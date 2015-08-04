@@ -36,7 +36,6 @@
 	var mongoose = require('mongoose');
 	var socketio = require('socket.io');
 	var swig = require('swig');
-	var grunt = require('grunt');
 
 	// Hijack console
 	var loglevel = 1;
@@ -74,7 +73,6 @@
 			}
 
 			console.error("Could not find plugin `%s`", plugin);
-			exit();
 		}
 	});
 }
@@ -90,6 +88,7 @@ console.info('================================================');
 			host: '0.0.0.0',
 			port: 80,
 			static: '../public_html',
+			maxAge: '1d',
 			maxFiles: 10,
 			maxFileSize: 10 * 1024 * 1024,
 			maxFieldSize: 1 * 1024 * 1024, // 1Mb
@@ -173,9 +172,7 @@ console.info('================================================');
 			});
 
 			sinaps.plugins.sort(function (a, b) {
-				if (a.executionOrder == b.executionOrder)
-					return 0;
-				return a.executionOrder > b.executionOrder ? 1 : -1;
+				return b.executionOrder - a.executionOrder;
 			});
 		}
 
@@ -223,7 +220,7 @@ console.info('================================================');
 		// If didn't catch in route, might be a static file
 		sinaps.app.use('/', express.static(path.resolve(__dirname + '/' + sinaps.config.webserver.static), {
 			index: 'index.html',
-			maxAge: '1d'
+			maxAge: sinaps.config.webserver.maxAge
 		}));
 
 		// Still didn't catch any static files, throw 404

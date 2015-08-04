@@ -1,23 +1,17 @@
 module.exports = {
 
-	siteUrl: 'http://dev.grenier.tv/',
+	siteUrl: 'http://localhost/',
 
 	mongodb: false,
-	/*mongodb: {
+	mongodb: {
 		host: 'localhost',
 		port: 27017,
-		db: 'greniertv'
-	},*/
-
-	session: {
-		name: 'greniertv.sid'
+		db: 'gamedev'
 	},
 
-	libraries: {
-		Movie: 'F:\\Users\\Michael\\Videos\\Movies',
-		Shows: 'F:\\Users\\Michael\\Videos\\Shows'
-	}
-
+	session: {
+		name: 'sinaps.sid'
+	},
 	/*services: {
 		facebook: {
 			ownerId: '10153101535784230',
