@@ -68,7 +68,7 @@
 		require: function (plugin) {
 			for (var i = 0, l = this.plugins.length; i < l; ++i) {
 				if (this.plugins[i].name == plugin) {
-					return this.plugins[i];
+					return this.plugins[i].exports || {};
 				}
 			}
 
