@@ -68,7 +68,7 @@
 		require: function (plugin) {
 			for (var i = 0, l = this.plugins.length; i < l; ++i) {
 				if (this.plugins[i].name == plugin) {
-					return this.plugins[i].exports || {};
+					return this.plugins[i];
 				}
 			}
 
@@ -202,7 +202,9 @@ console.info('================================================');
 		console.info('Initialize plugins');
 		_.each(sinaps.plugins, function (plugin) {
 			try {
+				delete plugin.executionOrder;
 				plugin.initialize();
+				delete plugin.initialize;
 			} catch (e) {
 				console.warn("  `%s` could not be initialize : %s", plugin.name, e.stack);
 			}

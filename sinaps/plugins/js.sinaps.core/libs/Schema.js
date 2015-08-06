@@ -15,6 +15,8 @@ function Schema (options) {
 	this.label = options.label;
 	//this.options = _.omit(options, 'layouts');
 	this.layouts = [];
+	this.methods = {};
+	this.virtuals = {};
 
 	if (_.isArray(options.layouts)) {
 		options.layouts.forEach(function (layout) {
@@ -59,6 +61,16 @@ Schema.prototype.finalizedSchema = function () {
 			index: true
 		}
 	}));
+
+	_.forEach(this.methods, function (fn, name) {
+		schema.methods[name] = fn;
+	});
+
+	_.forEach(this.virtuals, function (obj, name) {
+		var get = obj && obj.get || function () {};
+		var set = obj && obj.set || function () {};
+		schema.virtual(name).get(get).set(set);
+	});
 
 	return schema;
 }
