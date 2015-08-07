@@ -164,6 +164,7 @@ console.info('================================================');
 					plugin = require(path.resolve(__dirname + '/plugins/' + name + '/main.js'));
 					plugin.name = name;
 					plugin.executionOrder = parseInt(plugin.executionOrder, 10) || 0;
+					plugin.config = _.extend({}, plugin.config);
 					sinaps.plugins.push(plugin);
 					console.info("  `%s` loaded", name);
 				} catch (e) {
