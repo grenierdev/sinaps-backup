@@ -13,11 +13,21 @@ module.exports = function (grunt) {
 				files: [{
 					expand: true,
 					cwd: './plugins/sinaps.admin/resources/sass/',
-					src: ['*.scss'],
+					src: ['**/*.scss'],
 					dest: './plugins/sinaps.admin/resources/css/',
 					ext: '.css'
 				}]
 			}
+		},
+
+		watch: {
+			sass: {
+				interval: 1000,
+				files: [
+					'./plugins/sinaps.admin/resources/sass/**/*.scss'
+				],
+				tasks: ['sass']
+			},
 		},
 
 		//less: {
@@ -49,14 +59,6 @@ module.exports = function (grunt) {
 		//	}
 		//},
 
-		//watch: {
-		//	less: {
-		//		interval: 1000,
-		//		files: ['../public_html/resources/less/**/*.less'],
-		//		tasks: ['less']
-		//	},
-		//},
-
 		nodemon: {
 			dist: {
 				script: './server.js',
@@ -74,14 +76,14 @@ module.exports = function (grunt) {
 			options: {
 				logConcurrentOutput: true
 			},
-			tasks: ['nodemon', 'sass']
+			tasks: ['nodemon', 'watch', 'sass']
 		}
 
 	});
 
 	grunt.loadNpmTasks('grunt-concurrent');
 	grunt.loadNpmTasks('grunt-nodemon');
-	//grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-contrib-watch');
 	//grunt.loadNpmTasks('grunt-contrib-imagemin');
 	grunt.loadNpmTasks('grunt-sass');
 	//grunt.loadNpmTasks('grunt-contrib-less');

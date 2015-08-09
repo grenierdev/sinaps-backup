@@ -57,6 +57,7 @@ Schema.prototype.finalizedSchema = function () {
 	var schema = mongoose.Schema(_.extend(definitions, {
 		layout: {
 			type: String,
+			default: this.layouts[0].name || '',
 			required: true,
 			index: true
 		}
