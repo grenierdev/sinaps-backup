@@ -5,20 +5,20 @@ module.exports = function (grunt) {
 
 	grunt.initConfig({
 
-		//sass: {
-		//	options: {
-		//		sourceMap: true
-		//	},
-		//	dist: {
-		//		files: [{
-		//			expand: true,
-		//			cwd: '../public_html/resources/scss/',
-		//			src: ['*.scss'],
-		//			dest: '../public_html/resources/css/',
-		//			ext: '.css'
-		//		}]
-		//	}
-		//},
+		sass: {
+			options: {
+				sourceMap: true
+			},
+			dist: {
+				files: [{
+					expand: true,
+					cwd: './plugins/sinaps.admin/resources/sass/',
+					src: ['*.scss'],
+					dest: './plugins/sinaps.admin/resources/css/',
+					ext: '.css'
+				}]
+			}
+		},
 
 		//less: {
 		//	dist: {
@@ -65,7 +65,7 @@ module.exports = function (grunt) {
 					delay: 500,
 					watch: ['.', './**'],
 					ext: 'js',
-					ignore: ['node_modules/**', '**/node_modules/**/*', 'temps/**', 'templates/**']
+					ignore: ['node_modules/**', '**/node_modules/**', 'temps/**', 'templates/**', 'plugins/*/templates/**', 'plugins/*/resources/**']
 				}
 			}
 		},
@@ -74,7 +74,7 @@ module.exports = function (grunt) {
 			options: {
 				logConcurrentOutput: true
 			},
-			tasks: ['nodemon']
+			tasks: ['nodemon', 'sass']
 		}
 
 	});
@@ -83,7 +83,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-nodemon');
 	//grunt.loadNpmTasks('grunt-contrib-watch');
 	//grunt.loadNpmTasks('grunt-contrib-imagemin');
-	//grunt.loadNpmTasks('grunt-sass');
+	grunt.loadNpmTasks('grunt-sass');
 	//grunt.loadNpmTasks('grunt-contrib-less');
 
 
