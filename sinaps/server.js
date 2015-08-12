@@ -83,6 +83,7 @@ console.info('================================================');
 {
 	sinaps.config = _.merge({
 		path: __dirname,
+		languages: ['en'],
 		secret: 'keyboard cat',
 		webserver: {
 			host: '0.0.0.0',

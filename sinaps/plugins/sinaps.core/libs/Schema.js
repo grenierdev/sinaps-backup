@@ -148,6 +148,7 @@ Schema.Field = function Field (options) {
 		instruction: '',
 
 		type: '',
+		lang: false,
 		required: false,
 		index: false
 	}, options);
@@ -222,6 +223,14 @@ Schema.Field.prototype.finalizedField = function () {
 
 		default:
 			throw new Error("Unknown field type !");
+	}
+
+	if (this.lang) {
+		var d = definition;
+		definition = {};
+		for (var i = sinaps.config.languages.length; --i >= 0;) {
+			definition[sinaps.config.languages[i]] = d;
+		}
 	}
 
 	return definition;

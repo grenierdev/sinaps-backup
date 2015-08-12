@@ -48,7 +48,7 @@ module.exports = {
 
 				// If user present in request (logged), set user as swig global variable
 				sinaps.router.use(function (req, res, next) {
-					sinaps.swig.setDefaults({ user: req.user || null });
+					sinaps.app.locals.user = req.user || null;
 					next();
 				});
 			}

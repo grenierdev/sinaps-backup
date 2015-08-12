@@ -3,11 +3,17 @@ var path = require('path');
 var express = require('express');
 var passport = require('passport');
 var EventEmitter = require('events').EventEmitter;
+var Navigation = require('./libs/Navigation');
 
 module.exports = _.extend({}, EventEmitter.prototype, {
 
 	// Admin router
 	router: express.Router(),
+
+	sidebar: {
+		//top: new Navigation(),
+		navigation: new Navigation()
+	},
 
 	// Order in which plugins are executed
 	executionOrder: -500,
