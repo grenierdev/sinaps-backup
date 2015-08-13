@@ -21,23 +21,6 @@ module.exports = {
 			icon: 'icon-home'
 		});
 
-		admin.sidebar.navigation.addGroup({
-			name: 'features',
-			title: 'Features'
-		}).addItem({
-			title: 'Test',
-			icon: 'icon-check'
-		}).addItem({
-			title: 'Inception',
-			icon: 'icon-eye'
-		});
-
-		admin.sidebar.navigation.group('features').addItem({
-			title: 'Bleh !',
-			icon: 'icon-question'
-		});
-
-
 
 	}
 

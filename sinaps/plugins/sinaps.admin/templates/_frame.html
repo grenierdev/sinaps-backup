@@ -445,7 +445,7 @@
 					</li>
 					{% macro navItem(item) %}
 						<li>
-							<a {% if item.items.length > 0 %}href="javascript:;"{% else %}href="{{item.href|default('#')}}"{% endif %}>
+							<a href="{{item.href|default('javascript:;')}}">
 								{% if item.icon %}<i class="{{item.icon}}"></i>{% endif %}
 								<span class="title">{{item.title}}</span>
 								{% if item.items.length > 0 %}<span class="arrow "></span>{% endif %}
