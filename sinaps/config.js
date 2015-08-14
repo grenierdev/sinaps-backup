@@ -2,7 +2,6 @@ module.exports = {
 
 	siteUrl: 'http://localhost/',
 
-	mongodb: false,
 	mongodb: {
 		host: 'localhost',
 		port: 27017,
@@ -22,4 +21,4 @@ module.exports = {
 			key: 'decac561561a0f12d571e98de9de6380'
 		}
 	}*/
-}
+};

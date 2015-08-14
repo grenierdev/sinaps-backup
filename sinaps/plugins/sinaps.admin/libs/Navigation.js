@@ -27,7 +27,7 @@ Navigation.Item = function Item (options) {
 	options.items.forEach(function (item) {
 		this.addItem(item);
 	}.bind(this));
-}
+};
 
 Navigation.Item.prototype.addItem = function (options) {
 	var item = new Navigation.Item(options);
@@ -40,7 +40,7 @@ Navigation.Item.prototype.addItem = function (options) {
 	});
 
 	return item;
-}
+};
 
 Navigation.Group = function Group (options) {
 	options = item = _.extend({
@@ -57,7 +57,7 @@ Navigation.Group = function Group (options) {
 	options.items.forEach(function (item) {
 		this.addItem(item);
 	}.bind(this));
-}
+};
 
 Navigation.Group.prototype.addItem = Navigation.Item.prototype.addItem;
 
@@ -74,7 +74,7 @@ Navigation.prototype.addGroup = function (options) {
 	});
 
 	return group;
-}
+};
 
 Navigation.prototype.group = function (name) {
 	for (var i = this.groups.length; --i >= 0;) {
@@ -83,6 +83,6 @@ Navigation.prototype.group = function (name) {
 		}
 	}
 	return undefined;
-}
+};
 
 module.exports = Navigation;

@@ -3,15 +3,12 @@
 // Help file
 {
 	process.exitCode = 1; // gracefully/crashed
-	function exit () {
-		setTimeout(function() { process.exit(500); }, 1);
-	}
 
 	var optimist = require('optimist')
 				.usage('Usage [options]')
 				.alias('h', 'help')
 				.describe('help', 'Display usage')
-				.describe('loglevel', 'Log level : 1 = log, 2 = info, 3 = warn, 4 = error')
+				.describe('loglevel', 'Log level : 1 = log, 2 = info, 3 = warn, 4 = error');
 
 	// Get arguments
 	var argv = optimist.argv;
@@ -23,13 +20,33 @@
 	}
 }
 
-// Requires
+// Clustering
+var cluster = require('cluster');
+var _ = require('lodash');
+var config = _.merge(require('./libs/config-dist.js'), require('./config.js'));
+
+if (cluster.isMaster) {
+
+	cluster.on('exit', function (worker) {
+
+		console.error('Worker #%d died, restarting...', worker.id);
+		cluster.fork();
+	});
+
+	config.workers = Math.max(1, parseInt(config.workers, 10));
+	for (var i = 0; i < config.workers; ++i) {
+		cluster.fork();
+	}
+
+	return;
+}
+
+// Worker
 {
 	var util = require('util');
 	var colors = require('cli-color');
 	var fs = require('fs');
 	var path = require('path');
-	var _ = require('lodash');
 	var EventEmitter = require('events').EventEmitter;
 	var http = require('http');
 	var express = require('express');
@@ -55,9 +72,8 @@
 
 	var app = express();
 	var server = http.Server(app);
-	var layouts = {};
 	sinaps = _.extend({}, EventEmitter.prototype, {
-		config: null,
+		config: config,
 		plugins: [],
 		app: app,
 		router: express.Router(),
@@ -79,40 +95,6 @@
 
 console.info('================================================');
 
-// Read configuration file
-{
-	sinaps.config = _.merge({
-		path: __dirname,
-		languages: ['en'],
-		secret: 'keyboard cat',
-		webserver: {
-			host: '0.0.0.0',
-			port: 80,
-			static: '../public_html',
-			maxAge: '1d',
-			maxFiles: 10,
-			maxFileSize: 10 * 1024 * 1024,
-			maxFieldSize: 1 * 1024 * 1024, // 1Mb
-		},
-		session: {
-			name: 'sinaps.sid',
-			path: '/',
-			httpOnly: true,
-			secure: false,
-			maxAge: 30 * 24 * 60 * 60 * 1000
-		},
-		mongodb: {
-			host: 'localhost',
-			port: 27017,
-			db: 'test'
-		},
-		template: {
-			path: './templates',
-			cache: false
-		}
-	}, require('./config.js'));
-	//console.info('Configuration : %s', JSON.stringify(sinaps.config));
-}
 
 // Startup server
 {
@@ -228,14 +210,14 @@ console.info('================================================');
 		}));
 
 		// Still didn't catch any static files, throw 404
-		sinaps.app.use(function (req, res, next) {
+		sinaps.app.use(function (req, res) {
 			res.status(404).render('404', {
 				requested: req.originalUrl
 			});
 		});
 
 		// Oupsy! throw 500
-		sinaps.app.use(function (err, req, res, next) {
+		sinaps.app.use(function (err, req, res) {
 			console.error(err.stack);
 			res.status(500).render('500', {
 				error: err
@@ -253,7 +235,7 @@ if (sinaps.config.mongodb !== false) {
 	sinaps.db.connect(mongodburi, function (e) {
 		if (e) {
 			console.error(e.stack);
-			exit();
+			process.exit(500);
 			return;
 		}
 		console.info('Mongodb connected');
@@ -274,7 +256,7 @@ if (sinaps.config.mongodb !== false) {
 	);
 	sinaps.server.on('error', function (e) {
 		console.error(e.stack);
-		exit();
+		process.exit(500);
 		return;
 	});
 }

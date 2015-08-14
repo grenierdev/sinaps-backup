@@ -26,7 +26,7 @@ module.exports = {
             this.root = roots;
 
             return match;
-        }
+        };
 
     },
 
@@ -64,4 +64,4 @@ module.exports = {
 
         return ret;
     }
-}
+};

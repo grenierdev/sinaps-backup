@@ -1,11 +1,14 @@
 var UserSchema = require('./schemas/User');
 var User;
-var mongoose = require('mongoose')
+var mongoose = require('mongoose');
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
 
 
 module.exports = {
+	// Schemas
+	Schema: require('./libs/Schema'),
+
 	// Schema of a user
 	UserSchema: UserSchema,
 
@@ -56,4 +59,4 @@ module.exports = {
 
 		});
 	}
-}
+};

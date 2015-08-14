@@ -40,9 +40,10 @@ var UserSchema = new Schema({
 
 UserSchema.methods.setPassword = function (password) {
 	this.password = crypto.createHash('sha256').update(password).digest('base64');
-}
+};
+
 UserSchema.methods.verifyPassword = function (password) {
 	return this.password == crypto.createHash('sha256').update(password).digest('base64');
-}
+};
 
 module.exports = UserSchema;

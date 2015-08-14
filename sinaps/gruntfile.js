@@ -20,6 +20,20 @@ module.exports = function (grunt) {
 			}
 		},
 
+		jshint: {
+			sinaps: {
+				options: {
+					globals: {
+						sinaps: true
+					},
+					ignores: ['node_modules/**', '**/node_modules/**', 'temps/**', 'templates/**', 'plugins/*/templates/**', 'plugins/*/resources/**']
+				},
+				files: {
+					src: ['./*.js', './**/*.js']
+				}
+			}
+		},
+
 		watch: {
 			sass: {
 				interval: 1000,
@@ -27,37 +41,8 @@ module.exports = function (grunt) {
 					'./plugins/sinaps.admin/resources/sass/**/*.scss'
 				],
 				tasks: ['sass']
-			},
+			}
 		},
-
-		//less: {
-		//	dist: {
-		//		files: [{
-		//			expand: true,
-		//			cwd: '../public_html/resources/less/',
-		//			src: ['*.less'],
-		//			dest: '../public_html/resources/css/',
-		//			ext: '.css'
-		//		}]
-		//	}
-		//},
-
-		//imagemin: {
-		//	medias: {
-		//		options: {
-		//			progressive: true,
-		//			optimizationLevel: 7,
-		//			use: [mozjpeg(), pngquant()]
-		//		},
-		//		files: [{
-		//			expand: true,
-		//			cwd: __dirname,
-		//			src: ['../public_html/resources/medias/*.{png,jpg}'],
-		//			dest: '../public_html/resources/medias2/',
-		//			flatten: true
-		//		}]
-		//	}
-		//},
 
 		nodemon: {
 			dist: {
@@ -76,11 +61,12 @@ module.exports = function (grunt) {
 			options: {
 				logConcurrentOutput: true
 			},
-			tasks: ['nodemon', 'watch', 'sass']
+			tasks: ['nodemon', 'watch']
 		}
 
 	});
 
+	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-concurrent');
 	grunt.loadNpmTasks('grunt-nodemon');
 	grunt.loadNpmTasks('grunt-contrib-watch');
@@ -90,4 +76,5 @@ module.exports = function (grunt) {
 
 
 	grunt.registerTask('default', ['concurrent']);
-}
+	grunt.registerTask('tests', ['jshint']);
+};

@@ -31,14 +31,15 @@ Schema.prototype.addLayout = function (name, label, tabs) {
 		label: label,
 		tabs: tabs
 	}));
-}
+};
+
 Schema.prototype.getLayout = function (name) {
 	for (var i = this.layouts.length; --i >= 0;) {
 		if (this.layouts[i].name == name)
 			return this.layouts[i];
 	}
 	return null;
-}
+};
 
 Schema.prototype.finalizedSchema = function () {
 	var fields = [];
@@ -74,7 +75,7 @@ Schema.prototype.finalizedSchema = function () {
 	});
 
 	return schema;
-}
+};
 
 Schema.Layout = function Layout (options) {
 	options = _.extend({
@@ -94,7 +95,7 @@ Schema.Layout = function Layout (options) {
 			this.addTab(tab.name, tab.label || tab.name, tab.fields || []);
 		}.bind(this));
 	}
-}
+};
 
 Schema.Layout.prototype.addTab = function (name, label, fields) {
 	this.tabs.push(new Schema.Tab({
@@ -102,14 +103,15 @@ Schema.Layout.prototype.addTab = function (name, label, fields) {
 		label: label,
 		fields: fields
 	}));
-}
+};
+
 Schema.Layout.prototype.getTab = function (name) {
 	for (var i = this.tabs.length; --i >= 0;) {
 		if (this.tabs[i].name == name)
 			return this.tabs[i];
 	}
 	return null;
-}
+};
 
 Schema.Tab = function Tab (options) {
 	options = _.extend({
@@ -129,17 +131,19 @@ Schema.Tab = function Tab (options) {
 			this.addField(field);
 		}.bind(this));
 	}
-}
+};
+
 Schema.Tab.prototype.addField = function (options) {
 	this.fields.push(new Schema.Field(options));
-}
+};
+
 Schema.Tab.prototype.getField = function (name) {
 	for (var i = this.fields.length; --i >= 0;) {
 		if (this.fields[i].name == name)
 			return this.fields[i];
 	}
 	return null;
-}
+};
 
 Schema.Field = function Field (options) {
 	options = _.extend({
@@ -168,7 +172,7 @@ Schema.Field = function Field (options) {
 	}
 
 	_.extend(this, options);
-}
+};
 
 Schema.Field.prototype.finalizedField = function () {
 	var definition = {
@@ -213,7 +217,7 @@ Schema.Field.prototype.finalizedField = function () {
 					definition[field.name] = field.finalizedField();
 				});
 			});
-			definition['layout'] = {
+			definition.layout = {
 				type: String,
 				required: true,
 				index: true
@@ -234,6 +238,6 @@ Schema.Field.prototype.finalizedField = function () {
 	}
 
 	return definition;
-}
+};
 
 module.exports = Schema;
