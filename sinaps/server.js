@@ -23,7 +23,7 @@
 // Clustering
 var cluster = require('cluster');
 var _ = require('lodash');
-var config = _.merge(require('./libs/config-dist.js'), require('./config.js'));
+var config = _.merge({}, require('./libs/config-dist.js'), require('./config.js'));
 
 if (cluster.isMaster) {
 
@@ -108,6 +108,9 @@ console.info('================================================');
 		// Finish up express app
 		{
 			sinaps.app.disable('x-powered-by'); // remove header
+			sinaps.app.use(require('compression')({ // gzip/deflate response https://github.com/expressjs/compression
+				level: sinaps.config.webserver.compression
+			}));
 			sinaps.app.use(require('cookie-parser')()); // read cookie https://github.com/expressjs/cookie-parser#example
 			sinaps.app.use(require('body-parser').urlencoded({ // read form https://github.com/expressjs/body-parser#examples
 				extended: true
@@ -183,6 +186,8 @@ console.info('================================================');
 				loader: expressmultiplepaths.swigLoader(templates)
 			});
 			sinaps.app.locals.sinaps = sinaps;
+
+			require('./libs/swig-extend')(sinaps.swig);
 		}
 
 		console.info('Initialize plugins');

@@ -1,0 +1,61 @@
+
+{% macro form(layout) %}
+	{% import 'sinaps.admin/components/fields.html' as fields %}
+
+	<div class="tabbable-line">
+		<ul class="nav nav-tabs">
+			{% for tab in layout.tabs %}
+				<li {% if loop.first %}class="active"{% endif %}>
+					<a href="#form_tab_{{ tab.name }}" data-toggle="tab">
+						{{ tab.label|default(tab.name) }}
+					</a>
+				</li>
+			{% endfor %}
+		</ul>
+		<div class="tab-content">
+			{% for tab in layout.tabs %}
+				<div id="form_tab_{{ tab.name }}" class="tab-pane {% if loop.first %}active{% endif %}">
+					<div class="form-body">
+						{% for field in tab.fields %}
+							{% set fieldHTML = '' %}
+
+							{% if field.lang %}
+								{% set languages = sinaps.config.languages %}
+							{% else %}
+								{% set languages = [''] %}
+							{% endif %}
+
+							{% for lang in languages %}
+
+								{% if lang == '' %}
+									{% set name = field.name %}
+									{% set label = field.label %}
+								{% else %}
+									{% set name = field.name + '.' + lang %}
+									{% set label = field.label + ' (' + lang|upper + ')' %}
+								{% endif %}
+
+								{% if field.input == 'text' %}
+									{% set fieldHTML = fieldHTML + fields.textField({
+										id: 'field_' + name|replace('\.', '_', 'g'),
+										name: 'field[' + name|split('.')|join('][') + ']',
+										value: section.get(name),
+										label: label,
+										klass: 'form-control input-sm',
+										instructions: field.instructions,
+										required: field.required
+									}) %}
+								{% else %}
+									{% set fieldHTML = fieldHTML + '<input type="hidden" name="' + name +'" value="' + section.get(name)|json|escape +'" />' %}
+								{% endif %}
+							{% endfor %}
+
+							{{ fieldHTML|raw }}
+						{% endfor %}
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+
+{% endmacro %}

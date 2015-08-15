@@ -9,25 +9,28 @@ var Section = new Schema({
 			label: 'Channel',
 			tabs: [
 				{
-					name: 'channel',
-					label: 'Channel',
+					name: 'info',
+					label: 'Info',
 					fields: [
 						{
 							name: 'name',
 							label: 'Name',
 							type: 'string',
+							input: 'text',
 							required: true,
 							unique: true
 						},
 						{
 							name: 'title',
 							label: 'Title',
-							type: 'string'
+							type: 'string',
+							input: 'text',
 						},
 						{
 							name: 'url',
 							label: 'URL',
 							type: 'string',
+							input: 'text',
 							required: true,
 							lang: true
 						},

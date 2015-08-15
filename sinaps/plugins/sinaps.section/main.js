@@ -50,8 +50,9 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 	},
 
 	//
-	addSchema: function (schema) {
+	addSchema: function (schema, section) {
 		this.sections.push({
+			section: section || null,
 			model: null,
 			schema: schema
 		});
@@ -82,7 +83,7 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 						layouts: model.layouts
 					});
 
-					this.addSchema(schema);
+					this.addSchema(schema, model);
 
 				}.bind(this));
 

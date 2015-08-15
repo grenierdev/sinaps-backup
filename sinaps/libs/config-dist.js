@@ -13,6 +13,7 @@ module.exports = {
 		maxFiles: 10,
 		maxFileSize: 10 * 1024 * 1024,
 		maxFieldSize: 1 * 1024 * 1024, // 1Mb
+		compression: 6
 	},
 	session: {
 		name: 'sinaps.sid',

@@ -1,0 +1,35 @@
+
+
+{% macro field(options, input) %}
+	<div {% if options.id %}id="{{ options.id }}"{% endif %} class="form-group form-md-line-input">
+		{% if options.icon %}
+			{% if options.iconPosition and options.iconPosition == 'left' %}
+				<div class="input-group left-addon">
+					<span class="input-group-addon"><i class="{{ options.icon }}"></i></span>
+					{{ input|raw }}
+					<label {% if options.id %}for="{{ options.id }}"{% endif %}>{{ options.label }}</label>
+					{% if options.instructions %}<span class="help-block">{{ options.instruction }}</span>{% endif %}
+				</div>
+			{% else %}
+				<div class="input-icon right">
+					{{ input|raw }}
+					<label {% if options.id %}for="{{ options.id }}"{% endif %}>{{ options.label }}</label>
+					{% if options.instructions %}<span class="help-block">{{ options.instruction }}</span>{% endif %}
+					<i class="{{ options.icon }}"></i>
+				</div>
+			{% endif %}
+		{% else %}
+			{{ input|raw }}
+			<label {% if options.id %}for="{{ options.id }}"{% endif %}>{{ options.label }}</label>
+			{% if options.instructions %}<span class="help-block">{{ options.instruction }}</span>{% endif %}
+		{% endif %}
+	</div>
+{% endmacro %}
+
+{% macro textInput(options) %}
+	{% include "sinaps.admin/components/fields/text.html" with options only %}
+{% endmacro %}
+
+{% macro textField(options) %}
+	{{ field(options, textInput(options)) }}
+{% endmacro %}

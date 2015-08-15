@@ -36,24 +36,26 @@
 				<tbody>
 					{% for section in sections %}
 						<tr>
-							<td>{{loop.index}}</td>
+							<td>{{ loop.index }}</td>
 							<td>
-								{{section.label}}
+								{{ section.schema.label }}
 							</td>
 							<td>
-								{% for layout in section.layouts %}
-									{{layout.label|default(layout.name)}}{% if !loop.last %}, {% endif %}
+								{% for layout in section.schema.layouts %}
+									{{ layout.label|default(layout.name) }}{% if !loop.last %}, {% endif %}
 								{% endfor %}
 							</td>
 							<td class="text-nowrap">
-								<a href="/sections/~edit/{{section.name}}" class="btn default btn-xs purple">
-									<i class="fa fa-edit"></i>
-									Edit
-								</a>
-								<a href="/sections/~delete/{{section.name}}" class="btn default btn-xs red">
-									<i class="fa fa-trash-o"></i>
-									Delete
-								</a>
+								{% if section.section %}
+									<a href="/admin/sections/~edit/{{ section.schema.name }}" class="btn default btn-xs purple">
+										<i class="fa fa-edit"></i>
+										Edit
+									</a>
+									<a href="/admin/sections/~delete/{{ section.schema.name }}" class="btn default btn-xs red">
+										<i class="fa fa-trash-o"></i>
+										Delete
+									</a>
+								{% endif %}
 							</td>
 						</tr>
 					{% endfor %}

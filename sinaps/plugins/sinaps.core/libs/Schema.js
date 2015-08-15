@@ -186,6 +186,7 @@ Schema.Field = function Field (options) {
 		instruction: '',
 		type: '',
 		default: undefined,
+		input: '',
 
 		lang: undefined,
 		required: undefined,

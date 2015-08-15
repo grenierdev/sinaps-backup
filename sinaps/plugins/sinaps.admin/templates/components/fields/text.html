@@ -1,0 +1,12 @@
+<input type="{{ type|default('text') }}"
+	{% if id %} id="{{ id }}"{% endif %}
+	{% if klass %} class="{{ klass }}"{% endif %}
+	{% if name %} name="{{ name }}"{% endif %}
+	{% if value %} value="{{ value }}"{% endif %}
+	{% if maxlength %} maxlength="{{ maxlength }}"{% endif %}
+	{% if autofocus %} autofocus{% endif %}
+	{% if required %} required{% endif %}
+	{% if disabled %} disabled{% endif %}
+	{% if readonly %} readonly{% endif %}
+	{% if placeholder %} placeholder="{{ placeholder }}"{% endif %}
+/>
