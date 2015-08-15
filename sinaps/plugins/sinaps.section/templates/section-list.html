@@ -1,0 +1,67 @@
+{% extends "sinaps.admin/_frame.html" %}
+
+{% set title = 'Sections' %}
+{% set subtitle = '' %}
+{% set breadcrumbs = [{
+	href: '/admin/sections/',
+	title: 'Sections'
+}] %}
+
+{% block content %}
+
+<div class="portlet light">
+	<div class="portlet-title">
+		<div class="caption">
+			Sections
+		</div>
+		<div class="actions">
+			<a href="/sections/~create" class="btn default btn-sm blue">
+				<i class="fa fa-plus"></i>
+				Create
+			</a>
+		</div>
+	</div>
+	<div class="portlet-body">
+
+		<div class="table-scrollable">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th width="1">#</th>
+						<th>Name</th>
+						<th>Layouts</th>
+						<th width="1">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for section in sections %}
+						<tr>
+							<td>{{loop.index}}</td>
+							<td>
+								{{section.label}}
+							</td>
+							<td>
+								{% for layout in section.layouts %}
+									{{layout.label|default(layout.name)}}{% if !loop.last %}, {% endif %}
+								{% endfor %}
+							</td>
+							<td class="text-nowrap">
+								<a href="/sections/~edit/{{section.name}}" class="btn default btn-xs purple">
+									<i class="fa fa-edit"></i>
+									Edit
+								</a>
+								<a href="/sections/~delete/{{section.name}}" class="btn default btn-xs red">
+									<i class="fa fa-trash-o"></i>
+									Delete
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}

@@ -27,13 +27,16 @@ var config = _.merge(require('./libs/config-dist.js'), require('./config.js'));
 
 if (cluster.isMaster) {
 
+	// Workers has exited, spawn a new one
 	cluster.on('exit', function (worker) {
-
-		console.error('Worker #%d died, restarting...', worker.id);
 		cluster.fork();
 	});
 
+	// Minimum 1 worker, maximum os.cpus().length
+	//config.workers = Math.min(Math.max(1, parseInt(config.workers, 10)), require('os').cpus().length);
 	config.workers = Math.max(1, parseInt(config.workers, 10));
+
+	// Spawn workers
 	for (var i = 0; i < config.workers; ++i) {
 		cluster.fork();
 	}
@@ -41,7 +44,7 @@ if (cluster.isMaster) {
 	return;
 }
 
-// Worker
+// Requires & init
 {
 	var util = require('util');
 	var colors = require('cli-color');
@@ -94,7 +97,6 @@ if (cluster.isMaster) {
 }
 
 console.info('================================================');
-
 
 // Startup server
 {

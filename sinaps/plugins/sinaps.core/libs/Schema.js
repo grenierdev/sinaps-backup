@@ -16,13 +16,31 @@ function Schema (options) {
 	//this.options = _.omit(options, 'layouts');
 	this.layouts = [];
 	this.methods = {};
-	this.virtuals = {};
+	this._virtuals = {};
+	this._pre = {};
+	this._post = {};
 
 	if (_.isArray(options.layouts)) {
 		options.layouts.forEach(function (layout) {
 			this.addLayout(layout.name, layout.label || layout.name, layout.tabs || []);
 		}.bind(this));
 	}
+}
+
+Schema.prototype.virtual = function (virtual, getter, setter) {
+	this._virtuals[virtual] = {get: getter, set: setter};
+}
+
+Schema.prototype.pre = function (event, callback) {
+	if (typeof this._pre[event] == 'undefined')
+		this._pre[event] = [];
+	this._pre[event].push(callback);
+}
+
+Schema.prototype.post = function (event, callback) {
+	if (typeof this._post[event] == 'undefined')
+		this._post[event] = [];
+	this._post[event].push(callback);
 }
 
 Schema.prototype.addLayout = function (name, label, tabs) {
@@ -42,6 +60,10 @@ Schema.prototype.getLayout = function (name) {
 };
 
 Schema.prototype.finalizedSchema = function () {
+	if (typeof this._finalizedSchema != 'undefined') {
+		return this._finalizedSchema;
+	}
+
 	var fields = [];
 
 	this.layouts.forEach(function (layout) {
@@ -55,7 +77,7 @@ Schema.prototype.finalizedSchema = function () {
 		definitions[field.name] = field.finalizedField();
 	});
 
-	var schema = mongoose.Schema(_.extend(definitions, {
+	this._finalizedSchema = mongoose.Schema(_.extend(definitions, {
 		layout: {
 			type: String,
 			default: this.layouts[0].name || '',
@@ -65,16 +87,28 @@ Schema.prototype.finalizedSchema = function () {
 	}));
 
 	_.forEach(this.methods, function (fn, name) {
-		schema.methods[name] = fn;
-	});
+		this._finalizedSchema.methods[name] = fn;
+	}.bind(this));
 
-	_.forEach(this.virtuals, function (obj, name) {
+	_.forEach(this._virtuals, function (obj, name) {
 		var get = obj && obj.get || function () {};
 		var set = obj && obj.set || function () {};
-		schema.virtual(name).get(get).set(set);
-	});
+		this._finalizedSchema.virtual(name).get(get).set(set);
+	}.bind(this));
 
-	return schema;
+	_.forEach(this._pre, function (callbacks, name) {
+		_.forEach(callbacks, function (callback) {
+			this._finalizedSchema.pre(name, callback);
+		}.bind(this));
+	}.bind(this));
+
+	_.forEach(this._post, function (callbacks, name) {
+		_.forEach(callbacks, function (callback) {
+			this._finalizedSchema.post(name, callback);
+		}.bind(this));
+	}.bind(this));
+
+	return this._finalizedSchema;
 };
 
 Schema.Layout = function Layout (options) {
@@ -150,11 +184,13 @@ Schema.Field = function Field (options) {
 		name: '',
 		label: '',
 		instruction: '',
-
 		type: '',
-		lang: false,
-		required: false,
-		index: false
+		default: undefined,
+
+		lang: undefined,
+		required: undefined,
+		index: undefined,
+		unique: undefined
 	}, options);
 
 
