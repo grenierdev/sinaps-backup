@@ -5,21 +5,21 @@
 			{% if options.iconPosition and options.iconPosition == 'left' %}
 				<div class="input-group left-addon">
 					<span class="input-group-addon"><i class="{{ options.icon }}"></i></span>
-					<label {% if options.id %}for="{{ options.id }}"{% endif %}>{{ options.label }}</label>
 					{{ input|raw }}
+					<label {% if options.id %}for="{{ options.id }}"{% endif %}>{{ options.label }}</label>
 					{% if options.instructions %}<span class="help-block">{{ options.instructions }}</span>{% endif %}
 				</div>
 			{% else %}
 				<div class="input-icon right">
-					<label {% if options.id %}for="{{ options.id }}"{% endif %}>{{ options.label }}</label>
 					{{ input|raw }}
+					<label {% if options.id %}for="{{ options.id }}"{% endif %}>{{ options.label }}</label>
 					{% if options.instructions %}<span class="help-block">{{ options.instructions }}</span>{% endif %}
 					<i class="{{ options.icon }}"></i>
 				</div>
 			{% endif %}
 		{% else %}
-			<label {% if options.id %}for="{{ options.id }}"{% endif %}>{{ options.label }}</label>
 			{{ input|raw }}
+			<label {% if options.id %}for="{{ options.id }}"{% endif %}>{{ options.label }}</label>
 			{% if options.instructions %}<span class="help-block">{{ options.instructions }}</span>{% endif %}
 		{% endif %}
 	</div>
@@ -50,7 +50,11 @@
 {% endmacro %}
 
 {% macro checkboxField(options) %}
-	{{ field(options, checkboxInput(options)) }}
+	<div {% if options.id %}id="{{ options.id }}"{% endif %} class="form-group form-md-line-input">
+		<label for="{{ options.id|default(options.name) }}">{{ options.label }}</label>
+		{{ checkboxInput(options) }}
+		{% if options.instructions %}<span class="help-block">{{ options.instructions }}</span>{% endif %}
+	</div>
 {% endmacro %}
 
 {% macro selectboxField(options) %}
