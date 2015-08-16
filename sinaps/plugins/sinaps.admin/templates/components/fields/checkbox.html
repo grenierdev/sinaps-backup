@@ -1,14 +1,14 @@
-<div class="md-checkbox {{ klass }}">
+<div class="md-checkbox {{ options.class }}">
 	<input type="checkbox"
 			class="md-check"
-			id="{{ id|default(name) }}"
-			{% if name %} name="{{ name }}"{% endif %}
-			{% if required %} required{% endif %}
-			{% if disabled %} disabled{% endif %}
-			{% if readonly %} readonly{% endif %}
-			{% if checked %} checked{% endif %}
+			id="{{ options.id|default(options.name) }}"
+			{% if options.name %} name="{{ options.name }}"{% endif %}
+			{% if options.required %} required{% endif %}
+			{% if options.disabled %} disabled{% endif %}
+			{% if options.readonly %} readonly{% endif %}
+			{% if options.checked %} checked{% endif %}
 	/>
-	<label for="{{ id|default(name) }}">
+	<label for="{{ options.id|default(options.name) }}">
 		<span></span>
 		<span class="check"></span>
 		<span class="box"></span>

@@ -49,7 +49,7 @@ module.exports = {
 					});
 				});
 
-				// If user present in request (logged), set user as swig global variable
+				// If user present in request (logged)
 				sinaps.router.use(function (req, res, next) {
 					sinaps.app.locals.user = req.user || null;
 					next();

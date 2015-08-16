@@ -1,12 +1,12 @@
 <div class="input-group form-control">
 	<input 	type="text"
-	 		class="{{ klass|default('form-control timepicker timepicker-24') }}"
-			{% if id %} id="{{ id }}"{% endif %}
-			{% if name %} name="{{ name }}"{% endif %}
-			{% if autofocus %} autofocus{% endif %}
-			{% if required %} required{% endif %}
-			{% if disabled %} disabled{% endif %}
-			{% if readonly %} readonly{% endif %}
+	 		class="{{ options.class|default('form-control timepicker timepicker-24') }}"
+			id="{{ options.id|default(options.name) }}"
+			{% if options.name %} name="{{ options.name }}"{% endif %}
+			{% if options.autofocus %} autofocus{% endif %}
+			{% if options.required %} required{% endif %}
+			{% if options.disabled %} disabled{% endif %}
+			{% if options.readonly %} readonly{% endif %}
 	/>
 	<span class="input-group-btn">
 		<button class="btn default" type="button"><i class="fa fa-clock-o"></i></button>

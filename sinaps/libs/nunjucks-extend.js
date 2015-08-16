@@ -1,14 +1,14 @@
 var _ = require('lodash');
 
-module.exports = function (swig) {
+module.exports = function (env) {
 
-	swig.setFilter('merge', function (input, obj) {
+	env.addFilter('merge', function (input, obj) {
 		if (_.isArray(input))
 			return input.concat(obj);
 		return _.extend({}, obj, input);
 	});
 
-	swig.setFilter('split', function (input, char) {
+	env.addFilter('split', function (input, char) {
 		return (input + '').split(char);
 	});
 

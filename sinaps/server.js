@@ -55,7 +55,8 @@ if (cluster.isMaster) {
 	var express = require('express');
 	var mongoose = require('mongoose');
 	var socketio = require('socket.io');
-	var swig = require('swig');
+	var nunjucks = require('nunjucks');
+	var MultipleFSLoader = require('./libs/MultipleFSLoader');
 
 	// Hijack console
 	var loglevel = 1;
@@ -94,6 +95,7 @@ if (cluster.isMaster) {
 			console.error("Could not find plugin `%s`", plugin);
 		}
 	});
+	sinaps.app.locals.sinaps = sinaps;
 }
 
 console.info('================================================');
@@ -176,18 +178,10 @@ console.info('================================================');
 			sinaps.app.set('view engine', 'html');
 			sinaps.app.set('view cache', sinaps.config.template.cache);
 
-			var expressmultiplepaths = require('./libs/express-multiple-paths');
-			expressmultiplepaths.pathApp(sinaps.app); // enable multiple folder lookup
+			sinaps.nunjucks = new nunjucks.Environment(new MultipleFSLoader(templates));
+			sinaps.nunjucks.express(sinaps.app);
 
-			sinaps.app.engine('html', swig.renderFile);
-			sinaps.swig = swig;
-			sinaps.swig.setDefaults({
-				cache: sinaps.config.template.cache ? 'memory' : false,
-				loader: expressmultiplepaths.swigLoader(templates)
-			});
-			sinaps.app.locals.sinaps = sinaps;
-
-			require('./libs/swig-extend')(sinaps.swig);
+			require('./libs/nunjucks-extend')(sinaps.nunjucks);
 		}
 
 		console.info('Initialize plugins');

@@ -496,7 +496,7 @@
 						<li>
 							<i class="fa fa-home"></i>
 							<a href="/admin/">Home</a>
-							{% if breadcrumbs && breadcrumbs.length > 0 %}
+							{% if breadcrumbs and breadcrumbs.length > 0 %}
 								<i class="fa fa-angle-right"></i>
 							{% endif %}
 						</li>
@@ -504,7 +504,7 @@
 							{% for item in breadcrumbs %}
 								<li>
 									<a href="{{item.href|default('#')}}">{{item.title}}</a>
-									{% if !loop.last %}
+									{% if not loop.last %}
 										<i class="fa fa-angle-right"></i>
 									{% endif %}
 								</li>
@@ -581,6 +581,7 @@
 	<script src="/admin/resources/plugins/bootstrap-select/bootstrap-select.min.js" type="text/javascript"></script>
 	<script src="/admin/resources/plugins/select2/select2.min.js" type="text/javascript"></script>
 	<script src="/admin/resources/plugins/jquery-multi-select/js/jquery.multi-select.js" type="text/javascript"></script>
+	<script src="/admin/resources/scripts/nunjucks.min.js" type="text/javascript"></script>
 
 	<!-- END CORE PLUGINS -->
 	<script src="/admin/resources/scripts/metronic.js" type="text/javascript"></script>
@@ -590,7 +591,7 @@
 	<script src="/admin/resources/scripts/components-pickers.js" type="text/javascript"></script>
 	<script src="/admin/resources/scripts/components-dropdowns.js" type="text/javascript"></script>
 	<script>
-		jQuery(document).ready(function() {
+		$(function() {
 			Metronic.init(); // init metronic core components
 			Layout.init(); // init current layout
 			QuickSidebar.init(); // init quick sidebar
@@ -599,6 +600,8 @@
 			ComponentsPickers.init(); // init picker
 		});
 	</script>
+	{% block footJS %}
+	{% endblock %}
 	<!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->

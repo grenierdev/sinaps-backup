@@ -1,6 +1,6 @@
+{% import 'sinaps.admin/components/fields.html' as fields %}
 
 {% macro langSwitcher() %}
-	{% import 'sinaps.admin/components/fields.html' as fields %}
 
 	{% if sinaps.config.languages.length > 1 %}
 		{% set opts = [] %}
@@ -16,9 +16,8 @@
 	{% endif %}
 {% endmacro %}
 
-{% macro layoutSwitcher() %}
-	{% import 'sinaps.admin/components/fields.html' as fields %}
-	
+{% macro layoutSwitcher(schema) %}
+
 	{% set layouts = [] %}
 	{% for layout in schema.layouts %}
 		{% set layouts = layouts|merge({
@@ -38,7 +37,6 @@
 {% endmacro %}
 
 {% macro form(layout) %}
-	{% import 'sinaps.admin/components/fields.html' as fields %}
 
 	<div class="tabbable-line">
 		<ul class="nav nav-tabs">

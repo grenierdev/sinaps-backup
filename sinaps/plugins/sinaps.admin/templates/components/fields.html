@@ -5,20 +5,20 @@
 			{% if options.iconPosition and options.iconPosition == 'left' %}
 				<div class="input-group left-addon">
 					<span class="input-group-addon"><i class="{{ options.icon }}"></i></span>
-					{{ input|raw }}
+					{{ input }}
 					<label {% if options.id %}for="{{ options.id }}"{% endif %}>{{ options.label }}</label>
 					{% if options.instructions %}<span class="help-block">{{ options.instructions }}</span>{% endif %}
 				</div>
 			{% else %}
 				<div class="input-icon right">
-					{{ input|raw }}
+					{{ input }}
 					<label {% if options.id %}for="{{ options.id }}"{% endif %}>{{ options.label }}</label>
 					{% if options.instructions %}<span class="help-block">{{ options.instructions }}</span>{% endif %}
 					<i class="{{ options.icon }}"></i>
 				</div>
 			{% endif %}
 		{% else %}
-			{{ input|raw }}
+			{{ input }}
 			<label {% if options.id %}for="{{ options.id }}"{% endif %}>{{ options.label }}</label>
 			{% if options.instructions %}<span class="help-block">{{ options.instructions }}</span>{% endif %}
 		{% endif %}
@@ -26,23 +26,23 @@
 {% endmacro %}
 
 {% macro textInput(options) %}
-	{% include "sinaps.admin/components/fields/text.html" with options only %}
+	{% include "sinaps.admin/components/fields/text.html" %}
 {% endmacro %}
 
 {% macro checkboxInput(options) %}
-	{% include "sinaps.admin/components/fields/checkbox.html" with options only %}
+	{% include "sinaps.admin/components/fields/checkbox.html" %}
 {% endmacro %}
 
 {% macro selectboxInput(options) %}
-	{% include "sinaps.admin/components/fields/selectbox.html" with options only %}
+	{% include "sinaps.admin/components/fields/selectbox.html" %}
 {% endmacro %}
 
 {% macro dateInput(options) %}
-	{% include "sinaps.admin/components/fields/date.html" with options only %}
+	{% include "sinaps.admin/components/fields/date.html" %}
 {% endmacro %}
 
 {% macro timeInput(options) %}
-	{% include "sinaps.admin/components/fields/time.html" with options only %}
+	{% include "sinaps.admin/components/fields/time.html" %}
 {% endmacro %}
 
 {% macro textField(options) %}
