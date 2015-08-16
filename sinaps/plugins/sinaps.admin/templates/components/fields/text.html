@@ -1,8 +1,9 @@
 <input type="{{ type|default('text') }}"
 	{% if id %} id="{{ id }}"{% endif %}
-	{% if klass %} class="{{ klass }}"{% endif %}
+	class="{{ klass|default('form-control input-sm') }}"
 	{% if name %} name="{{ name }}"{% endif %}
 	{% if value %} value="{{ value }}"{% endif %}
+	{% if size %} size="{{ size }}"{% endif %}
 	{% if maxlength %} maxlength="{{ maxlength }}"{% endif %}
 	{% if autofocus %} autofocus{% endif %}
 	{% if required %} required{% endif %}

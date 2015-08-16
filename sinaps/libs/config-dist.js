@@ -9,7 +9,7 @@ module.exports = {
 		host: '0.0.0.0',
 		port: 80,
 		static: '../public_html',
-		maxAge: '1d',
+		maxAge: 1 * 24 * 60 * 60 * 1000,
 		maxFiles: 10,
 		maxFileSize: 10 * 1024 * 1024,
 		maxFieldSize: 1 * 1024 * 1024, // 1Mb

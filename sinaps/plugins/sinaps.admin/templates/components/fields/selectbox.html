@@ -1,0 +1,11 @@
+<select class="bs-select form-control"
+		{% if id %} id="{{ id }}"{% endif %}
+		{% if required %} required{% endif %}
+		{% if disabled %} disabled{% endif %}
+		{% if readonly %} readonly{% endif %}
+		{% if multiple %} multiple{% endif %}
+>
+	{% for opt in options %}
+		<option value="{{ opt.value }}" {% if opt.selected %}selected{% endif %}>{{ opt.label }}</option>
+	{% endfor %}
+</select>

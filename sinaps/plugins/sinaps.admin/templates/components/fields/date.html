@@ -1,0 +1,14 @@
+<div class="input-group input-medium date date-picker" data-date-format="{{ format|default('dd-mm-yyyy') }}">
+	<input 	type="text"
+	 		class="{{ klass|default('form-control') }}"
+			{% if id %} id="{{ id }}"{% endif %}
+			{% if name %} name="{{ name }}"{% endif %}
+			{% if autofocus %} autofocus{% endif %}
+			{% if required %} required{% endif %}
+			{% if disabled %} disabled{% endif %}
+			{% if readonly %} readonly{% endif %}
+	/>
+	<span class="input-group-btn">
+		<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+	</span>
+</div>

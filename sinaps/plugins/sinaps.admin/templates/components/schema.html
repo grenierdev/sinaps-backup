@@ -1,4 +1,42 @@
 
+{% macro langSwitcher() %}
+	{% import 'sinaps.admin/components/fields.html' as fields %}
+
+	{% if sinaps.config.languages.length > 1 %}
+		{% set opts = [] %}
+		{% for lang in sinaps.config.languages %}
+			{% set opts = opts|merge({value: lang, label: lang}) %}
+		{% endfor %}
+
+		{{ fields.selectboxField({
+			name: 'lang-switcher',
+			label: 'Languages',
+			options: opts
+		}) }}
+	{% endif %}
+{% endmacro %}
+
+{% macro layoutSwitcher() %}
+	{% import 'sinaps.admin/components/fields.html' as fields %}
+	
+	{% set layouts = [] %}
+	{% for layout in schema.layouts %}
+		{% set layouts = layouts|merge({
+			value: layout.name,
+			label: layout.label|default(layout.name),
+			selected: layout.name == section.layout
+		}) %}
+	{% endfor %}
+
+	{{ fields.selectboxField({
+		name: 'layout',
+		value: section.layout,
+		label: 'Layout',
+		options: layouts,
+		required: true
+	}) }}
+{% endmacro %}
+
 {% macro form(layout) %}
 	{% import 'sinaps.admin/components/fields.html' as fields %}
 
@@ -41,7 +79,6 @@
 										name: 'field[' + name|split('.')|join('][') + ']',
 										value: section.get(name),
 										label: label,
-										klass: 'form-control input-sm',
 										instructions: field.instructions,
 										required: field.required
 									}) %}

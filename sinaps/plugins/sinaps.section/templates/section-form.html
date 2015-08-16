@@ -21,7 +21,39 @@
 			<div class="portlet light">
 				<div class="portlet-body form">
 					<div class="form-body">
-						{{ schemaForm.form(schema.getLayout(section.layout)) }}
+						{# {{ schemaForm.form(schema.getLayout(section.layout)) }} #}
+
+						{{ fields.textField({
+							name: 'name',
+							label: 'Name',
+							instructions: 'Used as a reference key.',
+							value: section.name,
+							required: true
+						}) }}
+
+						{{ fields.textField({
+							name: 'title',
+							label: 'Title',
+							instructions: 'Only used as the title in the administration panel.',
+							value: section.title,
+							required: true
+						}) }}
+
+						{% for lang in sinaps.config.languages %}
+							{{ fields.textField({
+								name: 'url.' + lang,
+								label: 'URL (' + lang|upper + ')',
+								instructions: '(Optional) Swig syntax allowed.',
+								value: section.get('url.' + lang)
+							}) }}
+						{% endfor %}
+
+						{{ fields.checkboxField({
+							name: 'test',
+							label: 'Ha !',
+							checked: true,
+							instructions: 'Bhahaha'
+						}) }}
 					</div>
 				</div>
 			</div>
@@ -30,13 +62,15 @@
 			<div class="portlet light">
 				<div class="portlet-body form">
 					<div class="form-body">
-						{{ fields.textField({
-							name: 'hey',
-							value: section.layout,
-							label: 'Layout',
-							klass: 'form-control input-sm',
-							required: true
+						{{ schemaForm.langSwitcher() }}
+
+						{{ schemaForm.layoutSwitcher() }}
+
+						{{ fields.timeField({
+							name: 'publishDate',
+							label: 'Publish date !'
 						}) }}
+
 					</div>
 					<div class="form-actions">
 						<div class="row">
