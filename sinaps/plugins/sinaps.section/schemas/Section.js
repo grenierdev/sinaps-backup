@@ -35,6 +35,12 @@ var Section = new Schema({
 							lang: true
 						},
 						{
+							name: 'template',
+							label: 'Template',
+							type: 'string',
+							input: 'text',
+						},
+						{
 							name: 'layouts',
 							label: 'Layouts',
 							type: 'object'

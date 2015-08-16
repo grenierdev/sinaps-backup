@@ -12,4 +12,9 @@ module.exports = function (env) {
 		return (input + '').split(char);
 	});
 
+	env.addFilter('json', function (input) {
+		return JSON.stringify(input);
+	});
+	
+
 }

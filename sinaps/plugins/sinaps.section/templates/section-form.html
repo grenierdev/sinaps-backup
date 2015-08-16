@@ -43,10 +43,17 @@
 								{{ fields.textField({
 									name: 'url.' + lang,
 									label: 'URL (' + lang|upper + ')',
-									instructions: '(Optional) Nunjucks syntax allowed.',
+									instructions: 'Optional, Nunjucks syntax allowed.',
 									value: section.get('url.' + lang)
 								}) }}
 							{% endfor %}
+
+							{{ fields.textField({
+								name: 'template',
+								label: 'Template',
+								instructions: 'When URL is requested, this template will be used to render the content.',
+								value: section.template
+							}) }}
 						</div>
 					</div>
 				</div>
@@ -79,6 +86,44 @@
 		<div class="row">
 			<div class="col-md-9">
 
+				<div class="portlet light">
+					<div class="portlet-title">
+						<div class="caption">
+							Layouts &amp; Tabs &amp; Fields
+						</div>
+						<div class="actions">
+							<div class="btn-toolbar">
+								<div class="btn-group btn-group-sm btn-group-solid">
+									<a role="create-layout" class="btn default blue" data-toggle="modal" href="#newlayout">
+										<i class="fa fa-plus"></i>
+									</a>
+									<a role="edit-layout" class="btn default blue disabled" data-toggle="modal" href="#editlayout">
+										<i class="fa fa-edit"></i>
+									</a>
+									<a role="delete-layout" class="btn default blue disabled" data-toggle="modal" href="#deletelayout">
+										<i class="fa fa-trash-o"></i>
+									</a>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="portlet-body">
+						<div class="tabbable-line" role="tab-layout">
+							<ul class="nav nav-tabs">
+								<li>
+									<a>
+										Layouts
+									</a>
+								</li>
+							</ul>
+							<div class="tab-content">
+
+							</div>
+						</div>
+					</div>
+				</div>
+
 				<div id="newlayout" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
 					<div class="modal-dialog">
 						<div class="modal-content">
@@ -87,6 +132,7 @@
 								<h4 class="modal-title">New layout</h4>
 							</div>
 							<div class="modal-body">
+
 								{{ fields.textField({
 									name: 'name',
 									label: 'Name',
@@ -94,8 +140,8 @@
 									required: true
 								}) }}
 								{{ fields.textField({
-									name: 'title',
-									label: 'Title',
+									name: 'label',
+									label: 'Label',
 									instructions: 'Only used as the title in the administration panel.',
 									required: true
 								}) }}
@@ -103,13 +149,45 @@
 							<div class="modal-footer">
 								<button role="reset" type="button" class="btn default" data-dismiss="modal">Cancel</button>
 								<button role="save" type="button" class="btn blue" data-dismiss="modal">
-									<i class="fa fa-plus"></i>
 									Add
 								</button>
 							</div>
 						</div>
 					</div>
 				</div><!-- newlayout -->
+
+				<div id="editlayout" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+								<h4 class="modal-title">Edit layout</h4>
+							</div>
+							<div class="modal-body">
+								<input type="hidden" name="id" value="" />
+
+								{{ fields.textField({
+									name: 'name',
+									label: 'Name',
+									instructions: 'Used as a reference key.',
+									required: true
+								}) }}
+								{{ fields.textField({
+									name: 'label',
+									label: 'Label',
+									instructions: 'Only used as the title in the administration panel.',
+									required: true
+								}) }}
+							</div>
+							<div class="modal-footer">
+								<button role="reset" type="button" class="btn default" data-dismiss="modal">Cancel</button>
+								<button role="save" type="button" class="btn blue" data-dismiss="modal">
+									Save
+								</button>
+							</div>
+						</div>
+					</div>
+				</div><!-- editlayout -->
 
 				<div id="newtab" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
 					<div class="modal-dialog">
@@ -119,6 +197,8 @@
 								<h4 class="modal-title">New tab</h4>
 							</div>
 							<div class="modal-body">
+								<input type="hidden" name="layout" value="" />
+
 								{{ fields.textField({
 									name: 'name',
 									label: 'Name',
@@ -126,8 +206,8 @@
 									required: true
 								}) }}
 								{{ fields.textField({
-									name: 'title',
-									label: 'Title',
+									name: 'label',
+									label: 'Label',
 									instructions: 'Only used as the title in the administration panel.',
 									required: true
 								}) }}
@@ -135,7 +215,6 @@
 							<div class="modal-footer">
 								<button role="reset" type="button" class="btn default" data-dismiss="modal">Cancel</button>
 								<button role="save" type="button" class="btn blue" data-dismiss="modal">
-									<i class="fa fa-plus"></i>
 									Add
 								</button>
 							</div>
@@ -143,29 +222,38 @@
 					</div>
 				</div><!-- newtab -->
 
-				<div class="portlet light">
-					<div class="portlet-title">
-						<div class="caption">
-							Layouts &amp; Tabs &amp; Fields
-						</div>
-						<div class="actions">
-							<a role="create-layout" class="btn default btn-sm blue" data-toggle="modal" href="#newlayout">
-								<i class="fa fa-plus"></i>
-								New layout
-							</a>
-						</div>
-					</div>
-					<div class="portlet-body">
-						<div class="tabbable-line" role="tab-layout">
-							<ul class="nav nav-tabs">
+				<div id="newtab" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+								<h4 class="modal-title">Edit tab</h4>
+							</div>
+							<div class="modal-body">
+								<input type="hidden" name="id" value="" />
 
-							</ul>
-							<div class="tab-content">
-
+								{{ fields.textField({
+									name: 'name',
+									label: 'Name',
+									instructions: 'Used as a reference key.',
+									required: true
+								}) }}
+								{{ fields.textField({
+									name: 'label',
+									label: 'Label',
+									instructions: 'Only used as the title in the administration panel.',
+									required: true
+								}) }}
+							</div>
+							<div class="modal-footer">
+								<button role="reset" type="button" class="btn default" data-dismiss="modal">Cancel</button>
+								<button role="save" type="button" class="btn blue" data-dismiss="modal">
+									Save
+								</button>
 							</div>
 						</div>
 					</div>
-				</div>
+				</div><!-- edittab -->
 			</div>
 		</div>
 	</form>
@@ -173,34 +261,84 @@
 {% endblock %}
 
 {% block footJS %}
+	<link href="/admin/resources/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
+	<script src="/admin/resources/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
 	{% raw %}
 		<script type="text/x-template" name="layout">
-			<div class="col-xs-3">
-				<ul class="nav nav-tabs tabs-left">
-					{% for tab in tabs %}
+			<input type="hidden" name="layout[{{ name }}][name]" value="{{ name }}" />
+			<input type="hidden" name="layout[{{ name }}][label]" value="{{ label }}" />
+			<div class="row">
+				<div class="col-xs-3">
+					<ul class="nav nav-tabs tabs-left">
 						<li>
-							<a href="#tab-tab-{{ name }}" data-toggle="tab" {% if loop.first %}class="active"{% endif %}>
-								{{ title }}
+							<a>
+								Tabs
 							</a>
 						</li>
-					{% endfor %}
-				</ul>
-				<a role="create-layout" class="btn default btn-sm blue" data-toggle="modal" href="#newtab">
-					<i class="fa fa-plus"></i>
-					New tab
-				</a>
-			</div>
-			<div class="col-xs-9">
-				<div class="tab-content">
-					{% for tab in tabs %}
-						<div id="tab-tab-{{ name }}" class="tab-pane">
-							BLeh !
+					</ul>
+
+					<div class="btn-toolbar">
+						<div class="btn-group btn-group-sm btn-group-solid">
+							<a role="create-tab" class="btn default purple" data-toggle="modal" href="#newtab">
+								<i class="fa fa-plus"></i>
+							</a>
+							<a role="edit-tab" class="btn default purple disabled" data-toggle="modal" href="#edittab">
+								<i class="fa fa-edit"></i>
+							</a>
+							<a role="delete-tab" class="btn default purple disabled" data-toggle="modal" href="#deletetab">
+								<i class="fa fa-trash-o"></i>
+							</a>
 						</div>
-					{% endfor %}
+					</div>
+				</div>
+				<div class="col-xs-9">
+					<div class="tab-content">
+
+					</div>
 				</div>
 			</div>
 		</script>
+		<script type="text/x-template" name="tab">
+			<input type="hidden" name="layout[{{ layout }}][tabs][{{ name }}][name]" value="{{ name }}" />
+			<input type="hidden" name="layout[{{ layout }}][tabs][{{ name }}][label]" value="{{ label }}" />
+
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Type</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+
+				</tbody>
+			</table>
+
+			<div class="btn-group btn-group-sm btn-group-solid">
+				<a role="create-tab" class="btn default yellow" data-toggle="modal" href="#newfield">
+					<i class="fa fa-plus"></i>
+				</a>
+			</div>
+		</script>
+		<script type="text/x-template" name="field">
+			<tr>
+				<input type="hidden" name="layout[{{ layout }}][tabs][{{ tab }}][fields][]" value="{{ json|escape }}" />
+
+				<td>{{ label }} ({{ name }})</td>
+				<td>{{ type }}:{{ input }}</td>
+				<td class="text-nowrap text-right">
+					<a href="#" class="btn btn-xs default yellow">
+						<i class="fa fa-edit"></i>
+					</a>
+					<a href="#" class="btn btn-xs default yellow">
+						<i class="fa fa-trash-o"></i>
+					</a>
+				</td>
+			</tr>
+		</script>
 	{% endraw %}
+
 	<script>
 		$(function () {
 
@@ -208,27 +346,150 @@
 				$layoutTabs = $layouts.find('.nav-tabs').first(),
 				$layoutContents = $layouts.find('.tab-content').first(),
 				$newLayoutBtn = $('[role="create-layout"]').first(),
-				$newLayoutModal = $('[id="newlayout"]').first();
+				$editLayoutBtn = $('[role="edit-layout"]').first(),
+				$deleteLayoutBtn = $('[role="delete-layout"]').first(),
+				$newLayoutModal = $('[id="newlayout"]').first(),
+				$editLayoutModal = $('[id="editlayout"]').first(),
+				$deleteLayoutModal = $('[id="deletelayout"]').first(),
+				$newTabModal = $('[id="newtab"]').first(),
+				$editTabModal = $('[id="edittab"]').first(),
+				$deleteTabModal = $('[id="deletetab"]').first(),
+				templates = {
+					layout: nunjucks.compile($('script[name="layout"]').text()),
+					tab: nunjucks.compile($('script[name="tab"]').text()),
+					field: nunjucks.compile($('script[name="field"]').text()),
+				};
 
-			function createLayout (name, title, tabs) {
+			$layoutTabs.sortable({
+				items: 'li:not(:first)'
+			});
 
-				var id = 'tab-layout-' + name;
-				$layoutTabs.append('<li><a href="#' + id + '" data-toggle="tab">' + title + '</a></li>');
-				$layoutContents.append('<div id="' + id + '" class="tab-pane">'+id+'</div>');
+			function createLayout (name, label, tabs) {
+
+				var id = ['tab', name].join('_');
+				$layoutTabs.append('<li><a href="#' + id + '" data-toggle="tab">' + label + '</a></li>');
+				$layoutTabs.sortable('refresh');
+
+				var $content = $('<div id="' + id + '" class="tab-pane">' + templates.layout.render({
+					name: name,
+					label: label,
+					tabs: tabs || []
+				}) + '</div>');
+
+				$content.find('[role="create-tab"]').first().on('click', function (e) {
+					$newTabModal.find(':input').val('');
+					$newTabModal.find('[name="layout"]').val(name);
+				});
+
+				$content.find('.nav-tabs').sortable({
+					items: 'li:not(:first)'
+				});
+
+				$layoutContents.append($content);
 
 				$layoutTabs.find('[data-toggle="tab"]').last().click();
+
+				if (tabs) {
+					tabs.forEach(function (tab) {
+						createTab(name, tab.name, tab.label, tab.fields);
+					});
+				}
+
+				$editLayoutBtn.add($deleteLayoutBtn).removeClass('disabled');
 			}
 
-			$newLayoutModal.find('[role="reset"]').on('click', function (e) {
+			function createTab (layout, name, label, fields) {
+				var id = ['tab', layout, name].join('_');
+				var $layoutContent = $('[id="tab_' + layout + '"].tab-pane').first(),
+					$tabTabs = $layoutContent.find('.nav-tabs').first(),
+					$tabContents = $layoutContent.find('.tab-content').first();
+
+				$tabTabs.append('<li><a href="#' + id + '" data-toggle="tab">' + label + '</a></li>');
+				$tabTabs.sortable('refresh');
+
+				var $content = $('<div id="' + id + '" class="tab-pane">' + templates.tab.render({
+					layout: layout,
+					name: name,
+					label: label,
+					fields: fields || []
+				}) + '</div>');
+
+				$tabContents.append($content);
+
+				$tabTabs.find('[data-toggle="tab"]').last().click();
+
+				if (fields) {
+					fields.forEach(function (field) {
+						createField(layout, name, field);
+					});
+				}
+
+				$layoutContent.find('[role="edit-tab"], [role="delete-tab"]').removeClass('disabled')
+			}
+
+			function createField (layout, tab, config) {
+				var id = ['tab', layout, tab, name].join('_');
+				var $layoutContent = $('[id="tab_' + layout + '"].tab-pane').first(),
+					$tabContent = $('[id="tab_' + layout + '_' + tab + '"].tab-pane').first(),
+					$table = $tabContent.find('.table tbody'),
+					json = JSON.stringify(config);
+
+				config.layout = layout;
+				config.tab = tab;
+				config.json = json;
+				var $content = $(templates.field.render(config));
+
+				$table.append($content);
+			}
+
+			$newLayoutBtn.on('click', function () {
 				$newLayoutModal.find(':input').val('');
-			});
+			})
 
 			$newLayoutModal.find('[role="save"]').on('click', function (e) {
 				var name = $newLayoutModal.find('[name="name"]').val();
-				var title = $newLayoutModal.find('[name="title"]').val();
-				$newLayoutModal.find(':input').val('');
-				createLayout(name, title, []);
+				var label = $newLayoutModal.find('[name="label"]').val();
+				createLayout(name, label, []);
 			});
+
+			$newTabModal.find('[role="save"]').on('click', function (e) {
+				var layout = $newTabModal.find('[name="layout"]').val();
+				var name = $newTabModal.find('[name="name"]').val();
+				var label = $newTabModal.find('[name="label"]').val();
+				createTab(layout, name, label, []);
+			});
+
+			$editLayoutBtn.on('click', function () {
+				var $activeTab = $layoutTabs.children('.active'),
+					id = $activeTab.children('a').attr('href').substr(1),
+					$activePane = $layoutContents.children('[id="' + id + '"]'),
+					name = $activePane.find('[name$="[name]"]').val(),
+					label = $activePane.find('[name$="[label]"]').val();
+
+				$editLayoutModal.find(':input').val('');
+				$editLayoutModal.find('[name="id"]').val(id);
+				$editLayoutModal.find('[name="name"]').val(name);
+				$editLayoutModal.find('[name="label"]').val(label);
+			});
+
+			$editLayoutModal.find('[role="save"]').on('click', function (e) {
+				var id = $editLayoutModal.find('[name="id"]').val();
+				var name = $editLayoutModal.find('[name="name"]').val();
+				var label = $editLayoutModal.find('[name="label"]').val();
+			});
+
+			var layouts;
+			try {
+				layouts = {{ section.layouts|json }};
+			} catch (e) {}
+
+			if (layouts) {
+				layouts.forEach(function (layout) {
+
+					createLayout(layout.name, layout.label, layout.tabs);
+
+				});
+			}
 
 		});
 	</script>

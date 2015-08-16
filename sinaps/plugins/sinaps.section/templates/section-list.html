@@ -45,7 +45,7 @@
 										{{ layout.label|default(layout.name) }}{% if not loop.last %}, {% endif %}
 									{% endfor %}
 								</td>
-								<td class="text-nowrap">
+								<td class="text-nowrap text-right">
 									{% if section.section %}
 										<a href="/admin/sections/~edit/{{ section.schema.name }}" class="btn default btn-xs purple">
 											<i class="fa fa-edit"></i>
