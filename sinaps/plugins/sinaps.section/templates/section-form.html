@@ -28,7 +28,8 @@
 								label: 'Name',
 								instructions: 'Used as a reference key.',
 								value: section.name,
-								required: true
+								required: true,
+								autofocus: true
 							}) }}
 
 							{{ fields.textField({
@@ -54,6 +55,8 @@
 								instructions: 'When URL is requested, this template will be used to render the content.',
 								value: section.template
 							}) }}
+
+							<input type="hidden" name="layouts" value="{{ section.layouts|json|escape }}" />
 						</div>
 					</div>
 				</div>
@@ -65,7 +68,6 @@
 							{{ schemaForm.langSwitcher() }}
 
 							{{ schemaForm.layoutSwitcher(schema) }}
-
 						</div>
 						<div class="form-actions">
 							<div class="row">
@@ -94,7 +96,7 @@
 						<div class="actions">
 							<div class="btn-toolbar">
 								<div class="btn-group btn-group-sm btn-group-solid">
-									<a role="create-layout" class="btn default blue" data-toggle="modal" href="#newlayout">
+									<a role="create-layout" class="btn default blue" data-toggle="modal" href="#createlayout">
 										<i class="fa fa-plus"></i>
 									</a>
 									<a role="edit-layout" class="btn default blue disabled" data-toggle="modal" href="#editlayout">
@@ -108,389 +110,808 @@
 
 						</div>
 					</div>
-					<div class="portlet-body">
-						<div class="tabbable-line" role="tab-layout">
-							<ul class="nav nav-tabs">
-								<li>
-									<a>
-										Layouts
-									</a>
-								</li>
-							</ul>
-							<div class="tab-content">
+					<div class="portlet-body" id="layouts">
 
-							</div>
-						</div>
 					</div>
 				</div>
-
-				<div id="newlayout" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-								<h4 class="modal-title">New layout</h4>
-							</div>
-							<div class="modal-body">
-
-								{{ fields.textField({
-									name: 'name',
-									label: 'Name',
-									instructions: 'Used as a reference key.',
-									required: true
-								}) }}
-								{{ fields.textField({
-									name: 'label',
-									label: 'Label',
-									instructions: 'Only used as the title in the administration panel.',
-									required: true
-								}) }}
-							</div>
-							<div class="modal-footer">
-								<button role="reset" type="button" class="btn default" data-dismiss="modal">Cancel</button>
-								<button role="save" type="button" class="btn blue" data-dismiss="modal">
-									Add
-								</button>
-							</div>
-						</div>
-					</div>
-				</div><!-- newlayout -->
-
-				<div id="editlayout" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-								<h4 class="modal-title">Edit layout</h4>
-							</div>
-							<div class="modal-body">
-								<input type="hidden" name="id" value="" />
-
-								{{ fields.textField({
-									name: 'name',
-									label: 'Name',
-									instructions: 'Used as a reference key.',
-									required: true
-								}) }}
-								{{ fields.textField({
-									name: 'label',
-									label: 'Label',
-									instructions: 'Only used as the title in the administration panel.',
-									required: true
-								}) }}
-							</div>
-							<div class="modal-footer">
-								<button role="reset" type="button" class="btn default" data-dismiss="modal">Cancel</button>
-								<button role="save" type="button" class="btn blue" data-dismiss="modal">
-									Save
-								</button>
-							</div>
-						</div>
-					</div>
-				</div><!-- editlayout -->
-
-				<div id="newtab" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-								<h4 class="modal-title">New tab</h4>
-							</div>
-							<div class="modal-body">
-								<input type="hidden" name="layout" value="" />
-
-								{{ fields.textField({
-									name: 'name',
-									label: 'Name',
-									instructions: 'Used as a reference key.',
-									required: true
-								}) }}
-								{{ fields.textField({
-									name: 'label',
-									label: 'Label',
-									instructions: 'Only used as the title in the administration panel.',
-									required: true
-								}) }}
-							</div>
-							<div class="modal-footer">
-								<button role="reset" type="button" class="btn default" data-dismiss="modal">Cancel</button>
-								<button role="save" type="button" class="btn blue" data-dismiss="modal">
-									Add
-								</button>
-							</div>
-						</div>
-					</div>
-				</div><!-- newtab -->
-
-				<div id="newtab" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-								<h4 class="modal-title">Edit tab</h4>
-							</div>
-							<div class="modal-body">
-								<input type="hidden" name="id" value="" />
-
-								{{ fields.textField({
-									name: 'name',
-									label: 'Name',
-									instructions: 'Used as a reference key.',
-									required: true
-								}) }}
-								{{ fields.textField({
-									name: 'label',
-									label: 'Label',
-									instructions: 'Only used as the title in the administration panel.',
-									required: true
-								}) }}
-							</div>
-							<div class="modal-footer">
-								<button role="reset" type="button" class="btn default" data-dismiss="modal">Cancel</button>
-								<button role="save" type="button" class="btn blue" data-dismiss="modal">
-									Save
-								</button>
-							</div>
-						</div>
-					</div>
-				</div><!-- edittab -->
 			</div>
 		</div>
 	</form>
+
+	<div id="createlayout" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+						<h4 class="modal-title">New layout</h4>
+					</div>
+					<div class="modal-body">
+						{{ fields.textField({
+							name: 'name',
+							label: 'Name',
+							instructions: 'Used as a reference key.',
+							required: true,
+							autofocus: true
+						}) }}
+
+						{{ fields.textField({
+							name: 'label',
+							label: 'Label',
+							instructions: 'Only used as the title in the administration panel.',
+							required: true
+						}) }}
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn default" data-dismiss="modal">Cancel</button>
+						<button type="submit" class="btn blue">
+							Add
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div><!-- createlayout -->
+
+	<div id="editlayout" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+						<h4 class="modal-title">Edit layout</h4>
+					</div>
+					<div class="modal-body">
+						<input type="hidden" name="id" value="" />
+
+						{{ fields.textField({
+							name: 'name',
+							label: 'Name',
+							instructions: 'Used as a reference key.',
+							required: true,
+							autofocus: true
+						}) }}
+
+						{{ fields.textField({
+							name: 'label',
+							label: 'Label',
+							instructions: 'Only used as the title in the administration panel.',
+							required: true
+						}) }}
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn default" data-dismiss="modal">Cancel</button>
+						<button type="submit" class="btn blue">
+							Save
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div><!-- editlayout -->
+
+	<div id="deletelayout" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+						<h4 class="modal-title">Remove layout</h4>
+					</div>
+					<div class="modal-body">
+						<input type="hidden" name="id" value="" />
+
+						Are you sure you want to remove this layout?
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn default" data-dismiss="modal">Cancel</button>
+						<button type="submit" class="btn red">Remove</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div><!-- edittab -->
+
+	<div id="createtab" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+						<h4 class="modal-title">New tab</h4>
+					</div>
+					<div class="modal-body">
+						<input type="hidden" name="layout" value="" />
+
+						{{ fields.textField({
+							name: 'name',
+							label: 'Name',
+							instructions: 'Used as a reference key.',
+							required: true,
+							autofocus: true
+						}) }}
+
+						{{ fields.textField({
+							name: 'label',
+							label: 'Label',
+							instructions: 'Only used as the title in the administration panel.',
+							required: true
+						}) }}
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn default" data-dismiss="modal">Cancel</button>
+						<button type="submit" class="btn blue">
+							Add
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div><!-- createtab -->
+
+	<div id="edittab" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+						<h4 class="modal-title">Edit tab</h4>
+					</div>
+					<div class="modal-body">
+						<input type="hidden" name="layout" value="" />
+						<input type="hidden" name="id" value="" />
+
+						{{ fields.textField({
+							name: 'name',
+							label: 'Name',
+							instructions: 'Used as a reference key.',
+							required: true,
+							autofocus: true
+						}) }}
+
+						{{ fields.textField({
+							name: 'label',
+							label: 'Label',
+							instructions: 'Only used as the title in the administration panel.',
+							required: true
+						}) }}
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn default" data-dismiss="modal">Cancel</button>
+						<button type="submit" class="btn blue">
+							Save
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div><!-- edittab -->
+
+	<div id="deletetab" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+						<h4 class="modal-title">Remove tab</h4>
+					</div>
+					<div class="modal-body">
+						<input type="hidden" name="layout" value="" />
+						<input type="hidden" name="id" value="" />
+
+						Are you sure you want to remove this tab?
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn default" data-dismiss="modal">Cancel</button>
+						<button type="submit" class="btn red">Remove</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div><!-- edittab -->
+
+	<div id="formfield" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+						<h4 class="modal-title">New field</h4>
+					</div>
+					<div class="modal-body">
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn default" data-dismiss="modal">Cancel</button>
+						<button type="submit" class="btn blue">
+							Add
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div><!-- createlayout -->
+
+	<div id="deletefield" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+						<h4 class="modal-title">Remove field</h4>
+					</div>
+					<div class="modal-body">
+						<input type="hidden" name="layout" value="" />
+						<input type="hidden" name="tab" value="" />
+						<input type="hidden" name="id" value="" />
+
+						Are you sure you want to remove this field?
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn default" data-dismiss="modal">Cancel</button>
+						<button type="submit" class="btn red">Remove</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div><!-- deletefield -->
 
 {% endblock %}
 
 {% block footJS %}
 	<link href="/admin/resources/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
 	<script src="/admin/resources/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
-	{% raw %}
-		<script type="text/x-template" name="layout">
-			<input type="hidden" name="layout[{{ name }}][name]" value="{{ name }}" />
-			<input type="hidden" name="layout[{{ name }}][label]" value="{{ label }}" />
-			<div class="row">
-				<div class="col-xs-3">
-					<ul class="nav nav-tabs tabs-left">
-						<li>
-							<a>
-								Tabs
+
+	<script type="text/x-template" name="layouts">
+		{% raw %}
+			<div class="tabbable-line">
+				<ul class="nav nav-tabs">
+					<li>
+						<a>
+							Layouts
+						</a>
+					</li>
+					{% for layout in layouts %}
+						<li {% if layout.active %}class="active"{% endif %}>
+							<a href="#tab_{{ layout.name }}" data-toggle="tab" aria-expanded="true" data-layout="{{ layout.name }}">
+								{{layout.label}}
 							</a>
 						</li>
-					</ul>
+					{% endfor %}
+				</ul>
+				<div class="tab-content">
+					{% for layout in layouts %}
+						<div id="tab_{{ layout.name }}" class="tab-pane {% if layout.active %}active{% endif %}">
+							<div class="row">
+								<div class="col-xs-3">
+									<ul class="nav nav-tabs tabs-left">
+										<li>
+											<a>
+												Tabs
+											</a>
+										</li>
+										{% for tab in layout.tabs %}
+											<li {% if tab.active %}class="active"{% endif %}>
+												<a href="#tab_{{ layout.name }}_{{ tab.name }}" data-toggle="tab" aria-expanded="true" data-layout="{{ layout.name }}" data-tab="{{ tab.name }}">
+													{{tab.label}}
+												</a>
+											</li>
+										{% endfor %}
+									</ul>
 
-					<div class="btn-toolbar">
-						<div class="btn-group btn-group-sm btn-group-solid">
-							<a role="create-tab" class="btn default purple" data-toggle="modal" href="#newtab">
-								<i class="fa fa-plus"></i>
-							</a>
-							<a role="edit-tab" class="btn default purple disabled" data-toggle="modal" href="#edittab">
-								<i class="fa fa-edit"></i>
-							</a>
-							<a role="delete-tab" class="btn default purple disabled" data-toggle="modal" href="#deletetab">
-								<i class="fa fa-trash-o"></i>
-							</a>
+									<div class="btn-toolbar">
+										<div class="btn-group btn-group-sm btn-group-solid">
+											<a role="create-tab" class="btn default purple" data-toggle="modal" href="#createtab" data-layout="{{ layout.name }}">
+												<i class="fa fa-plus"></i>
+											</a>
+											<a role="edit-tab" class="btn default purple {% if layout.tabs.length == 0 %}disabled{% endif %}" data-toggle="modal" href="#edittab" data-layout="{{ layout.name }}">
+												<i class="fa fa-edit"></i>
+											</a>
+											<a role="delete-tab" class="btn default purple {% if layout.tabs.length == 0 %}disabled{% endif %}" data-toggle="modal" href="#deletetab" data-layout="{{ layout.name }}">
+												<i class="fa fa-trash-o"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-9">
+									<div class="tab-content">
+										{% for tab in layout.tabs %}
+											<div id="tab_{{ layout.name }}_{{ tab.name }}" class="tab-pane {% if tab.active %}active{% endif %}">
+												<table class="table table-hover">
+													<thead>
+														<tr>
+															<th width="1"></th>
+															<th>Title</th>
+															<th>Type</th>
+															<th></th>
+														</tr>
+													</thead>
+													<tbody>
+														{% for field in tab.fields %}
+															<tr>
+																<td><i class="fa fa-reorder"></i></td>
+																<td>{{ field.label }} ({{ field.name }})</td>
+																<td>{{ field.type }}:{{ field.input }}</td>
+																<td class="text-nowrap text-right">
+																	<a role="edit-field" class="btn btn-xs default yellow" data-toggle="modal" href="#formfield" data-action="edit" data-layout="{{ layout.name }}" data-tab="{{ tab.name }}" data-field="{{ field.name }}">
+																		<i class="fa fa-edit"></i>
+																	</a>
+																	<a class="btn btn-xs default yellow" data-toggle="modal" href="#deletefield" data-layout="{{ layout.name }}" data-tab="{{ tab.name }}" data-field="{{ field.name }}">
+																		<i class="fa fa-trash-o"></i>
+																	</a>
+																</td>
+															</tr>
+														{% endfor %}
+													</tbody>
+												</table>
+
+												<div class="btn-group btn-group-sm btn-group-solid">
+													<a role="create-tab" class="btn default yellow" data-toggle="modal" href="#formfield" data-action="create" data-layout="{{ layout.name }}" data-tab="{{ tab.name }}">
+														<i class="fa fa-plus"></i>
+													</a>
+												</div>
+											</div>
+										{% endfor %}
+									</div>
+								</div>
+							</div>
 						</div>
-					</div>
-				</div>
-				<div class="col-xs-9">
-					<div class="tab-content">
-
-					</div>
+					{% endfor %}
 				</div>
 			</div>
-		</script>
-		<script type="text/x-template" name="tab">
-			<input type="hidden" name="layout[{{ layout }}][tabs][{{ name }}][name]" value="{{ name }}" />
-			<input type="hidden" name="layout[{{ layout }}][tabs][{{ name }}][label]" value="{{ label }}" />
+		{% endraw %}
+	</script>
 
-			<table class="table table-hover">
-				<thead>
-					<tr>
-						<th>Title</th>
-						<th>Type</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
+	<script type="text/x-template" name="field">
+		{{ fields.textField({
+			name: 'name',
+			label: 'Name',
+			instructions: 'Used as a reference key.',
+			required: true,
+			autofocus: true
+		}) }}
 
-				</tbody>
-			</table>
+		{{ fields.textField({
+			name: 'label',
+			label: 'Label',
+			instructions: 'Only used as the title in the administration panel.',
+			required: true
+		}) }}
 
-			<div class="btn-group btn-group-sm btn-group-solid">
-				<a role="create-tab" class="btn default yellow" data-toggle="modal" href="#newfield">
-					<i class="fa fa-plus"></i>
-				</a>
-			</div>
-		</script>
-		<script type="text/x-template" name="field">
-			<tr>
-				<input type="hidden" name="layout[{{ layout }}][tabs][{{ tab }}][fields][]" value="{{ json|escape }}" />
+		{{ fields.textField({
+			name: 'instructions',
+			label: 'instructions',
+			instructions: 'Shown under the field (like this)'
+		}) }}
 
-				<td>{{ label }} ({{ name }})</td>
-				<td>{{ type }}:{{ input }}</td>
-				<td class="text-nowrap text-right">
-					<a href="#" class="btn btn-xs default yellow">
-						<i class="fa fa-edit"></i>
-					</a>
-					<a href="#" class="btn btn-xs default yellow">
-						<i class="fa fa-trash-o"></i>
-					</a>
-				</td>
-			</tr>
-		</script>
-	{% endraw %}
+		{{ fields.checkboxField({
+			name: 'lang',
+			label: 'Ce champ peut être traduit'
+		}) }}
+
+		<div class="form-group form-md-line-input">
+			<select class="bs-select form-control" id="input" name="{{ options.name }}" required>
+
+			</select>
+			<label for="input">Type de champ</label>
+			<span class="help-block">Changing this may result in data lost</span>
+		</div>
+	</script>
 
 	<script>
 		$(function () {
 
-			var $layouts = $('[role="tab-layout"]').first(),
-				$layoutTabs = $layouts.find('.nav-tabs').first(),
-				$layoutContents = $layouts.find('.tab-content').first(),
-				$newLayoutBtn = $('[role="create-layout"]').first(),
-				$editLayoutBtn = $('[role="edit-layout"]').first(),
-				$deleteLayoutBtn = $('[role="delete-layout"]').first(),
-				$newLayoutModal = $('[id="newlayout"]').first(),
-				$editLayoutModal = $('[id="editlayout"]').first(),
-				$deleteLayoutModal = $('[id="deletelayout"]').first(),
-				$newTabModal = $('[id="newtab"]').first(),
-				$editTabModal = $('[id="edittab"]').first(),
-				$deleteTabModal = $('[id="deletetab"]').first(),
-				templates = {
-					layout: nunjucks.compile($('script[name="layout"]').text()),
-					tab: nunjucks.compile($('script[name="tab"]').text()),
-					field: nunjucks.compile($('script[name="field"]').text()),
-				};
+			var state = {{ section.layouts|json }},
+				$input = $(':input[name="layouts"]'),
+				$layouts = $('#layouts'),
+				$modalCreateLayout = $('#createlayout'),
+				$modalEditLayout = $('#editlayout'),
+				$modalDeleteLayout = $('#deletelayout'),
+				$modalCreateTab = $('#createtab'),
+				$modalEditTab = $('#edittab'),
+				$modalDeleteTab = $('#deletetab'),
+				$modalEditField = $('#formfield'),
+				$modalDeleteField = $('#deletefield'),
+				templateLayout = nunjucks.compile($('script[name="layouts"]').html()),
+				templateField = nunjucks.compile($('script[name="field"]').html());
 
-			$layoutTabs.sortable({
-				items: 'li:not(:first)'
-			});
+			// Initial state
+			for (var a = 0, b = state.length; a < b; ++a) {
+				state[a].active = a == 0;
 
-			function createLayout (name, label, tabs) {
+				for (var c = 0, d = state[a].tabs.length; c < d; ++c) {
+					state[a].tabs[c].active = c == 0;
+				}
+			}
 
-				var id = ['tab', name].join('_');
-				$layoutTabs.append('<li><a href="#' + id + '" data-toggle="tab">' + label + '</a></li>');
-				$layoutTabs.sortable('refresh');
+			// Refresh layouts form
+			function updateLayouts () {
+				// Render
+				$layouts.empty().html(templateLayout.render({
+					layouts: state
+				}));
 
-				var $content = $('<div id="' + id + '" class="tab-pane">' + templates.layout.render({
-					name: name,
-					label: label,
-					tabs: tabs || []
-				}) + '</div>');
-
-				$content.find('[role="create-tab"]').first().on('click', function (e) {
-					$newTabModal.find(':input').val('');
-					$newTabModal.find('[name="layout"]').val(name);
-				});
-
-				$content.find('.nav-tabs').sortable({
+				// Initialize sortables
+				$layouts.find('.nav-tabs').sortable({
 					items: 'li:not(:first)'
 				});
+				$layouts.find('.tab-pane tbody').sortable({
+					handle: '.fa-reorder',
+					axis: 'y',
+					helper: function (e, $tr) {
+						var widths = $tr.children('td').map(function () { return $(this).width(); }).get(),
+							$clone = $tr.clone(false, false);
+						$clone.children('td').each(function (i) {
+							$(this).width(widths[i]);
+						});
+						return $clone;
+					}
+				});
 
-				$layoutContents.append($content);
+				// Intercept Layout tab change
+				$layouts.find('> .tabbable-line > .nav-tabs a').on('click', function (e) {
+					var id = $(this).attr('href').substr(1).split('_').slice(1);
+					for (var a = 0, b = state.length; a < b; ++a) {
+						state[a].active = state[a].name == id[0];
+					}
+				});
 
-				$layoutTabs.find('[data-toggle="tab"]').last().click();
+				// Intercept Tab tab change
+				$layouts.find('> .tabbable-line > .tab-content .nav-tabs a').on('click', function (e) {
+					var id = $(this).attr('href').substr(1).split('_').slice(1);
+					for (var a = 0, b = state.length; a < b; ++a) {
+						if (state[a].name == id[0]) {
+							for (var c = 0, d = state[a].tabs.length; c < d; ++c) {
+								state[a].tabs[c].active = state[a].tabs[c].name == id[1];
+							}
+						}
+					}
+				});
 
-				if (tabs) {
-					tabs.forEach(function (tab) {
-						createTab(name, tab.name, tab.label, tab.fields);
+				// Disable edit/delete if no items
+				$('[role="edit-layout"], [role="delete-layout"]').toggleClass('disabled', state.length == 0);
+
+				// Update input with current state
+				var save = _.map(state, function (layout) {
+					return _.extend(
+						_.omit(layout, 'active', 'tabs'),
+						{
+							tabs: _.map(layout.tabs, function (tab) {
+								return _.omit(tab, 'active');
+							})
+						}
+					)
+				});
+				$input.val(JSON.stringify(save));
+			}
+
+			updateLayouts();
+
+			// Autofocus form input
+			{
+				$modalCreateLayout
+				.add($modalEditLayout)
+				.add($modalCreateTab)
+				.add($modalEditTab)
+				.add($modalEditField)
+					.on('show.bs.modal', function (e) {
+						var $modal = $(this);
+						$modal.find(':input').val('');
+						setTimeout(function () {
+							$modal.find(':input[autofocus]:first').focus();
+						}, 500);
 					});
-				}
-
-				$editLayoutBtn.add($deleteLayoutBtn).removeClass('disabled');
 			}
 
-			function createTab (layout, name, label, fields) {
-				var id = ['tab', layout, name].join('_');
-				var $layoutContent = $('[id="tab_' + layout + '"].tab-pane').first(),
-					$tabTabs = $layoutContent.find('.nav-tabs').first(),
-					$tabContents = $layoutContent.find('.tab-content').first();
+			// layout form
+			{
+				$modalCreateLayout.find('form').on('submit', function (e) {
+					e.preventDefault();
+					var $form = $(this);
 
-				$tabTabs.append('<li><a href="#' + id + '" data-toggle="tab">' + label + '</a></li>');
-				$tabTabs.sortable('refresh');
+					// TODO validation on name (must be unique)
 
-				var $content = $('<div id="' + id + '" class="tab-pane">' + templates.tab.render({
-					layout: layout,
-					name: name,
-					label: label,
-					fields: fields || []
-				}) + '</div>');
+					for (var a = 0, b = state.length; a < b; ++a) {
+						state[a].active = false;
+					}
 
-				$tabContents.append($content);
-
-				$tabTabs.find('[data-toggle="tab"]').last().click();
-
-				if (fields) {
-					fields.forEach(function (field) {
-						createField(layout, name, field);
+					state.push({
+						active: true,
+						name: $form.find('[name="name"]').val(),
+						label: $form.find('[name="label"]').val(),
+						tabs: []
 					});
-				}
 
-				$layoutContent.find('[role="edit-tab"], [role="delete-tab"]').removeClass('disabled')
-			}
+					updateLayouts();
+					$modalCreateLayout.modal('hide');
+				});
 
-			function createField (layout, tab, config) {
-				var id = ['tab', layout, tab, name].join('_');
-				var $layoutContent = $('[id="tab_' + layout + '"].tab-pane').first(),
-					$tabContent = $('[id="tab_' + layout + '_' + tab + '"].tab-pane').first(),
-					$table = $tabContent.find('.table tbody'),
-					json = JSON.stringify(config);
+				$modalEditLayout.on('show.bs.modal', function (e) {
+					var $selected = $layouts.find('> .tabbable-line > .nav-tabs > li.active > a'),
+						selected = [$selected.data('layout')],
+						layout;
 
-				config.layout = layout;
-				config.tab = tab;
-				config.json = json;
-				var $content = $(templates.field.render(config));
+					for (var a = 0, b = state.length; a < b; ++a) {
+						if (state[a].name == selected) {
+							layout = state[a];
+							break;
+						}
+					}
 
-				$table.append($content);
-			}
+					if (layout) {
+						$modalEditLayout.find('[name="id"]').val(layout.name);
+						$modalEditLayout.find('[name="name"]').val(layout.name);
+						$modalEditLayout.find('[name="label"]').val(layout.label);
+					}
 
-			$newLayoutBtn.on('click', function () {
-				$newLayoutModal.find(':input').val('');
-			})
+				});
 
-			$newLayoutModal.find('[role="save"]').on('click', function (e) {
-				var name = $newLayoutModal.find('[name="name"]').val();
-				var label = $newLayoutModal.find('[name="label"]').val();
-				createLayout(name, label, []);
-			});
+				$modalEditLayout.find('form').on('submit', function (e) {
+					e.preventDefault();
+					var $form = $(this),
+						id = $form.find('[name="id"]').val(),
+						name = $form.find('[name="name"]').val(),
+						label = $form.find('[name="label"]').val();
 
-			$newTabModal.find('[role="save"]').on('click', function (e) {
-				var layout = $newTabModal.find('[name="layout"]').val();
-				var name = $newTabModal.find('[name="name"]').val();
-				var label = $newTabModal.find('[name="label"]').val();
-				createTab(layout, name, label, []);
-			});
+					// TODO validation on name (must be unique)
 
-			$editLayoutBtn.on('click', function () {
-				var $activeTab = $layoutTabs.children('.active'),
-					id = $activeTab.children('a').attr('href').substr(1),
-					$activePane = $layoutContents.children('[id="' + id + '"]'),
-					name = $activePane.find('[name$="[name]"]').val(),
-					label = $activePane.find('[name$="[label]"]').val();
+					for (var a = 0, b = state.length; a < b; ++a) {
+						if (state[a].name == id) {
+							state[a].name = name;
+							state[a].label = label;
+							break;
+						}
+					}
 
-				$editLayoutModal.find(':input').val('');
-				$editLayoutModal.find('[name="id"]').val(id);
-				$editLayoutModal.find('[name="name"]').val(name);
-				$editLayoutModal.find('[name="label"]').val(label);
-			});
+					updateLayouts();
+					$modalEditLayout.modal('hide');
+				});
 
-			$editLayoutModal.find('[role="save"]').on('click', function (e) {
-				var id = $editLayoutModal.find('[name="id"]').val();
-				var name = $editLayoutModal.find('[name="name"]').val();
-				var label = $editLayoutModal.find('[name="label"]').val();
-			});
+				$modalDeleteLayout.on('show.bs.modal', function (e) {
+					var $selected = $layouts.find('> .tabbable-line > .nav-tabs > li.active > a'),
+						selected = [$selected.data('layout')],
+					//var selected = $layouts.find('> .tabbable-line > .nav-tabs > li.active > a').attr('href').substr(1).split('_')[1],
+						layout;
 
-			var layouts;
-			try {
-				layouts = {{ section.layouts|json }};
-			} catch (e) {}
+					for (var a = 0, b = state.length; a < b; ++a) {
+						if (state[a].name == selected) {
+							layout = state[a];
+							break;
+						}
+					}
 
-			if (layouts) {
-				layouts.forEach(function (layout) {
+					if (layout) {
+						$modalDeleteLayout.find('[name="id"]').val(layout.name);
+					}
 
-					createLayout(layout.name, layout.label, layout.tabs);
+				});
 
+				$modalDeleteLayout.find('form').on('submit', function (e) {
+					e.preventDefault();
+					var $form = $(this),
+						id = $form.find('[name="id"]').val();
+
+					state = _.filter(state, function (layout) {
+						return layout.name != id;
+					});
+					if (state.length > 0) {
+						state[0].active = true;
+					}
+
+					updateLayouts();
+					$modalDeleteLayout.modal('hide');
 				});
 			}
 
+			// Tab form
+			{
+				$modalCreateTab.on('show.bs.modal', function (e) {
+					var $target = $(e.relatedTarget),
+						selected = [$target.data('layout')];
+
+					$modalCreateTab.find('[name="layout"]').val(selected[0]);
+				});
+
+				$modalCreateTab.find('form').on('submit', function (e) {
+					e.preventDefault();
+					var $form = $(this),
+						layout = $form.find('[name="layout"]').val();
+
+					// TODO validation on name (must be unique)
+
+					for (var a = 0, b = state.length; a < b; ++a) {
+						if (state[a].name == layout) {
+							for (var c = 0, d = state[a].tabs.length; c < d; ++c) {
+								state[a].tabs[c].active = false;
+							}
+
+							state[a].tabs.push({
+								active: true,
+								name: $form.find('[name="name"]').val(),
+								label: $form.find('[name="label"]').val(),
+								fields: []
+							});
+							break;
+						}
+					}
+
+					updateLayouts();
+					$modalCreateTab.modal('hide');
+				});
+
+				$modalEditTab.on('show.bs.modal', function (e) {
+					var $target = $(e.relatedTarget),
+						$selected = $target.closest('.tab-pane').find('.nav-tabs > li.active > a'),
+						selected = [$selected.data('layout'), $selected.data('tab')],
+						layout,
+						tab;
+
+					for (var a = 0, b = state.length; a < b; ++a) {
+						if (state[a].name == selected[0]) {
+							layout = state[a];
+							for (var c = 0, d = state[a].tabs.length; c < d; ++c) {
+								if (state[a].tabs[c].name == selected[1]) {
+									tab = state[a].tabs[c];
+									break;
+								}
+							}
+						}
+					}
+
+					if (tab) {
+						$modalEditTab.find('[name="layout"]').val(layout.name);
+						$modalEditTab.find('[name="id"]').val(tab.name);
+						$modalEditTab.find('[name="name"]').val(tab.name);
+						$modalEditTab.find('[name="label"]').val(tab.label);
+					}
+
+				});
+
+				$modalEditTab.find('form').on('submit', function (e) {
+					e.preventDefault();
+					var $form = $(this),
+						layout = $form.find('[name="layout"]').val(),
+						id = $form.find('[name="id"]').val(),
+						name = $form.find('[name="name"]').val(),
+						label = $form.find('[name="label"]').val();
+
+					// TODO validation on name (must be unique)
+
+					for (var a = 0, b = state.length; a < b; ++a) {
+						if (state[a].name == layout) {
+							for (var c = 0, d = state[a].tabs.length; c < d; ++c) {
+								if (state[a].tabs[c].name == id) {
+									state[a].tabs[c].name = name;
+									state[a].tabs[c].label = label;
+									break;
+								}
+							}
+						}
+					}
+
+					updateLayouts();
+					$modalEditTab.modal('hide');
+				});
+
+				$modalDeleteTab.on('show.bs.modal', function (e) {
+					var $target = $(e.relatedTarget),
+						$selected = $target.closest('.tab-pane').find('.nav-tabs > li.active > a'),
+						selected = [$selected.data('layout'), $selected.data('tab')],
+						layout,
+						tab;
+
+					for (var a = 0, b = state.length; a < b; ++a) {
+						if (state[a].name == selected[0]) {
+							layout = state[a];
+							for (var c = 0, d = state[a].tabs.length; c < d; ++c) {
+								if (state[a].tabs[c].name == selected[1]) {
+									tab = state[a].tabs[c];
+									break;
+								}
+							}
+						}
+					}
+
+					if (tab) {
+						$modalDeleteTab.find('[name="layout"]').val(layout.name);
+						$modalDeleteTab.find('[name="id"]').val(tab.name);
+					}
+
+				});
+
+				$modalDeleteTab.find('form').on('submit', function (e) {
+					e.preventDefault();
+					var $form = $(this),
+						layout = $form.find('[name="layout"]').val(),
+						id = $form.find('[name="id"]').val();
+
+					for (var a = 0, b = state.length; a < b; ++a) {
+						if (state[a].name == layout) {
+							state[a].tabs = _.filter(state[a].tabs, function (tab) {
+								return tab.name != id;
+							});
+							if (state[a].tabs.length > 0) {
+								state[a].tabs[0].active = true;
+							}
+						}
+					}
+
+					updateLayouts();
+					$modalDeleteTab.modal('hide');
+				});
+			}
+
+			// Field form
+			{
+				$modalEditField.on('show.bs.modal', function (e) {
+
+					console.log(templateField.render());
+
+					$modalEditField.find('.modal-body').empty().html(templateField.render({
+
+					}));
+
+					$modalEditField.find('.bs-select').selectpicker({
+			            iconBase: 'fa',
+			            tickIcon: 'fa-check'
+			        });
+
+				});
+
+				$modalDeleteField.on('show.bs.modal', function (e) {
+					var $target = $(e.relatedTarget),
+						selected = [$target.data('layout'), $target.data('tab'), $target.data('field')],
+						layout,
+						tab,
+						field;
+
+					for (var a = 0, b = state.length; a < b; ++a) {
+						if (state[a].name == selected[0]) {
+							layout = state[a];
+							for (var c = 0, d = state[a].tabs.length; c < d; ++c) {
+								if (state[a].tabs[c].name == selected[1]) {
+									tab = state[a].tabs[c];
+									for (var e = 0, f = state[a].tabs[c].fields.length; e < f; ++e) {
+										if (state[a].tabs[c].fields[e].name == selected[2]) {
+											field = state[a].tabs[c].fields[e];
+											break;
+										}
+									}
+								}
+							}
+						}
+					}
+
+					if (field) {
+						$modalDeleteField.find('[name="layout"]').val(layout.name);
+						$modalDeleteField.find('[name="tab"]').val(tab.name);
+						$modalDeleteField.find('[name="id"]').val(field.name);
+					}
+				});
+
+				$modalDeleteField.find('form').on('submit', function (e) {
+					e.preventDefault();
+					var $form = $(this),
+						layout = $form.find('[name="layout"]').val(),
+						tab = $form.find('[name="tab"]').val(),
+						id = $form.find('[name="id"]').val();
+
+					for (var a = 0, b = state.length; a < b; ++a) {
+						if (state[a].name == layout) {
+							for (var c = 0, d = state[a].tabs.length; c < d; ++c) {
+								if (state[a].tabs[c].name == tab) {
+									state[a].tabs[c].fields = _.filter(state[a].tabs[c].fields, function (field) {
+										return field.name != id;
+									});
+								}
+							}
+						}
+					}
+
+					updateLayouts();
+					$modalDeleteField.modal('hide');
+				});
+			}
 		});
 	</script>
 {% endblock %}

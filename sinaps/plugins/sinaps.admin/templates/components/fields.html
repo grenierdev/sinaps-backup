@@ -6,20 +6,20 @@
 				<div class="input-group left-addon">
 					<span class="input-group-addon"><i class="{{ options.icon }}"></i></span>
 					{{ input }}
-					<label {% if options.id %}for="{{ options.id }}"{% endif %}>{{ options.label }}</label>
+					<label for="{{ options.id|default(options.name) }}">{{ options.label }}</label>
 					{% if options.instructions %}<span class="help-block">{{ options.instructions }}</span>{% endif %}
 				</div>
 			{% else %}
 				<div class="input-icon right">
 					{{ input }}
-					<label {% if options.id %}for="{{ options.id }}"{% endif %}>{{ options.label }}</label>
+					<label for="{{ options.id|default(options.name) }}">{{ options.label }}</label>
 					{% if options.instructions %}<span class="help-block">{{ options.instructions }}</span>{% endif %}
 					<i class="{{ options.icon }}"></i>
 				</div>
 			{% endif %}
 		{% else %}
 			{{ input }}
-			<label {% if options.id %}for="{{ options.id }}"{% endif %}>{{ options.label }}</label>
+			<label for="{{ options.id|default(options.name) }}">{{ options.label }}</label>
 			{% if options.instructions %}<span class="help-block">{{ options.instructions }}</span>{% endif %}
 		{% endif %}
 	</div>
@@ -51,8 +51,8 @@
 
 {% macro checkboxField(options) %}
 	<div {% if options.id %}id="{{ options.id }}"{% endif %} class="form-group form-md-line-input">
+		{{ checkboxInput(options|merge({class: 'inline'})) }}
 		<label for="{{ options.id|default(options.name) }}">{{ options.label }}</label>
-		{{ checkboxInput(options) }}
 		{% if options.instructions %}<span class="help-block">{{ options.instructions }}</span>{% endif %}
 	</div>
 {% endmacro %}
