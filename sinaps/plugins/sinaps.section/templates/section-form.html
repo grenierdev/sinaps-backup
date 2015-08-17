@@ -26,7 +26,7 @@
 							{{ fields.textField({
 								name: 'name',
 								label: 'Name',
-								instructions: 'Used as a reference key.',
+								instructions: 'Used as a reference key',
 								value: section.name,
 								required: true,
 								autofocus: true
@@ -35,7 +35,7 @@
 							{{ fields.textField({
 								name: 'title',
 								label: 'Title',
-								instructions: 'Only used as the title in the administration panel.',
+								instructions: 'Only used as the title in the administration panel',
 								value: section.title,
 								required: true
 							}) }}
@@ -44,7 +44,7 @@
 								{{ fields.textField({
 									name: 'url.' + lang,
 									label: 'URL (' + lang|upper + ')',
-									instructions: 'Optional, Nunjucks syntax allowed.',
+									instructions: 'Optional, Nunjucks syntax allowed',
 									value: section.get('url.' + lang)
 								}) }}
 							{% endfor %}
@@ -52,7 +52,7 @@
 							{{ fields.textField({
 								name: 'template',
 								label: 'Template',
-								instructions: 'When URL is requested, this template will be used to render the content.',
+								instructions: 'When URL is requested, this template will be used to render the content',
 								value: section.template
 							}) }}
 
@@ -96,13 +96,19 @@
 						<div class="actions">
 							<div class="btn-toolbar">
 								<div class="btn-group btn-group-sm btn-group-solid">
-									<a role="create-layout" class="btn default blue" data-toggle="modal" href="#createlayout">
+									<a class="btn default blue" data-toggle="modal" href="#createlayout">
 										<i class="fa fa-plus"></i>
 									</a>
-									<a role="edit-layout" class="btn default blue disabled" data-toggle="modal" href="#editlayout">
+									<a class="btn default blue" data-toggle="modal" href="#pastelayout">
+										<i class="fa fa-paste"></i>
+									</a>
+									<a class="btn default blue disabled" data-toggle="modal" href="#copylayout">
+										<i class="fa fa-copy"></i>
+									</a>
+									<a class="btn default blue disabled" data-toggle="modal" href="#editlayout">
 										<i class="fa fa-edit"></i>
 									</a>
-									<a role="delete-layout" class="btn default blue disabled" data-toggle="modal" href="#deletelayout">
+									<a class="btn default blue disabled" data-toggle="modal" href="#deletelayout">
 										<i class="fa fa-trash-o"></i>
 									</a>
 								</div>
@@ -130,7 +136,7 @@
 						{{ fields.textField({
 							name: 'name',
 							label: 'Name',
-							instructions: 'Used as a reference key.',
+							instructions: 'Used as a reference key',
 							required: true,
 							autofocus: true
 						}) }}
@@ -138,7 +144,7 @@
 						{{ fields.textField({
 							name: 'label',
 							label: 'Label',
-							instructions: 'Only used as the title in the administration panel.',
+							instructions: 'Only used as the title in the administration panel',
 							required: true
 						}) }}
 					</div>
@@ -152,6 +158,67 @@
 			</div>
 		</div>
 	</div><!-- createlayout -->
+
+	<div id="copylayout" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+						<h4 class="modal-title">Copy layout</h4>
+					</div>
+					<div class="modal-body">
+						{{ fields.textareaField({
+							name: 'json',
+							label: 'JSON',
+							instructions: 'Raw layout data',
+							required: true,
+							autofocus: true
+						}) }}
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn default" data-dismiss="modal">Close</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div><!-- copylayout -->
+
+	<div id="pastelayout" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+						<h4 class="modal-title">Paste layout</h4>
+					</div>
+					<div class="modal-body">
+						{{ fields.textareaField({
+							name: 'json',
+							label: 'JSON',
+							instructions: 'Raw layout data',
+							required: true,
+							autofocus: true
+						}) }}
+
+						{{ fields.textField({
+							name: 'name',
+							label: 'Paste as new name',
+							instructions: 'This is the new refenrece key',
+							required: true
+						}) }}
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn default" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn blue">
+							Paste
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div><!-- pastelayout -->
 
 	<div id="editlayout" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
 		<div class="modal-dialog">
@@ -167,7 +234,7 @@
 						{{ fields.textField({
 							name: 'name',
 							label: 'Name',
-							instructions: 'Used as a reference key.',
+							instructions: 'Used as a reference key',
 							required: true,
 							autofocus: true
 						}) }}
@@ -175,7 +242,7 @@
 						{{ fields.textField({
 							name: 'label',
 							label: 'Label',
-							instructions: 'Only used as the title in the administration panel.',
+							instructions: 'Only used as the title in the administration panel',
 							required: true
 						}) }}
 					</div>
@@ -226,7 +293,7 @@
 						{{ fields.textField({
 							name: 'name',
 							label: 'Name',
-							instructions: 'Used as a reference key.',
+							instructions: 'Used as a reference key',
 							required: true,
 							autofocus: true
 						}) }}
@@ -234,7 +301,7 @@
 						{{ fields.textField({
 							name: 'label',
 							label: 'Label',
-							instructions: 'Only used as the title in the administration panel.',
+							instructions: 'Only used as the title in the administration panel',
 							required: true
 						}) }}
 					</div>
@@ -248,6 +315,69 @@
 			</div>
 		</div>
 	</div><!-- createtab -->
+
+	<div id="copytab" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+						<h4 class="modal-title">Copy tab</h4>
+					</div>
+					<div class="modal-body">
+						{{ fields.textareaField({
+							name: 'json',
+							label: 'JSON',
+							instructions: 'Raw tab data',
+							required: true,
+							autofocus: true
+						}) }}
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn default" data-dismiss="modal">Close</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div><!-- copytab -->
+
+	<div id="pastetab" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+						<h4 class="modal-title">Paste tab</h4>
+					</div>
+					<div class="modal-body">
+						<input type="hidden" name="layout" value="" />
+
+						{{ fields.textareaField({
+							name: 'json',
+							label: 'JSON',
+							instructions: 'Raw layout data',
+							required: true,
+							autofocus: true
+						}) }}
+
+						{{ fields.textField({
+							name: 'name',
+							label: 'Paste as new name',
+							instructions: 'This is the new refenrece key',
+							required: true
+						}) }}
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn default" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn blue">
+							Paste
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div><!-- pastetab -->
 
 	<div id="edittab" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
 		<div class="modal-dialog">
@@ -264,7 +394,7 @@
 						{{ fields.textField({
 							name: 'name',
 							label: 'Name',
-							instructions: 'Used as a reference key.',
+							instructions: 'Used as a reference key',
 							required: true,
 							autofocus: true
 						}) }}
@@ -272,7 +402,7 @@
 						{{ fields.textField({
 							name: 'label',
 							label: 'Label',
-							instructions: 'Only used as the title in the administration panel.',
+							instructions: 'Only used as the title in the administration panel',
 							required: true
 						}) }}
 					</div>
@@ -331,6 +461,70 @@
 			</div>
 		</div>
 	</div><!-- createlayout -->
+
+	<div id="copyfield" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+						<h4 class="modal-title">Copy field</h4>
+					</div>
+					<div class="modal-body">
+						{{ fields.textareaField({
+							name: 'json',
+							label: 'JSON',
+							instructions: 'Raw field data',
+							required: true,
+							autofocus: true
+						}) }}
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn default" data-dismiss="modal">Close</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div><!-- copyfield -->
+
+	<div id="pastefield" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+						<h4 class="modal-title">Paste field</h4>
+					</div>
+					<div class="modal-body">
+						<input type="hidden" name="layout" value="" />
+						<input type="hidden" name="tab" value="" />
+
+						{{ fields.textareaField({
+							name: 'json',
+							label: 'JSON',
+							instructions: 'Raw layout data',
+							required: true,
+							autofocus: true
+						}) }}
+
+						{{ fields.textField({
+							name: 'name',
+							label: 'Paste as new name',
+							instructions: 'This is the new refenrece key',
+							required: true
+						}) }}
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn default" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn blue">
+							Paste
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div><!-- pastefield -->
 
 	<div id="deletefield" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
 		<div class="modal-dialog">
@@ -401,13 +595,19 @@
 
 									<div class="btn-toolbar">
 										<div class="btn-group btn-group-sm btn-group-solid">
-											<a role="create-tab" class="btn default purple" data-toggle="modal" href="#createtab" data-layout="{{ layout.name }}">
+											<a class="btn default purple" data-toggle="modal" href="#createtab" data-layout="{{ layout.name }}">
 												<i class="fa fa-plus"></i>
 											</a>
-											<a role="edit-tab" class="btn default purple {% if layout.tabs.length == 0 %}disabled{% endif %}" data-toggle="modal" href="#edittab" data-layout="{{ layout.name }}">
+											<a class="btn default purple" data-toggle="modal" href="#pastetab" data-layout="{{ layout.name }}">
+												<i class="fa fa-paste"></i>
+											</a>
+											<a class="btn default purple" data-toggle="modal" href="#copytab" data-layout="{{ layout.name }}">
+												<i class="fa fa-copy"></i>
+											</a>
+											<a class="btn default purple {% if layout.tabs.length == 0 %}disabled{% endif %}" data-toggle="modal" href="#edittab" data-layout="{{ layout.name }}">
 												<i class="fa fa-edit"></i>
 											</a>
-											<a role="delete-tab" class="btn default purple {% if layout.tabs.length == 0 %}disabled{% endif %}" data-toggle="modal" href="#deletetab" data-layout="{{ layout.name }}">
+											<a class="btn default purple {% if layout.tabs.length == 0 %}disabled{% endif %}" data-toggle="modal" href="#deletetab" data-layout="{{ layout.name }}">
 												<i class="fa fa-trash-o"></i>
 											</a>
 										</div>
@@ -431,14 +631,20 @@
 															<tr>
 																<td><i class="fa fa-reorder"></i></td>
 																<td>{{ field.label }} ({{ field.name }})</td>
-																<td>{{ field.type }}:{{ field.input }}</td>
+																<td>{{ field.input }}</td>
 																<td class="text-nowrap text-right">
-																	<a role="edit-field" class="btn btn-xs default yellow" data-toggle="modal" href="#formfield" data-action="edit" data-layout="{{ layout.name }}" data-tab="{{ tab.name }}" data-field="{{ field.name }}">
-																		<i class="fa fa-edit"></i>
-																	</a>
-																	<a class="btn btn-xs default yellow" data-toggle="modal" href="#deletefield" data-layout="{{ layout.name }}" data-tab="{{ tab.name }}" data-field="{{ field.name }}">
-																		<i class="fa fa-trash-o"></i>
-																	</a>
+																	<div class="btn-group btn-group-xs btn-group-solid">
+																		<a class="btn btn-xs default yellow" data-toggle="modal" href="#copyfield" data-layout="{{ layout.name }}" data-tab="{{ tab.name }}" data-field="{{ field.name }}">
+																			<i class="fa fa-copy"></i>
+																		</a>
+																		<a class="btn btn-xs default yellow" data-toggle="modal" href="#formfield" data-action="edit" data-layout="{{ layout.name }}" data-tab="{{ tab.name }}" data-field="{{ field.name }}">
+																			<i class="fa fa-edit"></i>
+																		</a>
+																		<a class="btn btn-xs default yellow" data-toggle="modal" href="#deletefield" data-layout="{{ layout.name }}" data-tab="{{ tab.name }}" data-field="{{ field.name }}">
+																			<i class="fa fa-trash-o"></i>
+																		</a>
+
+																	</div>
 																</td>
 															</tr>
 														{% endfor %}
@@ -446,8 +652,11 @@
 												</table>
 
 												<div class="btn-group btn-group-sm btn-group-solid">
-													<a role="create-tab" class="btn default yellow" data-toggle="modal" href="#formfield" data-action="create" data-layout="{{ layout.name }}" data-tab="{{ tab.name }}">
+													<a class="btn default yellow" data-toggle="modal" href="#formfield" data-action="create" data-layout="{{ layout.name }}" data-tab="{{ tab.name }}">
 														<i class="fa fa-plus"></i>
+													</a>
+													<a class="btn default yellow" data-toggle="modal" href="#pastefield" data-layout="{{ layout.name }}" data-tab="{{ tab.name }}">
+														<i class="fa fa-paste"></i>
 													</a>
 												</div>
 											</div>
@@ -466,7 +675,7 @@
 		{{ fields.textField({
 			name: 'name',
 			label: 'Name',
-			instructions: 'Used as a reference key.',
+			instructions: 'Used as a reference key',
 			required: true,
 			autofocus: true
 		}) }}
@@ -474,13 +683,13 @@
 		{{ fields.textField({
 			name: 'label',
 			label: 'Label',
-			instructions: 'Only used as the title in the administration panel.',
+			instructions: 'Only used as the title in the administration panel',
 			required: true
 		}) }}
 
 		{{ fields.textField({
 			name: 'instructions',
-			label: 'instructions',
+			label: 'Instructions',
 			instructions: 'Shown under the field (like this)'
 		}) }}
 
@@ -506,11 +715,17 @@
 				$layouts = $('#layouts'),
 				$modalCreateLayout = $('#createlayout'),
 				$modalEditLayout = $('#editlayout'),
+				$modalCopyLayout = $('#copylayout'),
+				$modalPasteLayout = $('#pastelayout'),
 				$modalDeleteLayout = $('#deletelayout'),
 				$modalCreateTab = $('#createtab'),
 				$modalEditTab = $('#edittab'),
+				$modalCopyTab = $('#copytab'),
+				$modalPasteTab = $('#pastetab'),
 				$modalDeleteTab = $('#deletetab'),
 				$modalEditField = $('#formfield'),
+				$modalCopyField = $('#copyfield'),
+				$modalPasteField = $('#pastefield'),
 				$modalDeleteField = $('#deletefield'),
 				templateLayout = nunjucks.compile($('script[name="layouts"]').html()),
 				templateField = nunjucks.compile($('script[name="field"]').html());
@@ -569,7 +784,7 @@
 				});
 
 				// Disable edit/delete if no items
-				$('[role="edit-layout"], [role="delete-layout"]').toggleClass('disabled', state.length == 0);
+				$('[href="#copylayout"], [href="#editlayout"], [href="#deletelayout"]').toggleClass('disabled', state.length == 0);
 
 				// Update input with current state
 				var save = _.map(state, function (layout) {
@@ -591,9 +806,15 @@
 			{
 				$modalCreateLayout
 				.add($modalEditLayout)
+				.add($modalCopyLayout)
+				.add($modalPasteLayout)
 				.add($modalCreateTab)
+				.add($modalCopyTab)
+				.add($modalPasteTab)
 				.add($modalEditTab)
 				.add($modalEditField)
+				.add($modalCopyField)
+				.add($modalPasteField)
 					.on('show.bs.modal', function (e) {
 						var $modal = $(this);
 						$modal.find(':input').val('');
@@ -700,6 +921,62 @@
 
 					updateLayouts();
 					$modalDeleteLayout.modal('hide');
+				});
+
+				$modalCopyLayout.on('show.bs.modal', function (e) {
+					var $selected = $layouts.find('> .tabbable-line > .nav-tabs > li.active > a'),
+						selected = [$selected.data('layout')],
+						layout;
+
+					for (var a = 0, b = state.length; a < b; ++a) {
+						if (state[a].name == selected) {
+							layout = state[a];
+							break;
+						}
+					}
+
+					if (layout) {
+						$modalCopyLayout.find('[name="json"]').val(JSON.stringify(
+							_.extend(
+								_.omit(layout, 'active', 'tabs'),
+								{
+									tabs: _.map(layout.tabs, function (tab) {
+										return _.omit(tab, 'active');
+									})
+								}
+							)
+						));
+					}
+				});
+
+				$modalPasteLayout.find('form').on('submit', function (e) {
+					e.preventDefault();
+					var $form = $(this),
+						json = $form.find('[name="json"]').val(),
+						name = $form.find('[name="name"]').val();
+
+					// TODO validation on name (must be unique)
+
+					var data;
+					try {
+						data = JSON.parse(json);
+					} catch (e) {}
+
+					for (var a = 0, b = state.length; a < b; ++a) {
+						state[a].active = false;
+					}
+
+					if (data.tabs.length > 0)
+						data.tabs[0].active = true;
+
+					state.push(_.merge({}, data, {
+						active: true,
+						name: name,
+						label: data.label + ' (copy)'
+					}));
+
+					updateLayouts();
+					$modalPasteLayout.modal('hide');
 				});
 			}
 
@@ -839,13 +1116,89 @@
 					updateLayouts();
 					$modalDeleteTab.modal('hide');
 				});
+
+				$modalCopyTab.on('show.bs.modal', function (e) {
+					var $target = $(e.relatedTarget),
+						$selected = $target.closest('.tab-pane').find('.nav-tabs > li.active > a'),
+						selected = [$selected.data('layout'), $selected.data('tab')],
+						layout,
+						tab;
+
+					for (var a = 0, b = state.length; a < b; ++a) {
+						if (state[a].name == selected[0]) {
+							layout = state[a];
+							for (var c = 0, d = state[a].tabs.length; c < d; ++c) {
+								if (state[a].tabs[c].name == selected[1]) {
+									tab = state[a].tabs[c];
+									break;
+								}
+							}
+						}
+					}
+
+					if (tab) {
+						$modalCopyTab.find('[name="json"]').val(JSON.stringify(
+							_.omit(tab, 'active')
+						));
+					}
+				});
+
+				$modalPasteTab.on('show.bs.modal', function (e) {
+					var $target = $(e.relatedTarget),
+						$selected = $target.closest('.tab-pane').find('.nav-tabs > li.active > a'),
+						selected = [$selected.data('layout')],
+						layout;
+
+					for (var a = 0, b = state.length; a < b; ++a) {
+						if (state[a].name == selected[0]) {
+							layout = state[a];
+							break;
+						}
+					}
+
+					if (layout) {
+						$modalPasteTab.find('[name="layout"]').val(layout.name);
+					}
+
+				});
+
+				$modalPasteTab.find('form').on('submit', function (e) {
+					e.preventDefault();
+					var $form = $(this),
+						layout = $form.find('[name="layout"]').val(),
+						json = $form.find('[name="json"]').val(),
+						name = $form.find('[name="name"]').val();
+
+					// TODO validation on name (must be unique)
+
+					var data;
+					try {
+						data = JSON.parse(json);
+					} catch (e) {}
+
+					for (var a = 0, b = state.length; a < b; ++a) {
+						if (state[a].name == layout) {
+							for (var c = 0, d = state[a].tabs.length; c < d; ++c) {
+								state[a].tabs[c].active = false;
+							}
+
+							state[a].tabs.push(_.merge({}, data, {
+								active: true,
+								name: name,
+								label: data.label + ' (copy)'
+							}));
+							break;
+						}
+					}
+
+					updateLayouts();
+					$modalPasteTab.modal('hide');
+				});
 			}
 
 			// Field form
 			{
 				$modalEditField.on('show.bs.modal', function (e) {
-
-					console.log(templateField.render());
 
 					$modalEditField.find('.modal-body').empty().html(templateField.render({
 
@@ -910,6 +1263,96 @@
 
 					updateLayouts();
 					$modalDeleteField.modal('hide');
+				});
+
+				$modalCopyField.on('show.bs.modal', function (e) {
+					var $target = $(e.relatedTarget),
+						selected = [$target.data('layout'), $target.data('tab'), $target.data('field')],
+						layout,
+						tab,
+						field;
+
+					for (var a = 0, b = state.length; a < b; ++a) {
+						if (state[a].name == selected[0]) {
+							layout = state[a];
+							for (var c = 0, d = state[a].tabs.length; c < d; ++c) {
+								if (state[a].tabs[c].name == selected[1]) {
+									tab = state[a].tabs[c];
+									for (var e = 0, f = state[a].tabs[c].fields.length; e < f; ++e) {
+										if (state[a].tabs[c].fields[e].name == selected[2]) {
+											field = state[a].tabs[c].fields[e];
+											break;
+										}
+									}
+								}
+							}
+						}
+					}
+
+					if (field) {
+						$modalCopyField.find('[name="json"]').val(JSON.stringify(
+							field
+						));
+					}
+				});
+
+				$modalPasteField.on('show.bs.modal', function (e) {
+					var $target = $(e.relatedTarget),
+						selected = [$target.data('layout'), $target.data('tab'), $target.data('field')],
+						layout,
+						tab;
+
+					for (var a = 0, b = state.length; a < b; ++a) {
+						if (state[a].name == selected[0]) {
+							layout = state[a];
+							for (var c = 0, d = state[a].tabs.length; c < d; ++c) {
+								if (state[a].tabs[c].name == selected[1]) {
+									tab = state[a].tabs[c];
+									break;
+								}
+							}
+						}
+					}
+
+					if (tab) {
+						$modalPasteField.find('[name="layout"]').val(layout.name);
+						$modalPasteField.find('[name="tab"]').val(tab.name);
+					}
+
+				});
+
+				$modalPasteField.find('form').on('submit', function (e) {
+					e.preventDefault();
+					var $form = $(this),
+						layout = $form.find('[name="layout"]').val(),
+						tab = $form.find('[name="tab"]').val(),
+						json = $form.find('[name="json"]').val(),
+						name = $form.find('[name="name"]').val();
+
+					// TODO validation on name (must be unique)
+
+					var data;
+					try {
+						data = JSON.parse(json);
+					} catch (e) {}
+
+					for (var a = 0, b = state.length; a < b; ++a) {
+						if (state[a].name == layout) {
+							layout = state[a];
+							for (var c = 0, d = state[a].tabs.length; c < d; ++c) {
+								if (state[a].tabs[c].name == tab) {
+									state[a].tabs[c].fields.push(_.merge({}, data, {
+										name: name,
+										label: data.label + ' (copy)'
+									}));
+									break;
+								}
+							}
+						}
+					}
+
+					updateLayouts();
+					$modalPasteField.modal('hide');
 				});
 			}
 		});

@@ -29,6 +29,10 @@
 	{% include "sinaps.admin/components/fields/text.html" %}
 {% endmacro %}
 
+{% macro textareaInput(options) %}
+	{% include "sinaps.admin/components/fields/textarea.html" %}
+{% endmacro %}
+
 {% macro checkboxInput(options) %}
 	{% include "sinaps.admin/components/fields/checkbox.html" %}
 {% endmacro %}
@@ -47,6 +51,10 @@
 
 {% macro textField(options) %}
 	{{ field(options, textInput(options)) }}
+{% endmacro %}
+
+{% macro textareaField(options) %}
+	{{ field(options, textareaInput(options)) }}
 {% endmacro %}
 
 {% macro checkboxField(options) %}

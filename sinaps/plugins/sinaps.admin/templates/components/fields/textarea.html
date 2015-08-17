@@ -1,0 +1,12 @@
+<textarea
+	id="{{ options.id|default(options.name) }}"
+	class="{{ options.class|default('form-control input-sm') }}"
+	{% if options.name %} name="{{ options.name }}"{% endif %}
+	{% if options.cols %} size="{{ options.cols }}"{% endif %}
+	{% if options.rows %} size="{{ options.rows }}"{% endif %}
+	{% if options.autofocus %} autofocus{% endif %}
+	{% if options.required %} required{% endif %}
+	{% if options.disabled %} disabled{% endif %}
+	{% if options.readonly %} readonly{% endif %}
+	{% if options.placeholder %} placeholder="{{ options.placeholder }}"{% endif %}
+>{{ options.value }}</textarea>

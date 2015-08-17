@@ -4,15 +4,26 @@ var express = require('express');
 var passport = require('passport');
 var EventEmitter = require('events').EventEmitter;
 var Navigation = require('./libs/Navigation');
+var FieldType = require('./libs/FieldType');
 
 module.exports = _.extend({}, EventEmitter.prototype, {
+	// FieldType
+	FieldType: FieldType,
 
 	// Admin router
 	router: express.Router(),
 
+	// Sidebar ? TODO wtf ?
 	sidebar: {
 		//top: new Navigation(),
 		navigation: new Navigation()
+	},
+
+	// FieldTypes
+	fieldTypes: [],
+
+	addFieldType: function (fieldtype) {
+		this.fieldTypes.push(fieldtype);
 	},
 
 	// Order in which plugins are executed
