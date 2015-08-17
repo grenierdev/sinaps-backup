@@ -58,7 +58,7 @@
 {% endmacro %}
 
 {% macro checkboxField(options) %}
-	<div {% if options.id %}id="{{ options.id }}"{% endif %} class="form-group form-md-line-input">
+	<div {% if options.id %}id="{{ options.id }}"{% endif %} class="form-group form-sm-line-input">
 		{{ checkboxInput(options|merge({class: 'inline'})) }}
 		<label for="{{ options.id|default(options.name) }}">{{ options.label }}</label>
 		{% if options.instructions %}<span class="help-block">{{ options.instructions }}</span>{% endif %}

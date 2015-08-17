@@ -159,6 +159,10 @@ body {
     opacity: 0 !important;
     transform: scale(2.5); } }
 
+.form-group .md-checkbox ~ label {
+  color: #888888;
+  font-size: 13px; }
+
 .form-group.form-md-line-input {
   position: relative;
   margin: 0 0 35px 0;
@@ -173,9 +177,6 @@ body {
     color: #888888;
     opacity: 1 ;
     filter: alpha(opacity=100) ; }
-  .form-group.form-md-line-input .md-checkbox ~ label {
-    color: #888888;
-    font-size: 13px; }
   .form-group.form-md-line-input .form-control {
     background: none;
     border: 0;

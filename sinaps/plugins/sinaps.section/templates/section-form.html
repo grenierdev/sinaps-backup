@@ -124,7 +124,7 @@
 		</div>
 	</form>
 
-	<div id="createlayout" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+	<div id="createlayout" class="modal fade" tabindex="-1" data-backdrop="static" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form>
@@ -159,7 +159,7 @@
 		</div>
 	</div><!-- createlayout -->
 
-	<div id="copylayout" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+	<div id="copylayout" class="modal fade" tabindex="-1" data-backdrop="static" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form>
@@ -172,6 +172,7 @@
 							name: 'json',
 							label: 'JSON',
 							instructions: 'Raw layout data',
+							rows: 10,
 							required: true,
 							autofocus: true
 						}) }}
@@ -184,7 +185,7 @@
 		</div>
 	</div><!-- copylayout -->
 
-	<div id="pastelayout" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+	<div id="pastelayout" class="modal fade" tabindex="-1" data-backdrop="static" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form>
@@ -197,6 +198,7 @@
 							name: 'json',
 							label: 'JSON',
 							instructions: 'Raw layout data',
+							rows: 10,
 							required: true,
 							autofocus: true
 						}) }}
@@ -220,7 +222,7 @@
 		</div>
 	</div><!-- pastelayout -->
 
-	<div id="editlayout" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+	<div id="editlayout" class="modal fade" tabindex="-1" data-backdrop="static" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form>
@@ -257,7 +259,7 @@
 		</div>
 	</div><!-- editlayout -->
 
-	<div id="deletelayout" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+	<div id="deletelayout" class="modal fade" tabindex="-1" data-backdrop="static" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form>
@@ -279,7 +281,7 @@
 		</div>
 	</div><!-- edittab -->
 
-	<div id="createtab" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+	<div id="createtab" class="modal fade" tabindex="-1" data-backdrop="static" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form>
@@ -316,7 +318,7 @@
 		</div>
 	</div><!-- createtab -->
 
-	<div id="copytab" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+	<div id="copytab" class="modal fade" tabindex="-1" data-backdrop="static" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form>
@@ -329,6 +331,7 @@
 							name: 'json',
 							label: 'JSON',
 							instructions: 'Raw tab data',
+							rows: 10,
 							required: true,
 							autofocus: true
 						}) }}
@@ -341,7 +344,7 @@
 		</div>
 	</div><!-- copytab -->
 
-	<div id="pastetab" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+	<div id="pastetab" class="modal fade" tabindex="-1" data-backdrop="static" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form>
@@ -356,6 +359,7 @@
 							name: 'json',
 							label: 'JSON',
 							instructions: 'Raw layout data',
+							rows: 10,
 							required: true,
 							autofocus: true
 						}) }}
@@ -379,7 +383,7 @@
 		</div>
 	</div><!-- pastetab -->
 
-	<div id="edittab" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+	<div id="edittab" class="modal fade" tabindex="-1" data-backdrop="static" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form>
@@ -417,7 +421,7 @@
 		</div>
 	</div><!-- edittab -->
 
-	<div id="deletetab" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+	<div id="deletetab" class="modal fade" tabindex="-1" data-backdrop="static" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form>
@@ -440,29 +444,7 @@
 		</div>
 	</div><!-- edittab -->
 
-	<div id="formfield" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<form>
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-						<h4 class="modal-title">New field</h4>
-					</div>
-					<div class="modal-body">
-
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn default" data-dismiss="modal">Cancel</button>
-						<button type="submit" class="btn blue">
-							Add
-						</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div><!-- createlayout -->
-
-	<div id="copyfield" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+	<div id="copyfield" class="modal fade" tabindex="-1" data-backdrop="static" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form>
@@ -475,6 +457,7 @@
 							name: 'json',
 							label: 'JSON',
 							instructions: 'Raw field data',
+							rows: 10,
 							required: true,
 							autofocus: true
 						}) }}
@@ -487,7 +470,7 @@
 		</div>
 	</div><!-- copyfield -->
 
-	<div id="pastefield" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+	<div id="pastefield" class="modal fade" tabindex="-1" data-backdrop="static" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form>
@@ -503,6 +486,7 @@
 							name: 'json',
 							label: 'JSON',
 							instructions: 'Raw layout data',
+							rows: 10,
 							required: true,
 							autofocus: true
 						}) }}
@@ -526,7 +510,7 @@
 		</div>
 	</div><!-- pastefield -->
 
-	<div id="deletefield" class="modal fade" tabindex="-1" role="basic" aria-hidden="true">
+	<div id="deletefield" class="modal fade" tabindex="-1" data-backdrop="static" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form>
@@ -637,7 +621,7 @@
 																		<a class="btn btn-xs default yellow" data-toggle="modal" href="#copyfield" data-layout="{{ layout.name }}" data-tab="{{ tab.name }}" data-field="{{ field.name }}">
 																			<i class="fa fa-copy"></i>
 																		</a>
-																		<a class="btn btn-xs default yellow" data-toggle="modal" href="#formfield" data-action="edit" data-layout="{{ layout.name }}" data-tab="{{ tab.name }}" data-field="{{ field.name }}">
+																		<a class="btn btn-xs default yellow" data-toggle="modal" href="#editfield" data-action="edit" data-layout="{{ layout.name }}" data-tab="{{ tab.name }}" data-field="{{ field.name }}">
 																			<i class="fa fa-edit"></i>
 																		</a>
 																		<a class="btn btn-xs default yellow" data-toggle="modal" href="#deletefield" data-layout="{{ layout.name }}" data-tab="{{ tab.name }}" data-field="{{ field.name }}">
@@ -652,7 +636,7 @@
 												</table>
 
 												<div class="btn-group btn-group-sm btn-group-solid">
-													<a class="btn default yellow" data-toggle="modal" href="#formfield" data-action="create" data-layout="{{ layout.name }}" data-tab="{{ tab.name }}">
+													<a class="btn default yellow" data-toggle="modal" href="#createfield" data-action="create" data-layout="{{ layout.name }}" data-tab="{{ tab.name }}">
 														<i class="fa fa-plus"></i>
 													</a>
 													<a class="btn default yellow" data-toggle="modal" href="#pastefield" data-layout="{{ layout.name }}" data-tab="{{ tab.name }}">
@@ -671,39 +655,98 @@
 		{% endraw %}
 	</script>
 
-	<script type="text/x-template" name="field">
-		{{ fields.textField({
-			name: 'name',
-			label: 'Name',
-			instructions: 'Used as a reference key',
-			required: true,
-			autofocus: true
-		}) }}
+	<script type="text/x-template" name="fieldmodal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+						<h4 class="modal-title">{% raw %}{% if name %}Edit field{% else %}New field{% endif %}{% endraw %}</h4>
+					</div>
+					<div class="modal-body">
 
-		{{ fields.textField({
-			name: 'label',
-			label: 'Label',
-			instructions: 'Only used as the title in the administration panel',
-			required: true
-		}) }}
+					{% raw %}
+						<div class="form-group form-md-line-input">
+							<input type="text" id="name" class="form-control input-sm" name="name" autofocus required value="{{ name|escape }}" />
+							<label for="name">Name</label>
+							<span class="help-block">Used as a reference key</span>
+						</div>
 
-		{{ fields.textField({
-			name: 'instructions',
-			label: 'Instructions',
-			instructions: 'Shown under the field (like this)'
-		}) }}
+						<div class="form-group form-md-line-input">
+							<input type="text" id="label" class="form-control input-sm" name="label" required value="{{ label|escape }}" />
+							<label for="label">Label</label>
+							<span class="help-block">Only used as the title in the administration panel</span>
+						</div>
 
-		{{ fields.checkboxField({
-			name: 'lang',
-			label: 'Ce champ peut être traduit'
-		}) }}
+						<div class="form-group form-md-line-input">
+							<input type="text" id="instructions" class="form-control input-sm" name="instructions" value="{{ instructions|escape }}" />
+							<label for="instructions">Instructions</label>
+							<span class="help-block">Shown under the field (like this)</span>
+						</div>
 
-		<div class="form-group form-md-line-input">
-			<select class="bs-select form-control" id="input" name="{{ options.name }}" required>
+						<div class="form-group form-sm-line-input">
+							<div class="md-checkbox inline">
+								<input type="checkbox" class="md-check" id="required" name="required" {% if required %}checked{% endif %} />
+								<label for="required">
+									<span></span>
+									<span class="check"></span>
+									<span class="box"></span>
+								</label>
+							</div>
+							<label for="required">This field is required</label>
+						</div>
 
-			</select>
-			<label for="input">Type de champ</label>
-			<span class="help-block">Changing this may result in data lost</span>
+						<div class="form-group form-sm-line-input">
+							<div class="md-checkbox inline">
+								<input type="checkbox" class="md-check" id="index" name="index" {% if index %}checked{% endif %} />
+								<label for="index">
+									<span></span>
+									<span class="check"></span>
+									<span class="box"></span>
+								</label>
+							</div>
+							<label for="index">This field is indexed</label>
+						</div>
+
+						<div class="form-group form-sm-line-input">
+							<div class="md-checkbox inline">
+								<input type="checkbox" class="md-check" id="lang" name="lang" {% if lang %}checked{% endif %} />
+								<label for="lang">
+									<span></span>
+									<span class="check"></span>
+									<span class="box"></span>
+								</label>
+							</div>
+							<label for="lang">This field is translatable</label>
+						</div>
+
+						{% set input = input|default("text") %}
+
+					{% endraw %}
+						<div class="form-group form-md-line-input">
+							<select class="bs-select form-control" id="input" name="input" required>
+								{% for fieldtype in sinaps.require('sinaps.admin').fieldTypes %}
+									<option value="{{ fieldtype.name }}" {{ '{% if input == "' + fieldtype.name + '" %}selected{% endif %}' }}>{{ fieldtype.label }}</option>
+								{% endfor %}
+							</select>
+							<label for="input">Type de champ</label>
+							<span class="help-block">Changing this may result in data lost</span>
+						</div>
+
+						{% for fieldtype in sinaps.require('sinaps.admin').fieldTypes %}
+							{{ '{% if input == "' + fieldtype.name + '" %}' }}
+								{{ fieldtype.renderSettings({options: this}) }}
+							{{ '{% endif %}' }}
+						{% endfor %}
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn default" data-dismiss="modal">Cancel</button>
+						<button type="submit" class="btn blue">
+							{% raw %}{% if name %}Save{% else %}Add{% endif %}{% endraw %}
+						</button>
+					</div>
+				</form>
+			</div>
 		</div>
 	</script>
 
@@ -728,7 +771,7 @@
 				$modalPasteField = $('#pastefield'),
 				$modalDeleteField = $('#deletefield'),
 				templateLayout = nunjucks.compile($('script[name="layouts"]').html()),
-				templateField = nunjucks.compile($('script[name="field"]').html());
+				templateFieldModal = nunjucks.compile($('script[name="fieldmodal"]').html());
 
 			// Initial state
 			for (var a = 0, b = state.length; a < b; ++a) {
@@ -740,13 +783,14 @@
 			}
 
 			// Refresh layouts form
-			function updateLayouts () {
+			var updateLayouts = function () {
 				// Render
 				$layouts.empty().html(templateLayout.render({
 					layouts: state
 				}));
 
 				// Initialize sortables
+				// TODO change order in state
 				$layouts.find('.nav-tabs').sortable({
 					items: 'li:not(:first)'
 				});
@@ -764,7 +808,7 @@
 				});
 
 				// Intercept Layout tab change
-				$layouts.find('> .tabbable-line > .nav-tabs a').on('click', function (e) {
+				$layouts.find('> .tabbable-line > .nav-tabs > li:not(:first) > a').on('click', function (e) {
 					var id = $(this).attr('href').substr(1).split('_').slice(1);
 					for (var a = 0, b = state.length; a < b; ++a) {
 						state[a].active = state[a].name == id[0];
@@ -772,7 +816,7 @@
 				});
 
 				// Intercept Tab tab change
-				$layouts.find('> .tabbable-line > .tab-content .nav-tabs a').on('click', function (e) {
+				$layouts.find('> .tabbable-line > .tab-content .nav-tabs > li:not(:first) > a').on('click', function (e) {
 					var id = $(this).attr('href').substr(1).split('_').slice(1);
 					for (var a = 0, b = state.length; a < b; ++a) {
 						if (state[a].name == id[0]) {
@@ -816,12 +860,12 @@
 				.add($modalCopyField)
 				.add($modalPasteField)
 					.on('show.bs.modal', function (e) {
-						var $modal = $(this);
-						$modal.find(':input').val('');
-						setTimeout(function () {
-							$modal.find(':input[autofocus]:first').focus();
-						}, 500);
-					});
+						 $(this).find(':input').val('');
+					})
+					.on('shown.bs.modal', function (e) {
+						$(this).find(':input[autofocus]:first').focus();
+
+					})
 			}
 
 			// layout form
@@ -1198,17 +1242,125 @@
 
 			// Field form
 			{
-				$modalEditField.on('show.bs.modal', function (e) {
+				var showFieldModal = function (state, callback, context) {
+					state = _.extend({}, state);
+					var $modal = $('<div class="modal fade" tabindex="-1" data-backdrop="static" aria-hidden="true"></div>').appendTo('body'),
+						saveState = null;
 
-					$modalEditField.find('.modal-body').empty().html(templateField.render({
+					var refreshModal = function () {
+						$modal.children().empty();
+						$modal.html(templateFieldModal.render(state));
 
-					}));
+						var $form = $modal.find('form'),
+							updateState = function () {
+								state = $form.serializeObject();
+							}
 
-					$modalEditField.find('.bs-select').selectpicker({
-			            iconBase: 'fa',
-			            tickIcon: 'fa-check'
-			        });
+						// Maintain state
+						$modal.find(':input:not([name="input"])').on('change', updateState);
+						$modal.find(':input[name="input"]').on('change', function () {
+							updateState();
+							refreshModal();
+						})
 
+						// Clicked on save
+						$form.on('submit', function (e) {
+							e.preventDefault();
+
+							saveState = state;
+							$modal.modal('hide');
+						});
+
+						// Pretty stuff
+						$modal.find('.bs-select').selectpicker({
+				            iconBase: 'fa',
+				            tickIcon: 'fa-check'
+				        });
+					}
+					refreshModal();
+
+					$modal.modal('show');
+
+					// Modal closed, do the callback
+					$modal.on('hide.bs.modal', function (e) {
+						if (typeof callback == 'function') {
+							callback.apply(context, [saveState])
+						}
+					});
+				}
+
+				$layouts.on('click', '[href="#createfield"]', function (e) {
+					e.preventDefault();
+					var $target = $(this),
+						selected = [$target.data('layout'), $target.data('tab')],
+						layout = $target.data('layout'),
+						tab;
+
+					for (var a = 0, b = state.length; a < b; ++a) {
+						if (state[a].name == selected[0]) {
+							layout = state[a];
+							for (var c = 0, d = state[a].tabs.length; c < d; ++c) {
+								if (state[a].tabs[c].name == selected[1]) {
+									tab = state[a].tabs[c];
+									break;
+								}
+							}
+						}
+					}
+
+					if (tab) {
+						showFieldModal({}, function (state) {
+							if (!state) {
+								return;
+							}
+
+							tab.fields.push(state);
+
+							updateLayouts();
+						});
+					}
+				});
+
+				$layouts.on('click', '[href="#editfield"]', function (e) {
+					e.preventDefault();
+					var $target = $(this),
+						selected = [$target.data('layout'), $target.data('tab'), $target.data('field')],
+						layout,
+						tab,
+						field;
+
+					for (var a = 0, b = state.length; a < b; ++a) {
+						if (state[a].name == selected[0]) {
+							layout = state[a];
+							for (var c = 0, d = state[a].tabs.length; c < d; ++c) {
+								if (state[a].tabs[c].name == selected[1]) {
+									tab = state[a].tabs[c];
+									for (var e = 0, f = state[a].tabs[c].fields.length; e < f; ++e) {
+										if (state[a].tabs[c].fields[e].name == selected[2]) {
+											field = state[a].tabs[c].fields[e];
+											break;
+										}
+									}
+								}
+							}
+						}
+					}
+
+					if (field) {
+						showFieldModal(_.merge({}, field), function (state) {
+							if (!state) {
+								return;
+							}
+
+							_.keys(field).forEach(function (key) {
+								delete field[key];
+							});
+
+							_.merge(field, state);
+
+							updateLayouts();
+						});
+					}
 				});
 
 				$modalDeleteField.on('show.bs.modal', function (e) {

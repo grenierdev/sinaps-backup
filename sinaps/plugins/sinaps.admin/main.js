@@ -75,6 +75,9 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 			});
 		}
 
+		// Load builtin fields
+		require('./fields')();
+
 		// Once everythign is done
 		sinaps.once('idle', function () {
 

@@ -38,6 +38,13 @@
   	}
 }
 
+.form-group {
+	.md-checkbox ~ label {
+		color: #888888;
+    	font-size: 13px;
+	}
+}
+
 .form-group.form-md-line-input {
 	position: relative;
   	margin: 0 0 35px 0;
@@ -55,11 +62,6 @@
 		color: $input-md-label-color;
 		@include opacity($input-md-label-opacity);
   	}
-
-	.md-checkbox ~ label {
-		color: #888888;
-    	font-size: 13px;
-	}
 
 	.form-control {
 		background: none;
