@@ -33,6 +33,10 @@
 	{% include "sinaps.admin/components/fields/textarea.html" %}
 {% endmacro %}
 
+{% macro numberInput(options) %}
+	{% include "sinaps.admin/components/fields/number.html" %}
+{% endmacro %}
+
 {% macro checkboxInput(options) %}
 	{% include "sinaps.admin/components/fields/checkbox.html" %}
 {% endmacro %}
@@ -55,6 +59,10 @@
 
 {% macro textareaField(options) %}
 	{{ field(options, textareaInput(options)) }}
+{% endmacro %}
+
+{% macro numberField(options) %}
+	{{ field(options, numberInput(options)) }}
 {% endmacro %}
 
 {% macro checkboxField(options) %}

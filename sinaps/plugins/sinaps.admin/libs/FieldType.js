@@ -21,6 +21,7 @@ function FieldType (options) {
 					switch (type) {
 						case 'text':
 						case 'textarea':
+						case 'number':
 						case 'checkbox':
 						case 'selectbox':
 							var opt = _.omit(opt, 'type');

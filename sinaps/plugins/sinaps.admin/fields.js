@@ -67,6 +67,25 @@ module.exports = function () {
 		}
 	}));
 
+	// text
+	admin.addFieldType(new FieldType({
+		name: 'number',
+		label: 'Number',
+		settings: {
+			decimal: {
+				type: 'number',
+				label: 'Decimal',
+				value: 0
+			}
+		},
+		getHTML: function (options) {
+			return sinaps.nunjucks.renderString("\
+				{% import 'sinaps.admin/components/fields.html' as fields %}\
+				{{ fields.numberField(options) }}\
+			", options);
+		}
+	}));
+
 	// checkbox
 	admin.addFieldType(new FieldType({
 		name: 'checkbox',
@@ -122,21 +141,12 @@ module.exports = function () {
 	admin.addFieldType(new FieldType({
 		name: 'matrix',
 		label: 'Matrix',
-		settings: {
-			maximum: {
-				type: 'number',
-				label: 'Max number of blocks',
-				decimal: 0
-			}
-		},
+		settings: {},
 		getHTML: function (options) {
-			return sinaps.nunjucks.renderString("\
-				{% import 'sinaps.admin/components/fields.html' as fields %}\
-				{{ fields.timeField(options) }}\
-			", options);
+			return '<!-- special magic in sinaps.section/section-form.html -->';
 		},
 		renderSettings: function (options) {
-			return '';
+			return '<!-- special magic in sinaps.section/section-form.html -->';
 		}
 	}));
 

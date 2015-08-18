@@ -643,19 +643,25 @@
 				var updateContent = function () {
 					$modal.empty().html(renderer.render(state));
 					$form = $modal.find('form');
+
+					$form.on('submit', function (e) {
+						e.preventDefault();
+
+						updateState();
+						saveState = _.merge({}, state);
+						$modal.modal('hide');
+					});
+
+					// Pretty stuff
+					$modal.find('.bs-select').selectpicker({
+						iconBase: 'fa',
+						tickIcon: 'fa-check'
+					});
 				}
 				var updateState = function () {
 					state = $form.serializeObject();
 				}
 				updateContent();
-
-				$form.on('submit', function (e) {
-					e.preventDefault();
-
-					updateState();
-					saveState = _.merge({}, state);
-					$modal.modal('hide');
-				});
 
 				// Modal closed, do the callback
 				$modal.on('hide.bs.modal', function (e) {
@@ -669,16 +675,10 @@
 
 				$modal.modal('show');
 
-				// Pretty stuff
-				$modal.find('.bs-select').selectpicker({
-					iconBase: 'fa',
-					tickIcon: 'fa-check'
-				});
-
 				return {
 					updateContent: updateContent,
 					updateState: updateState,
-					modal: $modal
+					$modal: $modal
 				}
 			};
 
@@ -904,44 +904,6 @@
 					}
 				});
 
-				// Add Field
-				$layoutsContainer.on('click', '[href="#createfield"]', function (e) {
-					e.preventDefault();
-
-					var tab = getActiveTab();
-					if (tab) {
-						showModal(templates.field, {__action: 'add'}, function (state) {
-							if (state) {
-								tab.fields.push(_.omit(state, '__action'));
-								updateLayouts();
-							}
-
-						});
-					}
-				});
-
-				// Edit Field
-				$layoutsContainer.on('click', '[href="#editfield"]', function (e) {
-					e.preventDefault();
-
-					var $btn = $(this),
-						field = getField($btn.data('layout'), $btn.data('tab'), $btn.data('field'));
-
-					if (field) {
-						showModal(templates.field, _.merge({__action: 'edit'}, field), function (state) {
-							if (state) {
-								// Remove all keys from field
-								_.keys(field).forEach(function (key) { delete field[key]; });
-								// Update field state
-								_.merge(field, _.omit(state, '__action'));
-								updateLayouts();
-							}
-
-						});
-					}
-
-				});
-
 				// Copy Field
 				$layoutsContainer.on('click', '[href="#copyfield"]', function (e) {
 					e.preventDefault();
@@ -1001,6 +963,53 @@
 					}
 				});
 
+				var showFieldModal = function (state, onClose) {
+					var modal = showModal(templates.field, state, onClose);
+					var updateContent = function () {
+						modal.$modal.find('[name="input"]').on('change', function (e) {
+							modal.updateState();
+							modal.updateContent();
+							updateContent();
+						});
+					}
+					updateContent();
+				};
+
+				// Add Field
+				$layoutsContainer.on('click', '[href="#createfield"]', function (e) {
+					e.preventDefault();
+
+					var tab = getActiveTab();
+					if (tab) {
+						showFieldModal({__action: 'add'}, function (state) {
+							if (state) {
+								tab.fields.push(_.omit(state, '__action'));
+								updateLayouts();
+							}
+						});
+					}
+				});
+
+				// Edit Field
+				$layoutsContainer.on('click', '[href="#editfield"]', function (e) {
+					e.preventDefault();
+
+					var $btn = $(this),
+						field = getField($btn.data('layout'), $btn.data('tab'), $btn.data('field'));
+
+					if (field) {
+						showFieldModal(_.merge({__action: 'edit'}, field), function (state) {
+							if (state) {
+								// Remove all keys from field
+								_.keys(field).forEach(function (key) { delete field[key]; });
+								// Update field state
+								_.merge(field, _.omit(state, '__action'));
+								updateLayouts();
+							}
+						});
+					}
+
+				});
 			}
 
 		});
