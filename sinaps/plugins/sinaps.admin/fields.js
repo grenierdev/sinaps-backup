@@ -67,7 +67,7 @@ module.exports = function () {
 		}
 	}));
 
-	// text
+	// number
 	admin.addFieldType(new FieldType({
 		name: 'number',
 		label: 'Number',
@@ -141,11 +141,13 @@ module.exports = function () {
 	admin.addFieldType(new FieldType({
 		name: 'matrix',
 		label: 'Matrix',
-		settings: {},
-		getHTML: function (options) {
-			return '<!-- special magic in sinaps.section/section-form.html -->';
+		settings: {
+			maximum: {
+				type: 'number',
+				label: 'Maximum number of blocks'
+			}
 		},
-		renderSettings: function (options) {
+		getHTML: function (options) {
 			return '<!-- special magic in sinaps.section/section-form.html -->';
 		}
 	}));

@@ -419,25 +419,31 @@
 					</div>
 					<div class="modal-body">
 
+						{{ fields.textField({
+							name: 'name',
+							label: 'Name',
+							instructions: 'Used as a reference key',
+							value: '{{ name|escape }}',
+							autofocus: true,
+							required: true
+						}) }}
+
+						{{ fields.textField({
+							name: 'label',
+							label: 'Label',
+							instructions: 'Only used as the title in the administration panel',
+							value: '{{ label|escape }}',
+							required: true
+						}) }}
+
+						{{ fields.textField({
+							name: 'instructions',
+							label: 'Instructions',
+							instructions: 'Shown under the field (like this)',
+							value: '{{ instructions|escape }}'
+						}) }}
+
 					{% raw %}
-						<div class="form-group form-md-line-input">
-							<input type="text" id="name" class="form-control input-sm" name="name" autofocus required value="{{ name|escape }}" />
-							<label for="name">Name</label>
-							<span class="help-block">Used as a reference key</span>
-						</div>
-
-						<div class="form-group form-md-line-input">
-							<input type="text" id="label" class="form-control input-sm" name="label" required value="{{ label|escape }}" />
-							<label for="label">Label</label>
-							<span class="help-block">Only used as the title in the administration panel</span>
-						</div>
-
-						<div class="form-group form-md-line-input">
-							<input type="text" id="instructions" class="form-control input-sm" name="instructions" value="{{ instructions|escape }}" />
-							<label for="instructions">Instructions</label>
-							<span class="help-block">Shown under the field (like this)</span>
-						</div>
-
 						<div class="form-group form-sm-line-input">
 							<div class="md-checkbox inline">
 								<input type="checkbox" class="md-check" id="required" name="required" {% if required %}checked{% endif %} />
@@ -453,7 +459,7 @@
 						<div class="form-group form-sm-line-input">
 							<div class="md-checkbox inline">
 								<input type="checkbox" class="md-check" id="index" name="index" {% if index %}checked{% endif %} />
-								<label for="index">
+								<label for="index{{ __uid }}">
 									<span></span>
 									<span class="check"></span>
 									<span class="box"></span>
@@ -504,6 +510,138 @@
 		</div>
 	</script>
 
+	<script type="text/x-template" name="blockForm">
+		{% raw %}
+			<div class="form-group">
+				<div class="row">
+					<div class="col-xs-3">
+						<ul class="nav nav-tabs tabs-left">
+							<li>
+								<a>
+									Blocks
+								</a>
+							</li>
+							{% for block in blocks %}
+								<li {% if block.active %}class="active"{% endif %}>
+									<a href="#block_{{ __uid }}_{{ block.name }}" data-toggle="tab" aria-expanded="true" data-block="{{ block.name }}">
+										{{ block.label }}
+									</a>
+								</li>
+							{% endfor %}
+						</ul>
+
+						<div class="btn-toolbar">
+							<div class="btn-group btn-group-sm btn-group-solid">
+								<a class="btn default purple" href="#createblock">
+									<i class="fa fa-plus"></i>
+								</a>
+								<a class="btn default purple" href="#pasteblock">
+									<i class="fa fa-paste"></i>
+								</a>
+								<a class="btn default purple {% if blocks.length == 0 %}disabled{% endif %}" href="#copyblock">
+									<i class="fa fa-copy"></i>
+								</a>
+								<a class="btn default purple {% if blocks.length == 0 %}disabled{% endif %}" href="#editblock">
+									<i class="fa fa-edit"></i>
+								</a>
+								<a class="btn default purple {% if blocks.length == 0 %}disabled{% endif %}" href="#deleteblock">
+									<i class="fa fa-trash-o"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-9">
+						<div class="tab-content">
+							{% for block in blocks %}
+								<div id="block_{{ ____uid }}_{{ block.name }}" class="tab-pane {% if block.active %}active{% endif %}">
+									<table class="table table-hover">
+										<thead>
+											<tr>
+												<th width="1"></th>
+												<th>Title</th>
+												<th>Type</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for field in block.fields %}
+												<tr>
+													<td><i class="fa fa-reorder"></i></td>
+													<td>{{ field.label }} ({{ field.name }})</td>
+													<td>{{ field.input }}</td>
+													<td class="text-nowrap text-right">
+														<div class="btn-group btn-group-xs btn-group-solid">
+															<a class="btn btn-xs default yellow" href="#copyfield" data-block="{{ block.name }}" data-field="{{ field.name }}">
+																<i class="fa fa-copy"></i>
+															</a>
+															<a class="btn btn-xs default yellow" href="#editfield" data-action="edit" data-block="{{ block.name }}" data-field="{{ field.name }}">
+																<i class="fa fa-edit"></i>
+															</a>
+															<a class="btn btn-xs default yellow" href="#deletefield" data-block="{{ block.name }}" data-field="{{ field.name }}">
+																<i class="fa fa-trash-o"></i>
+															</a>
+
+														</div>
+													</td>
+												</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+
+									<div class="btn-group btn-group-sm btn-group-solid">
+										<a class="btn default yellow" href="#createfield" data-action="create" data-block="{{ layout.name }}">
+											<i class="fa fa-plus"></i>
+										</a>
+										<a class="btn default yellow" href="#pastefield" data-block="{{ layout.name }}">
+											<i class="fa fa-paste"></i>
+										</a>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endraw %}
+	</script>
+
+	<script type="text/x-template" name="blockModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+						<h4 class="modal-title">{% raw %}{% if __action == 'add' %}New block{% else %}Edit block{% endif %}{% endraw %}</h4>
+					</div>
+					<div class="modal-body">
+
+						{{ fields.textField({
+							name: 'name',
+							label: 'Name',
+							instructions: 'Used as a reference key',
+							value: '{{ name|escape }}',
+							required: true,
+							autofocus: true
+						}) }}
+
+						{{ fields.textField({
+							name: 'label',
+							label: 'Label',
+							instructions: 'Only used as the title in the administration panel',
+							value: '{{ label|escape }}',
+							required: true
+						}) }}
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn default" data-dismiss="modal">Cancel</button>
+						<button type="submit" class="btn blue">
+							{% raw %}{% if __action == 'add' %}Add{% else %}Save{% endif %}{% endraw %}
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</script>
 
 	<script>
 		$(function () {
@@ -519,7 +657,9 @@
 				delete: nunjucks.compile($('script[name="deleteModal"]').html()),
 				layout: nunjucks.compile($('script[name="layoutModal"]').html()),
 				tab: nunjucks.compile($('script[name="tabModal"]').html()),
-				field: nunjucks.compile($('script[name="fieldModal"]').html())
+				field: nunjucks.compile($('script[name="fieldModal"]').html()),
+				blocks: nunjucks.compile($('script[name="blockForm"]').html()),
+				block: nunjucks.compile($('script[name="blockModal"]').html()),
 			};
 
 			// Initial state
@@ -530,6 +670,8 @@
 					layoutsState[a].tabs[c].active = c == 0;
 				}
 			}
+
+			var uid = 0;
 
 			// Refresh layouts form
 			var updateLayouts = function () {
@@ -557,7 +699,7 @@
 					}
 				});
 
-				// Reorder tabs
+				// Reorder tabs & fields
 				// TODO change order in state
 				$layoutsContainer.find('.nav-tabs').sortable({
 					items: 'li:not(:first)'
@@ -636,6 +778,8 @@
 
 			// Create modal and listen for close event
 			var showModal = function (renderer, state, onClose) {
+				state.__uid = ++uid;
+
 				var $modal = $('<div class="modal fade" tabindex="-1" data-backdrop="static" aria-hidden="true"></div>').appendTo('body'),
 					$form,
 					saveState;
@@ -648,8 +792,21 @@
 						e.preventDefault();
 
 						updateState();
-						saveState = _.merge({}, state);
+						saveState = _.merge({}, _.omit(state, '__uid'));
 						$modal.modal('hide');
+					});
+
+					$modal.find('.md-checkbox').each(function () {
+						$(this)
+							.find('.md-check').attr('id', function (i, val) {
+								return val + state.__uid;
+							}).end()
+							.find('[for]').attr('for', function (i, val) {
+								return val + state.__uid;
+							}).end()
+							.siblings('[for]').attr('for', function (i, val) {
+								return val + state.__uid;
+							})
 					});
 
 					// Pretty stuff
@@ -659,7 +816,8 @@
 					});
 				}
 				var updateState = function () {
-					state = $form.serializeObject();
+					_.keys(_.omit(state, '__action', '__uid')).forEach(function (key) { delete state[key]; });
+					_.merge(state, $form.serializeObject());
 				}
 				updateContent();
 
@@ -963,14 +1121,287 @@
 					}
 				});
 
-				var showFieldModal = function (state, onClose) {
-					var modal = showModal(templates.field, state, onClose);
+				var showFieldModal = function (fieldState, onClose) {
+					var blocks = fieldState.blocks || [];
+					var modal = showModal(templates.field, fieldState, function (state) {
+						if (state && state.input == 'matrix') {
+							state.blocks = blocks;
+						}
+						onClose(state);
+					});
 					var updateContent = function () {
+						modal.$modal.addClass('bs-modal-lg').children('.modal-dialog').addClass('modal-lg');
 						modal.$modal.find('[name="input"]').on('change', function (e) {
 							modal.updateState();
 							modal.updateContent();
 							updateContent();
 						});
+						if (fieldState.input == 'matrix') {
+
+							_.extend(fieldState, {blocks: blocks});
+
+							var $blocks = $(templates.blocks.render(fieldState));
+							modal.$modal.find('[name="maximum"]:last').parent().before($blocks);
+
+							// Maintain active state
+							$blocks.find('.nav-tabs > li:not(:first) > a').on('click', function (e) {
+								var id = $(this).attr('href').substr(1).split('_').slice(2);
+								for (var a = 0, b = blocks.length; a < b; ++a) {
+									blocks[a].active = blocks[a].name == id[0];
+								}
+							});
+
+							// Reorder tabs & fields
+							// TODO change order in state
+							$blocks.find('.nav-tabs').sortable({
+								items: 'li:not(:first)'
+							});
+							$blocks.find('.tab-pane tbody').sortable({
+								handle: '.fa-reorder',
+								axis: 'y',
+								helper: function (e, $tr) {
+									var widths = $tr.children('td').map(function () { return $(this).width(); }).get(),
+										$clone = $tr.clone(false, false);
+									$clone.children('td').each(function (i) {
+										$(this).width(widths[i]);
+									});
+									return $clone;
+								}
+							});
+
+							// Get Active block
+							var getActiveBlock = function () {
+								for (var a = 0, b = blocks.length; a < b; ++a) {
+									if (blocks[a].active == true) {
+										return blocks[a];
+									}
+								}
+								return null;
+							};
+
+							// Get Field
+							var getField = function (block, field) {
+								for (var c = 0, d = blocks.length; c < d; ++c) {
+									if (blocks[c].name == block) {
+										for (var e = 0, f = blocks[c].fields.length; e < f; ++e) {
+											if (blocks[c].fields[e].name == field) {
+												return blocks[c].fields[e];
+											}
+										}
+										break;
+									}
+								}
+								return null;
+							}
+
+							// Events
+							{
+								// Add Block
+								$blocks.on('click', '[href="#createblock"]', function (e) {
+									e.preventDefault();
+
+									showModal(templates.block, {__action: 'add'}, function (state) {
+										if (state) {
+											for (var a = 0, b = blocks.length; a < b; ++a) {
+												blocks[a].active = false;
+											}
+
+											blocks.push(_.merge(_.omit(state, '__action'), {
+												active: true,
+												fields: []
+											}));
+
+											modal.updateContent();
+											updateContent();
+										}
+									});
+								});
+
+								// Edit Block
+								$blocks.on('click', '[href="#editblock"]', function (e) {
+									e.preventDefault();
+
+									var block = getActiveBlock();
+									if (block) {
+										showModal(templates.block, _.merge({__action: 'edit'}, block), function (state) {
+											if (state) {
+												_.merge(block, _.omit(state, '__action'));
+												modal.updateContent();
+												updateContent();
+											}
+										});
+									}
+								});
+
+								// Copy Block
+								$blocks.on('click', '[href="#copyblock"]', function (e) {
+									e.preventDefault();
+
+									var block = getActiveBlock();
+									if (block) {
+										showModal(templates.copy, {json: JSON.stringify(_.omit(block, 'active'))});
+									}
+								});
+
+								// Paste Block
+								$blocks.on('click', '[href="#pasteblock"]', function (e) {
+									e.preventDefault();
+
+									showModal(templates.paste, {}, function (state) {
+										if (state) {
+											var block;
+											try {
+												block = JSON.parse(state.json);
+											} catch (e) {}
+
+											if (block) {
+												for (var a = 0, b = blocks.length; a < b; ++a) {
+													blocks[a].active = false;
+												}
+
+												blocks.push(_.merge(block, {
+													active: true,
+													name: state.name,
+													label: state.label || (block.label + ' copy')
+												}));
+
+												modal.updateContent();
+												updateContent();
+											}
+										}
+
+									});
+								});
+
+								// Delete Block
+								$blocks.on('click', '[href="#deleteblock"]', function (e) {
+									e.preventDefault();
+
+									var block = getActiveBlock();
+									if (block) {
+										showModal(templates.delete, {}, function (state) {
+											if (state) {
+												var i = blocks.indexOf(block);
+												if (i > -1) {
+													var i = blocks.splice(i, 1);
+													if (blocks.length) {
+														blocks[0].active = true;
+													}
+													modal.updateContent();
+													updateContent();
+												}
+											}
+
+										});
+									}
+								});
+
+								// Add Field
+								$blocks.on('click', '[href="#createfield"]', function (e) {
+									e.preventDefault();
+
+									var block = getActiveBlock();
+									if (block) {
+										showFieldModal({__action: 'add'}, function (state) {
+											if (state) {
+												block.fields.push(_.omit(state, '__action', '__uid'));
+												modal.updateState();
+												modal.updateContent();
+												updateContent();
+											}
+										});
+									}
+								});
+
+								// Edit Field
+								$blocks.on('click', '[href="#editfield"]', function (e) {
+									e.preventDefault();
+
+									var $btn = $(this),
+										field = getField($btn.data('block'), $btn.data('field'));
+
+									if (field) {
+										showFieldModal(_.merge({__action: 'edit'}, field), function (state) {
+											if (state) {
+												// Remove all keys from field
+												_.keys(field).forEach(function (key) { delete field[key]; });
+												// Update field state
+												_.merge(field, _.omit(state, '__action', '__uid'));
+												modal.updateState();
+												modal.updateContent();
+												updateContent();
+											}
+										});
+									}
+
+								});
+
+								// Copy Field
+								$blocks.on('click', '[href="#copyfield"]', function (e) {
+									e.preventDefault();
+
+									var $btn = $(this),
+										field = getField($btn.data('block'), $btn.data('field'));
+
+									if (field) {
+										showModal(templates.copy, {json: JSON.stringify(field)});
+									}
+								});
+
+								// Paste Field
+								$blocks.on('click', '[href="#pastefield"]', function (e) {
+									e.preventDefault();
+
+									var block = getActiveBlock();
+									if (block) {
+										showModal(templates.paste, {}, function (state) {
+											if (state) {
+												var field;
+												try {
+													field = JSON.parse(state.json);
+												} catch (e) {}
+
+												if (field) {
+													block.fields.push(_.merge(field, {
+														name: state.name,
+														label: state.label || (field.label + ' copy')
+													}));
+
+													modal.updateState();
+													modal.updateContent();
+													updateContent();
+												}
+											}
+
+										});
+									}
+								});
+
+								// Delete Field
+								$blocks.on('click', '[href="#deletefield"]', function (e) {
+									e.preventDefault();
+
+									var $btn = $(this),
+										field = getField($btn.data('block'), $btn.data('field'));
+
+									if (field) {
+										var block = getActiveBlock();
+										showModal(templates.delete, {}, function (state) {
+											if (state) {
+												var i = block.fields.indexOf(field);
+												if (i > -1) {
+													var i = block.fields.splice(i, 1);
+													modal.updateState();
+													modal.updateContent();
+													updateContent();
+												}
+											}
+
+										});
+									}
+								});
+							}
+						}
 					}
 					updateContent();
 				};
@@ -983,7 +1414,7 @@
 					if (tab) {
 						showFieldModal({__action: 'add'}, function (state) {
 							if (state) {
-								tab.fields.push(_.omit(state, '__action'));
+								tab.fields.push(_.omit(state, '__action', '__uid'));
 								updateLayouts();
 							}
 						});
@@ -1003,7 +1434,7 @@
 								// Remove all keys from field
 								_.keys(field).forEach(function (key) { delete field[key]; });
 								// Update field state
-								_.merge(field, _.omit(state, '__action'));
+								_.merge(field, _.omit(state, '__action', '__uid'));
 								updateLayouts();
 							}
 						});
