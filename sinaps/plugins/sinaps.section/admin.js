@@ -11,14 +11,19 @@ module.exports = function () {
 
 	});
 
-	admin.router.get('/sections/~edit/:section', function (req, res) {
+	var getSectionByHandle = function (handle) {
 		var sec;
 		for (var i = section.sections.length; --i >= 0;) {
-			if (section.sections[i].schema.name == req.params.section && section.sections[i].section) {
+			if (section.sections[i].schema.name == handle && section.sections[i].section) {
 				sec = section.sections[i];
 				break;
 			}
 		}
+		return sec;
+	}
+
+	admin.router.get('/sections/~edit/:section', function (req, res) {
+		var sec = getSectionByHandle(req.params.section);
 
 		if (!sec) {
 			// TODO Error message
@@ -31,6 +36,36 @@ module.exports = function () {
 			schema: section.SectionSchema
 		});
 
+	});
+
+	admin.router.post('/sections/~edit/:section', function (req, res) {
+		var sec = getSectionByHandle(req.params.section);
+
+		if (!sec) {
+			// TODO Error message
+			res.redirect('/admin/sections/');
+			return;
+		}
+
+		try {
+			req.body.layouts = JSON.parse(req.body.layouts);
+		} catch (e) {}
+
+		sec.section.layout = req.body.layout;
+		sec.section.name = req.body.name;
+		sec.section.title = req.body.title;
+		sec.section.url = req.body.url;
+		sec.section.template = req.body.template;
+		sec.section.layouts = req.body.layouts;
+
+		sec.section.save(function (err) {
+			if (err) {
+				// TODO error message...
+				console.error(err);
+			}
+
+			res.redirect('/admin/sections/~edit/' + sec.section.name);
+		})
 	});
 
 	admin.router.get('/sections/:model/', function (req, res) {
