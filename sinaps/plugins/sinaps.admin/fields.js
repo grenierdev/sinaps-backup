@@ -138,14 +138,8 @@ module.exports = function () {
 </select>';
 		},
 
-		getInputHTML: function (options) {
-			var uid = this.getUniqueId();
-
-			this.includeJS('$("#' + uid + '").selectpicker({iconBase: "fa", tickIcon: "fa-check" })');
-
-			return sinaps.nunjucks.renderString(this.getInputTemplate(), {
-				field: _.merge({id: uid}, options)
-			});
+		getIncludedJS: function () {
+			return '$(".bs-select:not([data-field-discovered])").attr("data-field-discovered", "").selectpicker({iconBase: "fa", tickIcon: "fa-check" });';
 		}
 	}));
 
@@ -162,7 +156,7 @@ module.exports = function () {
 			}
 		},
 		getInputTemplate: function () {
-			return '<div class="input-group md-checkbox {{ field.class }}" style="border: 0">\
+			return '<div class="md-checkbox inline" style="border: 0">\
 	<input type="checkbox"\
 			class="md-check"\
 			id="{{ field.id|default(field.name) }}"\
@@ -177,26 +171,16 @@ module.exports = function () {
 		<span class="check"></span>\
 		<span class="box"></span>\
 	</label>\
+</div>';
+		},
+
+		getFieldTemplate: function () {
+			return '<div class="form-group form-sm-line-input">\
+	'+ this.getInputTemplate() +'\
+	<label for="{{ field.id }}">{{ field.label }}</label>\
+	{% if field.instructions %}<span class="help-block">{{ field.instructions }}</span>{% endif %}\
 </div>';
 		}
-		/*getInputTemplate: function () {
-			return '<div class="md-checkbox {{ field.class }}">\
-	<input type="checkbox"\
-			class="md-check"\
-			id="{{ field.id|default(field.name) }}"\
-			{% if field.name %} name="{{ field.name }}"{% endif %}\
-			{% if field.required %} required{% endif %}\
-			{% if field.disabled %} disabled{% endif %}\
-			{% if field.readonly %} readonly{% endif %}\
-			{% if field.checked %} checked{% endif %}\
-	/>\
-	<label for="{{ field.id|default(field.name) }}">\
-		<span></span>\
-		<span class="check"></span>\
-		<span class="box"></span>\
-	</label>\
-</div>';
-		}*/
 	}));
 
 	// Date
@@ -229,14 +213,8 @@ module.exports = function () {
 </div>';
 		},
 
-		getInputHTML: function (options) {
-			var uid = this.getUniqueId();
-
-			this.includeJS('$("#' + uid + '").datepicker({orientation: "left", autoclose: true});');
-
-			return sinaps.nunjucks.renderString(this.getInputTemplate(), {
-				field: _.merge({id: uid}, options)
-			});
+		getIncludedJS: function () {
+			return '$(".date-picker:not([data-field-discovered])").attr("data-field-discovered", "").datepicker({orientation: "left", autoclose: true});';
 		}
 	}));
 
@@ -264,14 +242,8 @@ module.exports = function () {
 </div>';
 		},
 
-		getInputHTML: function (options) {
-			var uid = this.getUniqueId();
-
-			this.includeJS('$("#' + uid + '").timepicker({autoclose: true, minuteStep: 1, showSeconds: false, showMeridian: false});');
-
-			return sinaps.nunjucks.renderString(this.getInputTemplate(), {
-				field: _.merge({id: uid}, options)
-			});
+		getIncludedJS: function () {
+			return '$(".timepicker:not([data-field-discovered])").attr("data-field-discovered", "").timepicker({autoclose: true, minuteStep: 1, showSeconds: false, showMeridian: false});';
 		}
 	}));
 

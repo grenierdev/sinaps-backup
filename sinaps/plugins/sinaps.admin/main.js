@@ -31,17 +31,6 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 		return this.fieldTypes[handle];
 	},
 
-	browserResources: {},
-	browserJS: [],
-
-	includeResource: function (src, type) {
-		this.browserResources[src] = type || 'script';
-	},
-
-	includeJS: function (code) {
-		this.browserJS.push(code);
-	},
-
 	// Order in which plugins are executed
 	executionOrder: -500,
 

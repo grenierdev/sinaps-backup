@@ -6,8 +6,8 @@
 	href: '/admin/sections/',
 	title: 'Sections'
 },{
-	href: '/admin/sections/~edit/' + section.name,
-	title: 'Edit ' + section.name
+	href: '/admin/sections/~edit/' + section.get('handle'),
+	title: 'Edit ' + section.title
 }] %}
 
 {% import 'sinaps.admin/components/schema.html' as schemaForm %}
@@ -682,8 +682,6 @@
 				block: nunjucks.compile($('script[name="blockModal"]').html()),
 			};
 
-			console.log(templates.block.tmplStr);
-
 			// Initial state
 			for (var a = 0, b = layoutsState.length; a < b; ++a) {
 				layoutsState[a].active = a == 0;
@@ -831,11 +829,7 @@
 							})
 					});
 
-					// Pretty stuff
-					$modal.find('.bs-select').selectpicker({
-						iconBase: 'fa',
-						tickIcon: 'fa-check'
-					});
+					refreshInputs();
 				}
 				var updateState = function () {
 					_.keys(_.omit(state, '__action', '__uid')).forEach(function (key) { delete state[key]; });

@@ -3,6 +3,8 @@ var nunjucks = require('nunjucks');
 var admin;
 var uid = 0;
 
+//throw new Error("Need to find a way to use a context bounded to template/request/response");
+
 function FieldType (options) {
 	_.extend(this, {
 		handle: '',
@@ -10,22 +12,12 @@ function FieldType (options) {
 		storage: {},
 		settings: {},
 
-		getUniqueId: function () {
-			return 'field_' + (++uid);
+		getIncludedResources: function () {
+			return [];
 		},
 
-		includeResource: function (src, type) {
-			if (!admin) {
-				admin = sinaps.require('sinaps.admin');
-			}
-			return admin.includeResource(src, type);
-		},
-
-		includeJS: function (code) {
-			if (!admin) {
-				admin = sinaps.require('sinaps.admin');
-			}
-			return admin.includeJS(code);
+		getIncludedJS: function () {
+			return '';
 		},
 
 		getInputTemplate: function () {
@@ -34,9 +26,7 @@ function FieldType (options) {
 
 		getInputHTML: function (options) {
 			return sinaps.nunjucks.renderString(this.getInputTemplate(), {
-				field: _.merge({
-					id: this.getUniqueId()
-				}, options)
+				field: options
 			});
 		},
 
@@ -50,9 +40,7 @@ function FieldType (options) {
 
 		getFieldHTML: function (options) {
 			return sinaps.nunjucks.renderString(this.getFieldTemplate(), {
-				field: _.merge({
-					id: this.getUniqueId()
-				}, options)
+				field: options
 			});
 		},
 
@@ -62,7 +50,6 @@ function FieldType (options) {
 
 			_.forEach(this.settings, function (options, name) {
 				tpl += '{% set field = '+ JSON.stringify(_.merge({
-					id: this.getUniqueId(),
 					name: name
 				}, options)) +' %}';
 				tpl += admin.getFieldType(options.type).getFieldTemplate();
@@ -75,52 +62,3 @@ function FieldType (options) {
 }
 
 module.exports = FieldType;
-
-/*function FieldType (options) {
-	_.extend(this, {
-		name: '',
-		label: '',
-		settings: {},
-
-		getHTML: function (field) {
-			return '';
-		},
-
-		renderSettings: function (options) {
-
-			if (!this._templateSettings) {
-				var html = "";
-
-				_.map(this.settings, function (opt, name) {
-					var type = (opt.type || '').toLowerCase();
-					switch (type) {
-						case 'text':
-						case 'textarea':
-						case 'number':
-						case 'checkbox':
-						case 'selectbox':
-							var opt = _.omit(opt, 'type');
-							opt.name = name;
-							opt.label = opt.label || opt.name;
-							html += '{{ fields.' + type + 'Field(' + JSON.stringify(opt) + ') }}';
-							break;
-					}
-				});
-
-				if (html == '') {
-					this._templateSettings = {render: function () {}};
-				} else {
-					html = "{% import 'sinaps.admin/components/fields.html' as fields %}" + html;
-					this._templateSettings = nunjucks.compile(html, sinaps.nunjucks);
-				}
-			}
-
-
-			return this._templateSettings.render(options);
-		}
-
-	}, options);
-}
-
-
-module.exports = FieldType;*/
