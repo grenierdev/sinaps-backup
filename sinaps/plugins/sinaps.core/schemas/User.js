@@ -2,31 +2,31 @@ var Schema = require('../libs/Schema');
 var crypto = require('crypto');
 
 var UserSchema = new Schema({
-	name: 'user',
+	handle: 'user',
 	label: 'User',
 	layouts: [
 		{
-			name: 'user',
+			handle: 'user',
 			label: 'User',
 			tabs: [
 				{
-					name: 'profile',
+					handle: 'profile',
 					label: 'Profile',
 					fields: [
 						{
-							name: 'display',
+							handle: 'display',
 							label: 'Display',
 							type: 'string'
 						},
 						{
-							name: 'email',
+							handle: 'email',
 							label: 'Email',
 							type: 'string',
 							required: true,
 							index: true
 						},
 						{
-							name: 'password',
+							handle: 'password',
 							label: 'Password',
 							type: 'string',
 							require: true

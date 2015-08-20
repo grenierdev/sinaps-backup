@@ -14,7 +14,7 @@ module.exports = function () {
 	var getSectionByHandle = function (handle) {
 		var sec;
 		for (var i = section.sections.length; --i >= 0;) {
-			if (section.sections[i].schema.name == handle && section.sections[i].section) {
+			if (section.sections[i].schema.handle == handle && section.sections[i].section) {
 				sec = section.sections[i];
 				break;
 			}
@@ -22,8 +22,8 @@ module.exports = function () {
 		return sec;
 	}
 
-	admin.router.get('/sections/~edit/:section', function (req, res) {
-		var sec = getSectionByHandle(req.params.section);
+	admin.router.get('/sections/~edit/:handle', function (req, res) {
+		var sec = getSectionByHandle(req.params.handle);
 
 		if (!sec) {
 			// TODO Error message
@@ -38,8 +38,8 @@ module.exports = function () {
 
 	});
 
-	admin.router.post('/sections/~edit/:section', function (req, res) {
-		var sec = getSectionByHandle(req.params.section);
+	admin.router.post('/sections/~edit/:handle', function (req, res) {
+		var sec = getSectionByHandle(req.params.handle);
 
 		if (!sec) {
 			// TODO Error message

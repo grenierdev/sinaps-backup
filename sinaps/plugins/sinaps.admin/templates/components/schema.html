@@ -8,7 +8,8 @@
 			{% set opts = opts|merge({value: lang, label: lang}) %}
 		{% endfor %}
 
-		{{ fields.selectboxField({
+		{{ fields.field({
+			type: 'selectbox',
 			name: 'lang-switcher',
 			label: 'Languages',
 			options: opts
@@ -27,7 +28,8 @@
 		}) %}
 	{% endfor %}
 
-	{{ fields.selectboxField({
+	{{ fields.field({
+		type: 'selectbox',
 		name: 'layout',
 		value: section.layout,
 		label: 'Layout',
@@ -36,6 +38,7 @@
 	}) }}
 {% endmacro %}
 
+{#
 {% macro form(layout) %}
 
 	<div class="tabbable-line">
@@ -72,7 +75,8 @@
 								{% endif %}
 
 								{% if field.input == 'text' %}
-									{% set fieldHTML = fieldHTML + fields.textField({
+									{% set fieldHTML = fieldHTML + fields.field({
+										type: 'text',
 										id: 'field_' + name|replace('\.', '_', 'g'),
 										name: 'field[' + name|split('.')|join('][') + ']',
 										value: section.get(name),
@@ -94,3 +98,4 @@
 	</div>
 
 {% endmacro %}
+#}

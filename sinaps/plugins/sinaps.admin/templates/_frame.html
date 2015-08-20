@@ -582,27 +582,26 @@
 	<script src="/admin/resources/plugins/select2/select2.min.js" type="text/javascript"></script>
 	<script src="/admin/resources/plugins/jquery-multi-select/js/jquery.multi-select.js" type="text/javascript"></script>
 	<script src="/admin/resources/plugins/fuelux/js/spinner.min.js" type="text/javascript"></script>
-	<script src="/admin/resources/plugins/nunjucks.min.js" type="text/javascript"></script>
 	<script src="/admin/resources/plugins/lodash.min.js" type="text/javascript"></script>
+	<script src="/admin/resources/plugins/nunjucks.min.js" type="text/javascript"></script>
+	<script src="/admin/resources/plugins/nunjucks-extend.js" type="text/javascript"></script>
 	<script src="/admin/resources/plugins/jquery.serialize-object.min.js" type="text/javascript"></script>
 
 	<!-- END CORE PLUGINS -->
 	<script src="/admin/resources/scripts/metronic.js" type="text/javascript"></script>
 	<script src="/admin/resources/scripts/layout.js" type="text/javascript"></script>
 	<script src="/admin/resources/scripts/quick-sidebar.js" type="text/javascript"></script>
-	<script src="/admin/resources/scripts/demo.js" type="text/javascript"></script>
-	<script src="/admin/resources/scripts/components-pickers.js" type="text/javascript"></script>
-	<script src="/admin/resources/scripts/components-dropdowns.js" type="text/javascript"></script>
-	<script src="/admin/resources/scripts/components-form-tools.js" type="text/javascript"></script>
+
 	<script>
 		$(function() {
 			Metronic.init();
 			Layout.init();
 			QuickSidebar.init();
-			Demo.init();
-			ComponentsDropdowns.init();
-			ComponentsPickers.init();
-			//ComponentsFormTools.init();
+
+			{% for js in sinaps.require('sinaps.admin').browserJS %}
+				{{ js }}
+			{% endfor %}
+
 		});
 	</script>
 	{% block footJS %}

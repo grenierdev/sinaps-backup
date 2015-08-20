@@ -20,10 +20,26 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 	},
 
 	// FieldTypes
-	fieldTypes: [],
+	fieldTypes: {},
 
-	addFieldType: function (fieldtype) {
-		this.fieldTypes.push(fieldtype);
+	registerFieldType: function (fieldtype) {
+		//this.fieldTypes.push(fieldtype);
+		this.fieldTypes[fieldtype.handle] = fieldtype;
+	},
+
+	getFieldType: function (handle) {
+		return this.fieldTypes[handle];
+	},
+
+	browserResources: {},
+	browserJS: [],
+
+	includeResource: function (src, type) {
+		this.browserResources[src] = type || 'script';
+	},
+
+	includeJS: function (code) {
+		this.browserJS.push(code);
 	},
 
 	// Order in which plugins are executed

@@ -17,10 +17,10 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 	// Sections collection
 	sections: [],
 
-	// Get schema by section name
-	schema: function (name) {
+	// Get schema by section handle
+	schema: function (handle) {
 		for (var i = this.sections.length; --i >= 0;) {
-			if (this.sections[i].schema.name == name)
+			if (this.sections[i].schema.handle == handle)
 				return this.sections[i].schema;
 		}
 		return undefined;
@@ -33,10 +33,10 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 		});
 	},
 
-	// Get model by section name
-	model: function (name) {
+	// Get model by section handle
+	model: function (handle) {
 		for (var i = this.sections.length; --i >= 0;) {
-			if (this.sections[i].schema.name == name)
+			if (this.sections[i].schema.handle == handle)
 				return this.sections[i].model;
 		}
 		return undefined;
@@ -78,9 +78,9 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 				models.forEach(function (model) {
 
 					var schema = new Schema({
-						name: model.name,
-						label: model.title,
-						layouts: model.layouts
+						handle: model.get('handle'),
+						label: model.get('title'),
+						layouts: model.get('layouts')
 					});
 
 					this.addSchema(schema, model);
@@ -103,11 +103,11 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 
 					sectionNav.addItem({
 						title: section.schema.label,
-						href: '/admin/sections/' + section.schema.name + '/',
+						href: '/admin/sections/' + section.schema.handle + '/',
 						icon: 'icon-doc'
 					});
 
-					section.model = mongoose.model(section.schema.name, section.schema.finalizedSchema());
+					section.model = mongoose.model(section.schema.handle, section.schema.finalizedSchema());
 				});
 
 				// Let others know models are ready

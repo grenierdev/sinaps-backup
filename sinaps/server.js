@@ -180,6 +180,7 @@ console.info('================================================');
 
 			sinaps.nunjucks = new nunjucks.Environment(new MultipleFSLoader(templates));
 			sinaps.nunjucks.express(sinaps.app);
+			sinaps.nunjucks.addGlobal('sinaps', sinaps);
 
 			require('./libs/nunjucks-extend')(sinaps.nunjucks);
 		}

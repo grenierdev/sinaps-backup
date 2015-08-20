@@ -3,7 +3,7 @@ var _ = require('lodash');
 
 function Schema (options) {
 	options = _.extend({
-		name: '',
+		handle: '',
 		label: '',
 
 		title: null,
@@ -11,7 +11,7 @@ function Schema (options) {
 		layouts: []
 	}, options);
 
-	this.name = options.name;
+	this.handle = options.handle;
 	this.label = options.label;
 	//this.options = _.omit(options, 'layouts');
 	this.layouts = [];
@@ -22,7 +22,7 @@ function Schema (options) {
 
 	if (_.isArray(options.layouts)) {
 		options.layouts.forEach(function (layout) {
-			this.addLayout(layout.name, layout.label || layout.name, layout.tabs || []);
+			this.addLayout(layout.handle, layout.label || layout.handle, layout.tabs || []);
 		}.bind(this));
 	}
 }
@@ -43,17 +43,17 @@ Schema.prototype.post = function (event, callback) {
 	this._post[event].push(callback);
 }
 
-Schema.prototype.addLayout = function (name, label, tabs) {
+Schema.prototype.addLayout = function (handle, label, tabs) {
 	this.layouts.push(new Schema.Layout({
-		name: name,
+		handle: handle,
 		label: label,
 		tabs: tabs
 	}));
 };
 
-Schema.prototype.getLayout = function (name) {
+Schema.prototype.getLayout = function (handle) {
 	for (var i = this.layouts.length; --i >= 0;) {
-		if (this.layouts[i].name == name)
+		if (this.layouts[i].handle == handle)
 			return this.layouts[i];
 	}
 	return null;
@@ -74,13 +74,13 @@ Schema.prototype.finalizedSchema = function () {
 
 	var definitions = {};
 	fields.forEach(function (field) {
-		definitions[field.name] = field.finalizedField();
+		definitions[field.handle] = field.finalizedField();
 	});
 
 	this._finalizedSchema = mongoose.Schema(_.extend(definitions, {
 		layout: {
 			type: String,
-			default: this.layouts[0].name || '',
+			default: this.layouts[0].handle || '',
 			required: true,
 			index: true
 		}
@@ -113,35 +113,35 @@ Schema.prototype.finalizedSchema = function () {
 
 Schema.Layout = function Layout (options) {
 	options = _.extend({
-		name: '',
+		handle: '',
 		label: '',
 
 		tabs: []
 	}, options);
 
-	this.name = options.name;
+	this.handle = options.handle;
 	this.label = options.label;
 	//this.options = _.omit(options, 'tabs');
 	this.tabs = [];
 
 	if (_.isArray(options.tabs)) {
 		options.tabs.forEach(function (tab) {
-			this.addTab(tab.name, tab.label || tab.name, tab.fields || []);
+			this.addTab(tab.handle, tab.label || tab.handle, tab.fields || []);
 		}.bind(this));
 	}
 };
 
-Schema.Layout.prototype.addTab = function (name, label, fields) {
+Schema.Layout.prototype.addTab = function (handle, label, fields) {
 	this.tabs.push(new Schema.Tab({
-		name: name,
+		handle: handle,
 		label: label,
 		fields: fields
 	}));
 };
 
-Schema.Layout.prototype.getTab = function (name) {
+Schema.Layout.prototype.getTab = function (handle) {
 	for (var i = this.tabs.length; --i >= 0;) {
-		if (this.tabs[i].name == name)
+		if (this.tabs[i].handle == handle)
 			return this.tabs[i];
 	}
 	return null;
@@ -149,13 +149,13 @@ Schema.Layout.prototype.getTab = function (name) {
 
 Schema.Tab = function Tab (options) {
 	options = _.extend({
-		name: '',
+		handle: '',
 		label: '',
 
 		fields: []
 	}, options);
 
-	this.name = options.name;
+	this.handle = options.handle;
 	this.label = options.label;
 	//this.options = _.omit(options, 'fields');
 	this.fields = [];
@@ -171,9 +171,9 @@ Schema.Tab.prototype.addField = function (options) {
 	this.fields.push(new Schema.Field(options));
 };
 
-Schema.Tab.prototype.getField = function (name) {
+Schema.Tab.prototype.getField = function (handle) {
 	for (var i = this.fields.length; --i >= 0;) {
-		if (this.fields[i].name == name)
+		if (this.fields[i].handle == handle)
 			return this.fields[i];
 	}
 	return null;
@@ -181,7 +181,7 @@ Schema.Tab.prototype.getField = function (name) {
 
 Schema.Field = function Field (options) {
 	options = _.extend({
-		name: '',
+		handle: '',
 		label: '',
 		instruction: '',
 		type: '',
@@ -244,14 +244,14 @@ Schema.Field.prototype.finalizedField = function () {
 		case 'object':
 			definition = {};
 			this.fields.forEach(function (field) {
-				definition[field.name] = field.finalizedField();
+				definition[field.handle] = field.finalizedField();
 			});
 			break;
 		case 'blocks':
 			definition = {};
 			this.blocks.forEach(function (block) {
 				block.fields.forEach(function (field) {
-					definition[field.name] = field.finalizedField();
+					definition[field.handle] = field.finalizedField();
 				});
 			});
 			definition.layout = {

@@ -45,7 +45,7 @@ Navigation.Item.prototype.addItem = function (options) {
 Navigation.Group = function Group (options) {
 	options = item = _.extend({
 		weight: 0,
-		name: '',
+		handle: '',
 		title: '',
 		items: []
 	}, options);
@@ -76,9 +76,9 @@ Navigation.prototype.addGroup = function (options) {
 	return group;
 };
 
-Navigation.prototype.group = function (name) {
+Navigation.prototype.group = function (handle) {
 	for (var i = this.groups.length; --i >= 0;) {
-		if (this.groups[i].name == name) {
+		if (this.groups[i].handle == handle) {
 			return this.groups[i];
 		}
 	}

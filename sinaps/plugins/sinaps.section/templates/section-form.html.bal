@@ -133,6 +133,8 @@
 	<link href="/admin/resources/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
 	<script src="/admin/resources/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
 
+
+
 	<script type="text/x-template" name="layoutsForm">
 		{% raw %}
 			<div class="tabbable-line">
@@ -257,8 +259,7 @@
 						<h4 class="modal-title">Copy</h4>
 					</div>
 					<div class="modal-body">
-						{{ fields.field({
-							type: 'textarea',
+						{{ fields.textareaField({
 							name: 'json',
 							label: 'JSON data',
 							instructions: 'Raw data',
@@ -284,8 +285,7 @@
 						<h4 class="modal-title">Paste layout</h4>
 					</div>
 					<div class="modal-body">
-						{{ fields.field({
-							type: 'textarea',
+						{{ fields.textareaField({
 							name: 'json',
 							label: 'JSON data',
 							instructions: 'Raw data',
@@ -294,16 +294,14 @@
 							autofocus: true
 						}) }}
 
-						{{ fields.field({
-							type: 'text',
+						{{ fields.textField({
 							name: 'handle',
 							label: 'Paste as new handle',
 							instructions: 'This is the new refenrece key',
 							required: true
 						}) }}
 
-						{{ fields.field({
-							type: 'text',
+						{{ fields.textField({
 							name: 'label',
 							label: 'Paste as new label',
 							instructions: 'Only used as the title in the administration panel'
@@ -350,8 +348,7 @@
 						<h4 class="modal-title">{% raw %}{% if __action == 'add' %}New layout{% else %}Edit layout{% endif %}{% endraw %}</h4>
 					</div>
 					<div class="modal-body">
-						{{ fields.field({
-							type: 'text',
+						{{ fields.textField({
 							name: 'handle',
 							label: 'Handle',
 							instructions: 'Used as a reference key',
@@ -360,8 +357,7 @@
 							autofocus: true
 						}) }}
 
-						{{ fields.field({
-							type: 'text',
+						{{ fields.textField({
 							name: 'label',
 							label: 'Label',
 							instructions: 'Only used as the title in the administration panel',
@@ -390,8 +386,7 @@
 					</div>
 					<div class="modal-body">
 
-						{{ fields.field({
-							type: 'text',
+						{{ fields.textField({
 							name: 'handle',
 							label: 'Handle',
 							instructions: 'Used as a reference key',
@@ -400,8 +395,7 @@
 							autofocus: true
 						}) }}
 
-						{{ fields.field({
-							type: 'text',
+						{{ fields.textField({
 							name: 'label',
 							label: 'Label',
 							instructions: 'Only used as the title in the administration panel',
@@ -430,8 +424,7 @@
 					</div>
 					<div class="modal-body">
 
-						{{ fields.field({
-							type: 'text',
+						{{ fields.textField({
 							name: 'handle',
 							label: 'Handle',
 							instructions: 'Used as a reference key',
@@ -440,8 +433,7 @@
 							required: true
 						}) }}
 
-						{{ fields.field({
-							type: 'text',
+						{{ fields.textField({
 							name: 'label',
 							label: 'Label',
 							instructions: 'Only used as the title in the administration panel',
@@ -449,71 +441,66 @@
 							required: true
 						}) }}
 
-						{{ fields.field({
-							type: 'text',
+						{{ fields.textField({
 							name: 'instructions',
 							label: 'Instructions',
 							instructions: 'Shown under the field (like this)',
 							value: '{{ instructions|escape }}'
 						}) }}
 
-						{% raw %}
-							{% set field = {
-								id: 'required' + __uid,
-								name: 'required',
-								label: 'This field is required',
-								value: required
-							} %}
-						{% endraw %}
-						{{ sinaps.require('sinaps.admin').getFieldType('checkbox').getFieldTemplate() }}
+					{% raw %}
+						<div class="form-group form-sm-line-input">
+							<div class="md-checkbox inline">
+								<input type="checkbox" class="md-check" id="required" name="required" {% if required %}checked{% endif %} />
+								<label for="required">
+									<span></span>
+									<span class="check"></span>
+									<span class="box"></span>
+								</label>
+							</div>
+							<label for="required">This field is required</label>
+						</div>
 
-						{% raw %}
-							{% set field = {
-								id: 'index' + __uid,
-								name: 'index',
-								label: 'This field is indexed',
-								value: index
-							} %}
-						{% endraw %}
-						{{ sinaps.require('sinaps.admin').getFieldType('checkbox').getFieldTemplate() }}
+						<div class="form-group form-sm-line-input">
+							<div class="md-checkbox inline">
+								<input type="checkbox" class="md-check" id="index" name="index" {% if index %}checked{% endif %} />
+								<label for="index{{ __uid }}">
+									<span></span>
+									<span class="check"></span>
+									<span class="box"></span>
+								</label>
+							</div>
+							<label for="index">This field is indexed</label>
+						</div>
 
-						{% raw %}
-							{% set field = {
-								id: 'lang' + __uid,
-								name: 'lang',
-								label: 'This field is translatable',
-								value: lang
-							} %}
-						{% endraw %}
-						{{ sinaps.require('sinaps.admin').getFieldType('checkbox').getFieldTemplate() }}
+						<div class="form-group form-sm-line-input">
+							<div class="md-checkbox inline">
+								<input type="checkbox" class="md-check" id="lang" name="lang" {% if lang %}checked{% endif %} />
+								<label for="lang">
+									<span></span>
+									<span class="check"></span>
+									<span class="box"></span>
+								</label>
+							</div>
+							<label for="lang">This field is translatable</label>
+						</div>
 
-						{% raw %}
-							{% set input = input|default("text") %}
-							{% set fieldtypes = [] %}
-						{% endraw %}
+						{% set input = input|default("text") %}
 
-						{% for handle, fieldtype in sinaps.require('sinaps.admin').fieldTypes %}
-							{{ "{% set fieldtypes = fieldtypes|merge({
-								value: '" + fieldtype.handle +"',
-								label: '" + fieldtype.label +"',
-								selected: input == '"+ fieldtype.handle +"'
-							}) %}" }}
-						{% endfor %}
+					{% endraw %}
+						<div class="form-group form-md-line-input">
+							<select class="bs-select form-control" id="input" name="input" required>
+								{% for fieldtype in sinaps.require('sinaps.admin').fieldTypes %}
+									<option value="{{ fieldtype.handle }}" {{ '{% if input == "' + fieldtype.handle + '" %}selected{% endif %}' }}>{{ fieldtype.label }}</option>
+								{% endfor %}
+							</select>
+							<label for="input">Field type</label>
+							<span class="help-block">Changing this may result in data lost</span>
+						</div>
 
-						{% raw %}
-							{% set field = {
-								id: 'input' + __uid,
-								name: 'input',
-								label: 'Field type',
-								instructions: 'Changing this may result in data lost',
-								options: fieldtypes
-							} %}
-						{% endraw %}
-						{{ sinaps.require('sinaps.admin').getFieldType('selectbox').getFieldTemplate() }}
-
-						{% for handle, fieldtype in sinaps.require('sinaps.admin').fieldTypes %}
-							{{ '{% if input == "' + handle + '" %}' }}
-								{{ fieldtype.getSettingTemplate() }}
+						{% for handle, fieldType in sinaps.require('sinaps.admin').fieldTypes %}
+							{{ '{% if input == "' + fieldType.handle + '" %}' }}
+								{{ fieldType.getSettingTemplate() }}
 							{{ '{% endif %}' }}
 						{% endfor %}
 					</div>
@@ -633,8 +620,7 @@
 					</div>
 					<div class="modal-body">
 
-						{{ fields.field({
-							type: 'text',
+						{{ fields.textField({
 							name: 'handle',
 							label: 'Handle',
 							instructions: 'Used as a reference key',
@@ -643,8 +629,7 @@
 							autofocus: true
 						}) }}
 
-						{{ fields.field({
-							type: 'text',
+						{{ fields.textField({
 							name: 'label',
 							label: 'Label',
 							instructions: 'Only used as the title in the administration panel',
@@ -681,8 +666,6 @@
 				blocks: nunjucks.compile($('script[name="blockForm"]').html()),
 				block: nunjucks.compile($('script[name="blockModal"]').html()),
 			};
-
-			console.log(templates.block.tmplStr);
 
 			// Initial state
 			for (var a = 0, b = layoutsState.length; a < b; ++a) {
@@ -1167,7 +1150,7 @@
 							_.extend(fieldState, {blocks: blocks});
 
 							var $blocks = $(templates.blocks.render(fieldState));
-							modal.$modal.find('[name="input"]:last').parent().after($blocks);
+							modal.$modal.find('[name="maximum"]:last').parent().before($blocks);
 
 							// Maintain active state
 							$blocks.find('.nav-tabs > li:not(:first) > a').on('click', function (e) {

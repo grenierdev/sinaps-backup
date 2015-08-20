@@ -1,19 +1,19 @@
 var Schema = sinaps.require('sinaps.core').Schema;
 
 var Section = new Schema({
-	name: 'section',
+	handle: 'section',
 	label: 'Section',
 	layouts: [
 		{
-			name: 'channel',
+			handle: 'channel',
 			label: 'Channel',
 			tabs: [
 				{
-					name: 'info',
+					handle: 'info',
 					label: 'Info',
 					fields: [
 						{
-							name: 'name',
+							handle: 'name',
 							label: 'Name',
 							type: 'string',
 							input: 'text',
@@ -21,13 +21,13 @@ var Section = new Schema({
 							unique: true
 						},
 						{
-							name: 'title',
+							handle: 'title',
 							label: 'Title',
 							type: 'string',
 							input: 'text',
 						},
 						{
-							name: 'url',
+							handle: 'url',
 							label: 'URL',
 							type: 'string',
 							input: 'text',
@@ -35,13 +35,13 @@ var Section = new Schema({
 							lang: true
 						},
 						{
-							name: 'template',
+							handle: 'template',
 							label: 'Template',
 							type: 'string',
 							input: 'text',
 						},
 						{
-							name: 'layouts',
+							handle: 'layouts',
 							label: 'Layouts',
 							type: 'object'
 						}

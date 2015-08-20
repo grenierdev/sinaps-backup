@@ -1,86 +1,13 @@
-
-{% macro field(options, input) %}
-	<div {% if options.id %}id="{{ options.id }}"{% endif %} class="form-group form-md-line-input">
-		{% if options.icon %}
-			{% if options.iconPosition and options.iconPosition == 'left' %}
-				<div class="input-group left-addon">
-					<span class="input-group-addon"><i class="{{ options.icon }}"></i></span>
-					{{ input }}
-					<label for="{{ options.id|default(options.name) }}">{{ options.label }}</label>
-					{% if options.instructions %}<span class="help-block">{{ options.instructions }}</span>{% endif %}
-				</div>
-			{% else %}
-				<div class="input-icon right">
-					{{ input }}
-					<label for="{{ options.id|default(options.name) }}">{{ options.label }}</label>
-					{% if options.instructions %}<span class="help-block">{{ options.instructions }}</span>{% endif %}
-					<i class="{{ options.icon }}"></i>
-				</div>
-			{% endif %}
-		{% else %}
-			{{ input }}
-			<label for="{{ options.id|default(options.name) }}">{{ options.label }}</label>
-			{% if options.instructions %}<span class="help-block">{{ options.instructions }}</span>{% endif %}
-		{% endif %}
-	</div>
+{% macro input(options) %}
+	{% set fieldtype = sinaps.require('sinaps.admin').fieldTypes[options.type] %}
+	{% if fieldtype %}
+		{{ fieldtype.getInputHTML(options) }}
+	{% endif %}
 {% endmacro %}
 
-{% macro textInput(options) %}
-	{% include "sinaps.admin/components/fields/text.html" %}
-{% endmacro %}
-
-{% macro textareaInput(options) %}
-	{% include "sinaps.admin/components/fields/textarea.html" %}
-{% endmacro %}
-
-{% macro numberInput(options) %}
-	{% include "sinaps.admin/components/fields/number.html" %}
-{% endmacro %}
-
-{% macro checkboxInput(options) %}
-	{% include "sinaps.admin/components/fields/checkbox.html" %}
-{% endmacro %}
-
-{% macro selectboxInput(options) %}
-	{% include "sinaps.admin/components/fields/selectbox.html" %}
-{% endmacro %}
-
-{% macro dateInput(options) %}
-	{% include "sinaps.admin/components/fields/date.html" %}
-{% endmacro %}
-
-{% macro timeInput(options) %}
-	{% include "sinaps.admin/components/fields/time.html" %}
-{% endmacro %}
-
-{% macro textField(options) %}
-	{{ field(options, textInput(options)) }}
-{% endmacro %}
-
-{% macro textareaField(options) %}
-	{{ field(options, textareaInput(options)) }}
-{% endmacro %}
-
-{% macro numberField(options) %}
-	{{ field(options, numberInput(options)) }}
-{% endmacro %}
-
-{% macro checkboxField(options) %}
-	<div {% if options.id %}id="{{ options.id }}"{% endif %} class="form-group form-sm-line-input">
-		{{ checkboxInput(options|merge({class: 'inline'})) }}
-		<label for="{{ options.id|default(options.name) }}">{{ options.label }}</label>
-		{% if options.instructions %}<span class="help-block">{{ options.instructions }}</span>{% endif %}
-	</div>
-{% endmacro %}
-
-{% macro selectboxField(options) %}
-	{{ field(options, selectboxInput(options)) }}
-{% endmacro %}
-
-{% macro dateField(options) %}
-	{{ field(options, dateInput(options)) }}
-{% endmacro %}
-
-{% macro timeField(options) %}
-	{{ field(options, timeInput(options)) }}
+{% macro field(options, inputhtml='') %}
+	{% set fieldtype = sinaps.require('sinaps.admin').fieldTypes[options.type] %}
+	{% if fieldtype %}
+		{{ fieldtype.getFieldHTML(options) }}
+	{% endif %}
 {% endmacro %}

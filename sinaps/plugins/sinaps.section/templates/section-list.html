@@ -42,16 +42,16 @@
 								</td>
 								<td>
 									{% for layout in section.schema.layouts %}
-										{{ layout.label|default(layout.name) }}{% if not loop.last %}, {% endif %}
+										{{ layout.label|default(layout.handle) }}{% if not loop.last %}, {% endif %}
 									{% endfor %}
 								</td>
 								<td class="text-nowrap text-right">
 									{% if section.section %}
-										<a href="/admin/sections/~edit/{{ section.schema.name }}" class="btn default btn-xs purple">
+										<a href="/admin/sections/~edit/{{ section.schema.handle }}" class="btn default btn-xs purple">
 											<i class="fa fa-edit"></i>
 											Edit
 										</a>
-										<a href="/admin/sections/~delete/{{ section.schema.name }}" class="btn default btn-xs red">
+										<a href="/admin/sections/~delete/{{ section.schema.handle }}" class="btn default btn-xs red">
 											<i class="fa fa-trash-o"></i>
 											Delete
 										</a>
