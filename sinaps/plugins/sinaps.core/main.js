@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var UserSchema = require('./schemas/User');
 var User;
 var mongoose = require('mongoose');
@@ -51,7 +52,12 @@ module.exports = {
 
 				// If user present in request (logged)
 				sinaps.router.use(function (req, res, next) {
-					sinaps.app.locals.user = req.user || null;
+					res.locals.messages = req.session.messages || [];
+					res.locals.user = req.user || null;
+
+					// Messages consumed, empty out messages
+					req.session.messages = [];
+
 					next();
 				});
 			}

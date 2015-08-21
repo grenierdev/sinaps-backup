@@ -163,7 +163,7 @@ console.info('================================================');
 			});
 
 			sinaps.plugins.sort(function (a, b) {
-				return b.executionOrder - a.executionOrder;
+				return a.executionOrder - b.executionOrder;
 			});
 		}
 

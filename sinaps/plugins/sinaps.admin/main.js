@@ -61,13 +61,17 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 				// Use globaly storage to find user (using fields : username, password)
 				passport.authenticate('local', function (err, user, info) {
 					// Could not find user
-					if (err || !user)
-						return res.redirect('/admin/login?error=&username=' + req.body.username);
+					if (err || !user) {
+						req.session.messages.push({type: 'warning', message: 'Credentials not found'});
+						return res.redirect('/admin/login?username=' + req.body.username);
+					}
 
 					// Bind this request and the user found
 					req.logIn(user, function (err) {
-						if (err)
-							return res.redirect('/admin/login?error=');
+						if (err) {
+							req.session.messages.push({type: 'warning', message: 'Something went wrong...'});
+							return res.redirect('/admin/login');
+						}
 						return res.redirect(req.body.redirect || req.query.redirect || '/admin');
 					});
 				})(req, res, next);

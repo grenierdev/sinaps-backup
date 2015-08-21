@@ -50,12 +50,13 @@ function FieldType (options) {
 
 			_.forEach(this.settings, function (options, name) {
 				tpl += '{% set field = '+ JSON.stringify(_.merge({
+					id: name + '"+ __uid',
 					name: name
 				}, options)) +' %}';
 				tpl += admin.getFieldType(options.type).getFieldTemplate();
 			}.bind(this));
 
-			return tpl;
+			return tpl.replace(/\\"\+ __uid"/g, '"+ __uid');
 		}
 
 	}, options);

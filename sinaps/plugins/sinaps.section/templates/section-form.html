@@ -432,6 +432,7 @@
 
 						{{ fields.field({
 							type: 'text',
+							id: 'handle{{ __uid }}',
 							name: 'handle',
 							label: 'Handle',
 							instructions: 'Used as a reference key',
@@ -442,6 +443,7 @@
 
 						{{ fields.field({
 							type: 'text',
+							id: 'label{{ __uid }}',
 							name: 'label',
 							label: 'Label',
 							instructions: 'Only used as the title in the administration panel',
@@ -451,6 +453,7 @@
 
 						{{ fields.field({
 							type: 'text',
+							id: 'instructions{{ __uid }}',
 							name: 'instructions',
 							label: 'Instructions',
 							instructions: 'Shown under the field (like this)',
@@ -829,7 +832,7 @@
 							})
 					});
 
-					refreshInputs();
+					$('body').trigger('refresh-inputs');
 				}
 				var updateState = function () {
 					_.keys(_.omit(state, '__action', '__uid')).forEach(function (key) { delete state[key]; });

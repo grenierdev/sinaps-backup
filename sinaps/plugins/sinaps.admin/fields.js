@@ -124,7 +124,7 @@ module.exports = function () {
 		settings: {},
 
 		getInputTemplate: function () {
-			return '<select class="{{ field.class|default("bs-select form-control") }}"\
+			return '<select class="form-control {{ field.class }}"\
 		id="{{ field.id|default(field.name) }}"\
 		{% if field.name %} name="{{ field.name }}"{% endif %}\
 		{% if field.required %} required{% endif %}\
@@ -136,11 +136,11 @@ module.exports = function () {
 		<option value="{{ opt.value }}" {% if opt.selected %}selected{% endif %}>{{ opt.label }}</option>\
 	{% endfor %}\
 </select>';
-		},
+		}/*,
 
 		getIncludedJS: function () {
 			return '$(".bs-select:not([data-field-discovered])").attr("data-field-discovered", "").selectpicker({iconBase: "fa", tickIcon: "fa-check" });';
-		}
+		}*/
 	}));
 
 	// Checkbox
