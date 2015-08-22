@@ -13,8 +13,8 @@ var Section = new Schema({
 					label: 'Info',
 					fields: [
 						{
-							handle: 'name',
-							label: 'Name',
+							handle: 'handle',
+							label: 'Handle',
 							type: 'string',
 							input: 'text',
 							required: true,
@@ -53,7 +53,7 @@ var Section = new Schema({
 });
 
 // When a section is removed, try to drop collection first
-Section.pre('remove', function (next) {
+/*Section.pre('remove', function (next) {
 	sinaps.db.collections[this.name].drop(function (err) {
 		next(err);
 	});
@@ -62,9 +62,11 @@ Section.pre('remove', function (next) {
 // Restart server when a section changes
 var restartServer = function () {
 	// TODO interprocess event
-	process.exit();
+	setTimeout(function () {
+		process.exit();
+	}, 1000);
 }
 Section.post('save', restartServer);
-Section.post('remove', restartServer)
+Section.post('remove', restartServer);*/
 
 module.exports = Section;

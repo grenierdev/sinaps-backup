@@ -22,7 +22,7 @@
 	{% set layouts = [] %}
 	{% for layout in schema.layouts %}
 		{% set layouts = layouts|merge({
-			value: layout.name,
+			value: layout.handle,
 			label: layout.label|default(layout.name),
 			selected: layout.name == section.layout
 		}) %}

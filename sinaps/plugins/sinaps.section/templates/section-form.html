@@ -669,7 +669,7 @@
 	<script>
 		$(function () {
 
-			var layoutsState = {{ section.layouts|json }},
+			var layoutsState = {{ section.layouts|default([])|json }},
 				$layoutsInput = $(':input[name="layouts"]'),
 				$layoutsContainer = $('#layouts');
 

@@ -50,10 +50,9 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 	},
 
 	//
-	addSchema: function (schema, section) {
+	addSchema: function (schema, model) {
 		this.sections.push({
-			section: section || null,
-			model: null,
+			model: model || null,
 			schema: schema
 		});
 	},
@@ -67,10 +66,10 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 		sinaps.once('initialized', function () {
 
 			// Setup user model based on schema
-			SectionModel = mongoose.model('section', SectionSchema.finalizedSchema());
+			this.SectionModel = mongoose.model('section', SectionSchema.finalizedSchema());
 
 			// Load section from database
-			SectionModel.find({}, function (err, models) {
+			this.SectionModel.find({}, function (err, models) {
 				if (err)
 					return;
 
@@ -107,7 +106,7 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 						icon: 'icon-doc'
 					});
 
-					section.model = mongoose.model(section.schema.handle, section.schema.finalizedSchema());
+					//section.model = mongoose.model(section.schema.handle, section.schema.finalizedSchema());
 				});
 
 				// Let others know models are ready

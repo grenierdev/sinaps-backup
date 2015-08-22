@@ -15,7 +15,7 @@
 				Sections
 			</div>
 			<div class="actions">
-				<a href="/sections/~create" class="btn default btn-sm blue">
+				<a href="/admin/sections/~create" class="btn default btn-sm blue">
 					<i class="fa fa-plus"></i>
 					Create
 				</a>
@@ -46,15 +46,18 @@
 									{% endfor %}
 								</td>
 								<td class="text-nowrap text-right">
-									{% if section.section %}
+									{% if section.model %}
 										<a href="/admin/sections/~edit/{{ section.schema.handle }}" class="btn default btn-xs purple">
 											<i class="fa fa-edit"></i>
 											Edit
 										</a>
-										<a href="/admin/sections/~delete/{{ section.schema.handle }}" class="btn default btn-xs red">
-											<i class="fa fa-trash-o"></i>
-											Delete
-										</a>
+										<form action="/admin/sections/~delete" method="post" class="inline">
+											<input type="hidden" name="handle[]" value="{{ section.schema.handle }}" />
+											<button type="submit" class="btn default btn-xs red">
+												<i class="fa fa-trash-o"></i>
+												Delete
+											</button>
+										</form>
 									{% endif %}
 								</td>
 							</tr>
@@ -66,4 +69,36 @@
 	</div>
 
 
+{% endblock %}
+
+{% block footJS %}
+	<script>
+		$(function () {
+
+			// Show confirm dialog on delete
+			$('form[action$="~delete"]').on('submit', function (e) {
+				e.preventDefault();
+				var $form = $(this);
+
+				bootbox.dialog({
+					message: 'Are you sure you want to delete this item?',
+					title: 'Delete section',
+					buttons: {
+						cancel: {
+							className: 'btn-default',
+							label: 'Cancel'
+						},
+						delete: {
+							className: 'red',
+							label: 'Delete',
+							callback: function () {
+								$form.off('submit').submit();
+							}
+						}
+					}
+				});
+			});
+
+		});
+	</script>
 {% endblock %}
