@@ -13,8 +13,8 @@ function Schema (options) {
 
 	this.handle = options.handle;
 	this.label = options.label;
-	//this.options = _.omit(options, 'layouts');
 	this.layouts = [];
+
 	this.methods = {};
 	this._virtuals = {};
 	this._pre = {};

@@ -21,17 +21,30 @@ var Section = new Schema({
 							unique: true
 						},
 						{
+							handle: 'label',
+							label: 'Label',
+							type: 'string',
+							input: 'text',
+						},
+						{
 							handle: 'title',
 							label: 'Title',
 							type: 'string',
 							input: 'text',
+							required: true
+						},
+						{
+							handle: 'hasurls',
+							label: 'Entries in this section have their own URLs',
+							type: 'boolean',
+							input: 'checkbox',
+							required: true
 						},
 						{
 							handle: 'url',
 							label: 'URL',
 							type: 'string',
 							input: 'text',
-							required: true,
 							lang: true
 						},
 						{

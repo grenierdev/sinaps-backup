@@ -7,7 +7,7 @@
 	title: 'Sections'
 },{
 	href: '/admin/sections/~edit/' + section.get('handle'),
-	title: 'Edit ' + section.title
+	title: 'Edit ' + section.label
 }] %}
 
 {% import 'sinaps.admin/components/schema.html' as schemaForm %}
@@ -26,7 +26,7 @@
 								type: 'text',
 								name: 'handle',
 								label: 'Handle',
-								instructions: 'Used as a reference key',
+								instructions: 'How you’ll refer to this section in the templates.',
 								value: section.get('handle'),
 								required: true,
 								autofocus: true
@@ -34,30 +34,49 @@
 
 							{{ fields.field({
 								type: 'text',
+								name: 'label',
+								label: 'Label',
+								instructions: 'What this section will be called in the CP.',
+								value: section.label,
+								required: true
+							}) }}
+
+							{{ fields.field({
+								type: 'text',
 								name: 'title',
-								label: 'Title',
-								instructions: 'Only used as the title in the administration panel',
+								label: 'Title format',
+								instructions: 'How entries will be displayed in the CP.',
 								value: section.title,
 								required: true
 							}) }}
 
-							{% for lang in sinaps.config.languages %}
+							{{ fields.field({
+								type: 'checkbox',
+								name: 'hasurls',
+								label: 'Entries in this section have their own URLs',
+								checked: section.hasurls,
+								required: true
+							}) }}
+
+							<div id="toggle-hasurls">
+								{% for lang in sinaps.config.languages %}
+									{{ fields.field({
+										type: 'text',
+										name: 'url[' + lang + ']',
+										label: 'URL format (' + lang|upper + ')',
+										instructions: 'What the entry URLs should look like. You can include tags that output entry properties, such as {slug} or {postDate|date("Y")}.',
+										value: section.get('url.' + lang)
+									}) }}
+								{% endfor %}
+
 								{{ fields.field({
 									type: 'text',
-									name: 'url[' + lang + ']',
-									label: 'URL (' + lang|upper + ')',
-									instructions: 'Optional, Nunjucks syntax allowed',
-									value: section.get('url.' + lang)
+									name: 'template',
+									label: 'Template',
+									instructions: 'The template to use when an entry’s URL is requested.',
+									value: section.template
 								}) }}
-							{% endfor %}
-
-							{{ fields.field({
-								type: 'text',
-								name: 'template',
-								label: 'Template',
-								instructions: 'When URL is requested, this template will be used to render the content',
-								value: section.template
-							}) }}
+							</div>
 
 							<input type="hidden" name="layouts" value="{{ section.layouts|json|escape }}" />
 						</div>
@@ -298,15 +317,13 @@
 							type: 'text',
 							name: 'handle',
 							label: 'Paste as new handle',
-							instructions: 'This is the new refenrece key',
 							required: true
 						}) }}
 
 						{{ fields.field({
 							type: 'text',
 							name: 'label',
-							label: 'Paste as new label',
-							instructions: 'Only used as the title in the administration panel'
+							label: 'Paste as new label'
 						}) }}
 
 					</div>
@@ -354,7 +371,7 @@
 							type: 'text',
 							name: 'handle',
 							label: 'Handle',
-							instructions: 'Used as a reference key',
+							instructions: 'How you’ll refer to this layout in the templates.',
 							value: '{{ handle|escape }}',
 							required: true,
 							autofocus: true
@@ -364,7 +381,7 @@
 							type: 'text',
 							name: 'label',
 							label: 'Label',
-							instructions: 'Only used as the title in the administration panel',
+							instructions: 'What this layout will be called in the CP.',
 							value: '{{ label|escape }}',
 							required: true
 						}) }}
@@ -394,7 +411,7 @@
 							type: 'text',
 							name: 'handle',
 							label: 'Handle',
-							instructions: 'Used as a reference key',
+							instructions: 'How you’ll refer to this tab in the templates.',
 							value: '{{ handle|escape }}',
 							required: true,
 							autofocus: true
@@ -404,7 +421,7 @@
 							type: 'text',
 							name: 'label',
 							label: 'Label',
-							instructions: 'Only used as the title in the administration panel',
+							instructions: 'What this tab will be called in the CP.',
 							value: '{{ label|escape }}',
 							required: true
 						}) }}
@@ -435,7 +452,7 @@
 							id: 'handle{{ __uid }}',
 							name: 'handle',
 							label: 'Handle',
-							instructions: 'Used as a reference key',
+							instructions: 'How you’ll refer to this field in the templates.',
 							value: '{{ handle|escape }}',
 							autofocus: true,
 							required: true
@@ -446,7 +463,7 @@
 							id: 'label{{ __uid }}',
 							name: 'label',
 							label: 'Label',
-							instructions: 'Only used as the title in the administration panel',
+							instructions: 'What this field will be called in the CP.',
 							value: '{{ label|escape }}',
 							required: true
 						}) }}
@@ -456,7 +473,7 @@
 							id: 'instructions{{ __uid }}',
 							name: 'instructions',
 							label: 'Instructions',
-							instructions: 'Shown under the field (like this)',
+							instructions: 'Help text shown under the field (like this) to assist the user.',
 							value: '{{ instructions|escape }}'
 						}) }}
 
@@ -640,7 +657,7 @@
 							type: 'text',
 							name: 'handle',
 							label: 'Handle',
-							instructions: 'Used as a reference key',
+							instructions: 'How you’ll refer to this block in the templates.',
 							value: '{{ handle|escape }}',
 							required: true,
 							autofocus: true
@@ -650,7 +667,7 @@
 							type: 'text',
 							name: 'label',
 							label: 'Label',
-							instructions: 'Only used as the title in the administration panel',
+							instructions: 'What this block will be called in the CP.',
 							value: '{{ label|escape }}',
 							required: true
 						}) }}
@@ -668,6 +685,15 @@
 
 	<script>
 		$(function () {
+
+			$('#hasurls').on('change', function (e) {
+				if (this.checked) {
+					$('#toggle-hasurls').stop(true, false).slideDown(300);
+				} else {
+					$('#toggle-hasurls').stop(true, false).slideUp(300);
+				}
+			}).change();
+
 
 			var layoutsState = {{ section.layouts|default([])|json }},
 				$layoutsInput = $(':input[name="layouts"]'),

@@ -1,4 +1,4 @@
-var admin = sinaps.require('sinaps.admin');
+var pluginAdmin = sinaps.require('sinaps.admin');
 
 module.exports = {
 
@@ -6,7 +6,7 @@ module.exports = {
 
 	initialize: function () {
 
-		admin.router.get('/', function (req, res) {
+		pluginAdmin.router.get('/', function (req, res) {
 
 			res.render('sinaps.admin.dashboard/dashboard', {
 				// vars
@@ -14,7 +14,7 @@ module.exports = {
 
 		});
 
-		admin.sidebar.navigation.addItem({
+		pluginAdmin.sidebar.navigation.addItem({
 			weight: -1000,
 			title: 'Dashboard',
 			href: '/admin/',

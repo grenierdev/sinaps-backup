@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var util = require('util');
 
 module.exports = function (env) {
 
@@ -15,6 +16,12 @@ module.exports = function (env) {
 	env.addFilter('json', function (input) {
 		return JSON.stringify(input);
 	});
-	
+
+	env.addFilter('inspect', function (input, depth) {
+		return util.inspect(input, {
+			depth: parseInt(depth, 10) || 1
+		});
+	});
+
 
 }

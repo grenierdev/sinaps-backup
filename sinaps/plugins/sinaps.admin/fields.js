@@ -1,11 +1,11 @@
 var _ = require('lodash');
-var admin = sinaps.require('sinaps.admin');
-var FieldType = admin.FieldType;
+var pluginAdmin = sinaps.require('sinaps.admin');
+var FieldType = pluginAdmin.FieldType;
 
 module.exports = function () {
 
 	// Text
-	admin.registerFieldType(new FieldType({
+	pluginAdmin.registerFieldType(new FieldType({
 		handle: 'text',
 		label: 'Text',
 		storage: String,
@@ -56,7 +56,7 @@ module.exports = function () {
 	}));
 
 	// Textarea
-	admin.registerFieldType(new FieldType({
+	pluginAdmin.registerFieldType(new FieldType({
 		handle: 'textarea',
 		label: 'Textarea',
 		storage: String,
@@ -88,7 +88,7 @@ module.exports = function () {
 	}));
 
 	// Number
-	admin.registerFieldType(new FieldType({
+	pluginAdmin.registerFieldType(new FieldType({
 		handle: 'number',
 		label: 'Number',
 		storage: String,
@@ -117,7 +117,7 @@ module.exports = function () {
 	}));
 
 	// Selectbox
-	admin.registerFieldType(new FieldType({
+	pluginAdmin.registerFieldType(new FieldType({
 		handle: 'selectbox',
 		label: 'Selectbox',
 		storage: String,
@@ -144,7 +144,7 @@ module.exports = function () {
 	}));
 
 	// Checkbox
-	admin.registerFieldType(new FieldType({
+	pluginAdmin.registerFieldType(new FieldType({
 		handle: 'checkbox',
 		label: 'Checkbox',
 		storage: String,
@@ -177,14 +177,14 @@ module.exports = function () {
 		getFieldTemplate: function () {
 			return '<div class="form-group form-sm-line-input">\
 	'+ this.getInputTemplate() +'\
-	<label for="{{ field.id }}">{{ field.label }}</label>\
+	<label for="{{ field.id|default(field.name) }}">{{ field.label }}</label>\
 	{% if field.instructions %}<span class="help-block">{{ field.instructions }}</span>{% endif %}\
 </div>';
 		}
 	}));
 
 	// Date
-	admin.registerFieldType(new FieldType({
+	pluginAdmin.registerFieldType(new FieldType({
 		handle: 'date',
 		label: 'Date',
 		storage: Date,
@@ -219,7 +219,7 @@ module.exports = function () {
 	}));
 
 	// Time
-	admin.registerFieldType(new FieldType({
+	pluginAdmin.registerFieldType(new FieldType({
 		handle: 'time',
 		label: 'Time',
 		storage: String,
@@ -248,7 +248,7 @@ module.exports = function () {
 	}));
 
 	// Matrix
-	admin.registerFieldType(new FieldType({
+	pluginAdmin.registerFieldType(new FieldType({
 		handle: 'matrix',
 		label: 'Matrix',
 		storage: String,

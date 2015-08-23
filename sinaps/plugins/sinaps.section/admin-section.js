@@ -1,31 +1,33 @@
 var _ = require('lodash');
-var admin = sinaps.require('sinaps.admin');
-var section = sinaps.require('sinaps.section');
+var pluginAdmin = sinaps.require('sinaps.admin');
+var pluginSection = sinaps.require('sinaps.section');
 var SectionModel;
 
 module.exports = function () {
 
-	section.once('ready', function () {
-		SectionModel = section.SectionModel;
+	pluginSection.once('ready', function () {
+		SectionModel = pluginSection.SectionModel;
 	});
 
 	var assignDataToModel = function (model, data) {
 		model.layouts = data.layouts;
 		model.layout = data.layout;
 		model.handle = data.handle;
+		model.label = data.label;
 		model.title = data.title;
+		model.hasurls = data.hasurls;
 		model.url = data.url;
 		model.template = data.template;
 		model.layouts = data.layouts;
 	};
 
-	admin.router.get('/sections/', function (req, res) {
+	pluginAdmin.router.get('/sections/', function (req, res) {
 		res.render('sinaps.section/section-list', {
-			sections: section.sections
+			sections: pluginSection.sections
 		});
 	});
 
-	admin.router.get('/sections/~create', function (req, res) {
+	pluginAdmin.router.get('/sections/~create', function (req, res) {
 		var sec = new SectionModel();
 
 		if (req.session.data) {
@@ -35,11 +37,11 @@ module.exports = function () {
 
 		res.render('sinaps.section/section-form', {
 			section: sec,
-			schema: section.SectionSchema
+			schema: pluginSection.SectionSchema
 		});
 	});
 
-	admin.router.post('/sections/~create', function (req, res) {
+	pluginAdmin.router.post('/sections/~create', function (req, res) {
 
 		var sec = new SectionModel();
 
@@ -65,16 +67,16 @@ module.exports = function () {
 
 	var getSectionByHandle = function (handle) {
 		var sec;
-		for (var i = section.sections.length; --i >= 0;) {
-			if (section.sections[i].schema.handle == handle && section.sections[i].model) {
-				sec = section.sections[i];
+		for (var i = pluginSection.sections.length; --i >= 0;) {
+			if (pluginSection.sections[i].schema.handle == handle && pluginSection.sections[i].model) {
+				sec = pluginSection.sections[i];
 				break;
 			}
 		}
 		return sec;
 	};
 
-	admin.router.get('/sections/~edit/:handle', function (req, res) {
+	pluginAdmin.router.get('/sections/~edit/:handle', function (req, res) {
 		var sec = getSectionByHandle(req.params.handle);
 
 		if (!sec) {
@@ -90,12 +92,12 @@ module.exports = function () {
 
 		res.render('sinaps.section/section-form', {
 			section: sec.model,
-			schema: section.SectionSchema
+			schema: pluginSection.SectionSchema
 		});
 
 	});
 
-	admin.router.post('/sections/~edit/:handle', function (req, res) {
+	pluginAdmin.router.post('/sections/~edit/:handle', function (req, res) {
 		var sec = getSectionByHandle(req.params.handle);
 
 		if (!sec) {
@@ -122,7 +124,7 @@ module.exports = function () {
 		});
 	});
 
-	admin.router.post('/sections/~delete', function (req, res) {
+	pluginAdmin.router.post('/sections/~delete', function (req, res) {
 
 		var handles = _.isArray(req.body.handle) ? req.body.handle : [req.body.handle];
 
@@ -139,22 +141,17 @@ module.exports = function () {
 		res.redirect('/admin/sections/~restarting?redirect=/admin/sections/');
 	});
 
-	admin.router.get('/sections/~restarting', function (req, res) {
+	pluginAdmin.router.get('/sections/~restarting', function (req, res) {
 		res.render('sinaps.section/section-restart', {
 			redirect: req.query.redirect
 		});
+
+		// TODO just reload model ? http://stackoverflow.com/questions/19643126/how-do-you-remove-a-model-from-mongoose
 
 		// TODO interprocess restart signal ?
 		setTimeout(function () {
 			process.exit();
 		}, 500);
 	});
-
-	admin.router.get('/sections/:model/', function (req, res) {
-
-		res.send('Bleh');
-
-	});
-
 
 };

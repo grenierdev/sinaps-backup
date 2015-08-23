@@ -1,6 +1,6 @@
 var _ = require('lodash');
 var EventEmitter = require('events').EventEmitter;
-var admin = sinaps.require('sinaps.admin');
+var pluginAdmin = sinaps.require('sinaps.admin');
 var Schema = sinaps.require('sinaps.core').Schema;
 var SectionSchema = require('./schemas/Section');
 var SectionModel;
@@ -78,7 +78,7 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 
 					var schema = new Schema({
 						handle: model.get('handle'),
-						label: model.get('title'),
+						label: model.get('label'),
 						layouts: model.get('layouts')
 					});
 
@@ -90,7 +90,7 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 				this.emit('loaded');
 
 				// Admin sidebar nav group
-				var sectionNav = admin.sidebar.navigation.addItem({
+				var sectionNav = pluginAdmin.sidebar.navigation.addItem({
 					weight: 0,
 					title: 'Sections',
 					href: '/admin/sections/',
@@ -117,7 +117,20 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 		}.bind(this));
 
 		// Initialize admin
-		require('./admin.js')();
+		require('./admin-section.js')();
+		require('./admin-model.js')();
+
+		// All plugin have initalized
+		sinaps.once('idle', function () {
+
+			sinaps.app.use(function (req, res) {
+				res.send('Is it a section url ?');
+				/*res.status(404).render('404', {
+					requested: req.originalUrl
+				});*/
+			});
+
+		});
 
 	}
 

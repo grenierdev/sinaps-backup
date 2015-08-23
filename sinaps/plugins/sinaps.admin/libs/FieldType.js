@@ -33,7 +33,7 @@ function FieldType (options) {
 		getFieldTemplate: function () {
 			return '<div class="form-group form-md-line-input">\
 	'+ this.getInputTemplate() +'\
-	<label for="{{ field.id }}">{{ field.label }}</label>\
+	<label for="{{ field.id|default(field.name) }}">{{ field.label }}</label>\
 	{% if field.instructions %}<span class="help-block">{{ field.instructions }}</span>{% endif %}\
 </div>';
 		},
