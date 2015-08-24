@@ -5,6 +5,9 @@
 {% set breadcrumbs = [{
 	href: '/admin/sections/',
 	title: 'Sections'
+},{
+	href: '/admin/sections/' + section.schema.handle + '/',
+	title: section.schema.label
 }] %}
 
 {% block content %}
@@ -12,10 +15,10 @@
 	<div class="portlet light">
 		<div class="portlet-title">
 			<div class="caption">
-				Sections
+				{{ section.schema.label }}
 			</div>
 			<div class="actions">
-				<a href="/admin/sections/~create" class="btn default btn-sm blue">
+				<a href="/admin/sections/{{ section.schema.handle }}/create" class="btn default btn-sm blue">
 					<i class="fa fa-plus"></i>
 					Create
 				</a>
@@ -28,37 +31,31 @@
 					<thead>
 						<tr>
 							<th width="1">#</th>
-							<th>Name</th>
-							<th>Layouts</th>
+							{% for path, column in columns %}
+								<th>{{ column.label }}</th>
+							{% endfor %}
 							<th width="1">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
-						{% for section in sections %}
+						{% for entry in entries %}
 							<tr>
 								<td>{{ loop.index }}</td>
-								<td>
-									<a href="/admin/sections/{{ section.schema.handle }}">{{ section.schema.label }}</a>
-								</td>
-								<td>
-									{% for layout in section.schema.layouts %}
-										{{ layout.label|default(layout.handle) }}{% if not loop.last %}, {% endif %}
-									{% endfor %}
-								</td>
+								{% for path, column in columns %}
+									<td>{{ path }} {{ entry.path(path) }}</td>
+								{% endfor %}
 								<td class="text-nowrap text-right">
-									{% if section.model %}
-										<a href="/admin/sections/~edit/{{ section.schema.handle }}" class="btn default btn-xs purple">
-											<i class="fa fa-edit"></i>
-											Edit
-										</a>
-										<form action="/admin/sections/~delete" method="post" class="inline">
-											<input type="hidden" name="handle[]" value="{{ section.schema.handle }}" />
-											<button type="submit" class="btn default btn-xs red">
-												<i class="fa fa-trash-o"></i>
-												Delete
-											</button>
-										</form>
-									{% endif %}
+									<a href="/admin/sections/{{ section.schema.handle }}/edit/{{ entry.id }}" class="btn default btn-xs purple">
+										<i class="fa fa-edit"></i>
+										Edit
+									</a>
+									<form action="/admin/sections/{{ section.schema.handle }}/delete" method="post" class="inline">
+										<input type="hidden" name="id[]" value="{{ entry.id }}" />
+										<button type="submit" class="btn default btn-xs red">
+											<i class="fa fa-trash-o"></i>
+											Delete
+										</button>
+									</form>
 								</td>
 							</tr>
 						{% endfor %}

@@ -19,6 +19,7 @@ module.exports = function () {
 		model.url = data.url;
 		model.template = data.template;
 		model.layouts = data.layouts;
+		model.columns = data.columns;
 	};
 
 	pluginAdmin.router.get('/sections/', function (req, res) {
@@ -47,13 +48,13 @@ module.exports = function () {
 
 		try {
 			req.body.layouts = JSON.parse(req.body.layouts);
+			req.body.columns = JSON.parse(req.body.columns);
 		} catch (e) {}
 
 		assignDataToModel(sec, req.body);
 
 		sec.save(function (err) {
 			if (err) {
-				console.log(err);
 				req.session.messages.push({type: 'danger', message: 'Could not save section'});
 				req.session.data = sec.toObject();
 				res.redirect('/admin/sections/~create');
@@ -66,14 +67,14 @@ module.exports = function () {
 	});
 
 	var getSectionByHandle = function (handle) {
-		var sec;
+		var section;
 		for (var i = pluginSection.sections.length; --i >= 0;) {
 			if (pluginSection.sections[i].schema.handle == handle && pluginSection.sections[i].model) {
-				sec = pluginSection.sections[i];
+				section = pluginSection.sections[i];
 				break;
 			}
 		}
-		return sec;
+		return section;
 	};
 
 	pluginAdmin.router.get('/sections/~edit/:handle', function (req, res) {
@@ -81,7 +82,7 @@ module.exports = function () {
 
 		if (!sec) {
 			req.session.messages.push({type: 'danger', message: 'Could not find section'});
-			res.redirect('/admin/sections/');
+			res.status(404).redirect('/admin/sections/');
 			return;
 		}
 
@@ -102,12 +103,13 @@ module.exports = function () {
 
 		if (!sec) {
 			req.session.messages.push({type: 'danger', message: 'Could not find section'});
-			res.redirect('/admin/sections/');
+			res.status(404).redirect('/admin/sections/');
 			return;
 		}
 
 		try {
 			req.body.layouts = JSON.parse(req.body.layouts);
+			req.body.columns = JSON.parse(req.body.columns);
 		} catch (e) {}
 
 		assignDataToModel(sec.model, req.body);

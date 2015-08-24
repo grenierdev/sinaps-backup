@@ -3,13 +3,11 @@ var nunjucks = require('nunjucks');
 var admin;
 var uid = 0;
 
-//throw new Error("Need to find a way to use a context bounded to template/request/response");
-
 function FieldType (options) {
 	_.extend(this, {
 		handle: '',
 		label: '',
-		storage: {},
+		type: {},
 		settings: {},
 
 		getIncludedResources: function () {

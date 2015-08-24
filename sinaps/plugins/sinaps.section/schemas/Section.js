@@ -1,3 +1,5 @@
+var _ = require('lodash');
+var pluginAdmin = sinaps.require('sinaps.admin');
 var Schema = sinaps.require('sinaps.core').Schema;
 
 var Section = new Schema({
@@ -57,6 +59,12 @@ var Section = new Schema({
 							handle: 'layouts',
 							label: 'Layouts',
 							type: 'object'
+						},
+						{
+							handle: 'columns',
+							label: 'Columns',
+							type: 'object',
+							array: 'string'
 						}
 					]
 				}
@@ -65,21 +73,36 @@ var Section = new Schema({
 	]
 });
 
-// When a section is removed, try to drop collection first
-/*Section.pre('remove', function (next) {
-	sinaps.db.collections[this.name].drop(function (err) {
-		next(err);
-	});
-});
+Section.methods.getLayoutSchema = function () {
+	var convertInputToType = function (container) {
+		container.fields = _.map(container.fields, function (field) {
+			var fieldtype = pluginAdmin.getFieldType(field.input);
+			field.type = fieldtype ? fieldtype.type : 'object';
+			if (field.input == 'matrix') {
+				field.blocks = _.map(field.blocks, function (block) {
+					return convertInputToType(block);
+				});
+			}
+			else if (field.input == 'object') {
+				field = convertInputToType(field);
+			}
+			return field;
+		});
+		return container;
+	};
 
-// Restart server when a section changes
-var restartServer = function () {
-	// TODO interprocess event
-	setTimeout(function () {
-		process.exit();
-	}, 1000);
-}
-Section.post('save', restartServer);
-Section.post('remove', restartServer);*/
+	var layouts = _.map(this.get('layouts'), function (layout) {
+		layout.tabs = _.map(layout.tabs, function (tab) {
+			return convertInputToType(tab);
+		});
+		return layout;
+	});
+
+	return new Schema({
+		handle: this.get('handle'),
+		label: this.get('label'),
+		layouts: layouts
+	});;
+};
 
 module.exports = Section;

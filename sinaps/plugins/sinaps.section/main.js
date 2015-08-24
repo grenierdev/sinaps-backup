@@ -53,7 +53,9 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 	addSchema: function (schema, model) {
 		this.sections.push({
 			model: model || null,
-			schema: schema
+			schema: schema,
+			entryModel: undefined,
+			entrySchema: undefined
 		});
 	},
 
@@ -76,13 +78,7 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 				// Build schema, nav
 				models.forEach(function (model) {
 
-					var schema = new Schema({
-						handle: model.get('handle'),
-						label: model.get('label'),
-						layouts: model.get('layouts')
-					});
-
-					this.addSchema(schema, model);
+					this.addSchema(model.getLayoutSchema(), model);
 
 				}.bind(this));
 
@@ -106,7 +102,8 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 						icon: 'icon-doc'
 					});
 
-					//section.model = mongoose.model(section.schema.handle, section.schema.finalizedSchema());
+					section.entrySchema = section.schema.finalizedSchema();
+					section.entryModel = mongoose.model(section.schema.handle, section.entrySchema);
 				});
 
 				// Let others know models are ready

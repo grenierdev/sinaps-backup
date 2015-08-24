@@ -8,7 +8,7 @@ module.exports = function () {
 	pluginAdmin.registerFieldType(new FieldType({
 		handle: 'text',
 		label: 'Text',
-		storage: String,
+		type: String,
 		settings: {
 			subtype: {
 				type: 'selectbox',
@@ -59,7 +59,7 @@ module.exports = function () {
 	pluginAdmin.registerFieldType(new FieldType({
 		handle: 'textarea',
 		label: 'Textarea',
-		storage: String,
+		type: String,
 		settings: {
 			rows: {
 				type: 'number',
@@ -91,7 +91,7 @@ module.exports = function () {
 	pluginAdmin.registerFieldType(new FieldType({
 		handle: 'number',
 		label: 'Number',
-		storage: String,
+		type: Number,
 		settings: {
 			decimal: {
 				type: 'number',
@@ -120,7 +120,7 @@ module.exports = function () {
 	pluginAdmin.registerFieldType(new FieldType({
 		handle: 'selectbox',
 		label: 'Selectbox',
-		storage: String,
+		type: String,
 		settings: {},
 
 		getInputTemplate: function () {
@@ -147,7 +147,7 @@ module.exports = function () {
 	pluginAdmin.registerFieldType(new FieldType({
 		handle: 'checkbox',
 		label: 'Checkbox',
-		storage: String,
+		type: Boolean,
 		settings: {
 			default: {
 				type: 'checkbox',
@@ -187,7 +187,7 @@ module.exports = function () {
 	pluginAdmin.registerFieldType(new FieldType({
 		handle: 'date',
 		label: 'Date',
-		storage: Date,
+		type: Date,
 		settings: {
 			format: {
 				type: 'text',
@@ -222,7 +222,7 @@ module.exports = function () {
 	pluginAdmin.registerFieldType(new FieldType({
 		handle: 'time',
 		label: 'Time',
-		storage: String,
+		type: String,
 		settings: {},
 
 		getInputTemplate: function () {
@@ -251,7 +251,7 @@ module.exports = function () {
 	pluginAdmin.registerFieldType(new FieldType({
 		handle: 'matrix',
 		label: 'Matrix',
-		storage: String,
+		type: 'blocks',
 		settings: {
 			maxblocks: {
 				type: 'number',

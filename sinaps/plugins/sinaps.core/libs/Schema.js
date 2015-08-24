@@ -1,3 +1,4 @@
+var util = require('util');
 var mongoose = require('mongoose');
 var _ = require('lodash');
 
@@ -25,6 +26,40 @@ function Schema (options) {
 			this.addLayout(layout.handle, layout.label || layout.handle, layout.tabs || []);
 		}.bind(this));
 	}
+}
+
+Schema.prototype.fields = function () {
+	var fields = {};
+
+	var blockField = function (block, paths) {
+		paths.push(block.handle);
+		_.each(block.fields, function (field) {
+			var p = paths.concat();
+			p.push(field.handle);
+			fields[paths.join('.')] = field;
+			if (field.input == 'matrix') {
+				_.each(field.blocks, function (block) {
+					blockField(block, p.concat());
+				});
+			}
+		});
+	};
+
+	_.each(this.layouts, function (layout) {
+		_.each(layout.tabs, function (tab) {
+			_.each(tab.fields, function (field) {
+				var paths = [layout.handle, tab.handle, field.handle];
+				fields[paths.join('.')] = field;
+				if (field.input == 'matrix') {
+					_.each(field.blocks, function (block) {
+						blockField(block, paths.concat());
+					});
+				}
+			});
+		});
+	});
+
+	return fields;
 }
 
 Schema.prototype.virtual = function (virtual, getter, setter) {
@@ -213,11 +248,13 @@ Schema.Field = function Field (options) {
 
 Schema.Field.prototype.finalizedField = function () {
 	var definition = {
-		type: String,
-		default: this.default || undefined,
-		required: this.required,
-		index: this.index
+		type: String
 	};
+	if (this.default)	definition.default = this.default;
+	if (this.required)	definition.required = this.required;
+	if (this.index)		definition.index = this.index;
+
+
 	var type = null;
 
 	switch (typeof this.type) {
@@ -230,6 +267,9 @@ Schema.Field.prototype.finalizedField = function () {
 			else if (this.type == Buffer)							type = 'buffer';
 			else if (this.type == mongoose.Schema.Types.ObjectId)	type = 'objectid';
 			else if (this.type == mongoose.Schema.Types.Mixed)		type = 'object';
+			else {
+				throw new Error("Unknown field type `" + this.type + "` for " + util.inspect(this));
+			}
 			break;
 	}
 
@@ -240,7 +280,7 @@ Schema.Field.prototype.finalizedField = function () {
 		case 'date':			definition.type = Date; break;
 		case 'buffer':			definition.type = Buffer; break;
 		case 'objectid':		definition.type = mongoose.Schema.Types.ObjectId; break;
-		case 'array':			definition.type = [this.array]; break;
+		case 'array':			definition.type = [new Schema.Field({type: this.array}).finalizedField()]; break;
 		case 'object':
 			definition = {};
 			this.fields.forEach(function (field) {
@@ -261,9 +301,6 @@ Schema.Field.prototype.finalizedField = function () {
 			};
 			definition = [definition];
 			break;
-
-		default:
-			throw new Error("Unknown field type !");
 	}
 
 	if (this.lang) {

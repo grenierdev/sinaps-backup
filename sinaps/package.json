@@ -4,6 +4,7 @@
   "description": "Private videoclub grenier.tv",
   "author": "Michael Grenier <michael.grenier@live.com>",
   "dependencies": {
+    "async": "^1.4.2",
     "body-parser": "^1.13.3",
     "cheerio": "^0.19.0",
     "chokidar": "^1.0.5",

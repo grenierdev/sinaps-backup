@@ -79,6 +79,8 @@
 							</div>
 
 							<input type="hidden" name="layouts" value="{{ section.layouts|json|escape }}" />
+
+							<input type="hidden" name="columns" value="{{ section.columns|json|escape }}" />
 						</div>
 					</div>
 				</div>
@@ -113,7 +115,7 @@
 				<div class="portlet light">
 					<div class="portlet-title">
 						<div class="caption">
-							Layouts &amp; Tabs &amp; Fields
+							Form Layouts &amp; Tabs &amp; Fields
 						</div>
 						<div class="actions">
 							<div class="btn-toolbar">
@@ -139,6 +141,32 @@
 						</div>
 					</div>
 					<div class="portlet-body" id="layouts">
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-9">
+
+				<div class="portlet light">
+					<div class="portlet-title">
+						<div class="caption">
+							List Fields
+						</div>
+						<div class="actions">
+							<div class="btn-toolbar">
+								<div class="btn-group btn-group-sm btn-group-solid">
+									<a class="btn default blue" href="#addcolumn">
+										<i class="fa fa-plus"></i>
+									</a>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="portlet-body" id="columns">
 
 					</div>
 				</div>
@@ -683,6 +711,28 @@
 		</div>
 	</script>
 
+	<script type="text/x-template" name="columnsForm">
+		{% raw %}
+			<div class="row">
+				{% for column in columns %}
+					<div class="col-xs-12 col-md-3">
+						<div class="form-group form-md-line-input has-info">
+							<div class="input-group">
+								<span class="input-group-btn btn-left">
+									<a class="btn btn-xs red" href="#removecolumn"><i class="fa fa-trash-o"></i></a>
+								</span>
+								<div class="input-group-control">
+									<input type="text" class="form-control input-sm" value="{{ column }}" placeholder="Column field path">
+									<span class="help-block">example.brand.title</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		{% endraw %}
+	</script>
+
 	<script>
 		$(function () {
 
@@ -694,11 +744,6 @@
 				}
 			}).change();
 
-
-			var layoutsState = {{ section.layouts|default([])|json }},
-				$layoutsInput = $(':input[name="layouts"]'),
-				$layoutsContainer = $('#layouts');
-
 			var templates = {
 				layouts: nunjucks.compile($('script[name="layoutsForm"]').html()),
 				copy: nunjucks.compile($('script[name="copyModal"]').html()),
@@ -709,789 +754,858 @@
 				field: nunjucks.compile($('script[name="fieldModal"]').html()),
 				blocks: nunjucks.compile($('script[name="blockForm"]').html()),
 				block: nunjucks.compile($('script[name="blockModal"]').html()),
+				columns: nunjucks.compile($('script[name="columnsForm"]').html()),
 			};
 
-			// Initial state
-			for (var a = 0, b = layoutsState.length; a < b; ++a) {
-				layoutsState[a].active = a == 0;
+			// Layouts, Tabs, Fields
+			{
+				var layoutsState = {{ section.layouts|default([])|json }},
+					$layoutsInput = $(':input[name="layouts"]'),
+					$layoutsContainer = $('#layouts');
 
-				for (var c = 0, d = layoutsState[a].tabs.length; c < d; ++c) {
-					layoutsState[a].tabs[c].active = c == 0;
-				}
-			}
-
-			var uid = 0;
-
-			// Refresh layouts form
-			var updateLayouts = function () {
-
-				// Render
-				$layoutsContainer.empty().html(templates.layouts.render({
-					layouts: layoutsState
-				}));
-
-				// Maintain active state
-				$layoutsContainer.find('> .tabbable-line > .nav-tabs > li:not(:first) > a').on('click', function (e) {
-					var id = $(this).attr('href').substr(1).split('_').slice(1);
-					for (var a = 0, b = layoutsState.length; a < b; ++a) {
-						layoutsState[a].active = layoutsState[a].handle == id[0];
-					}
-				});
-				$layoutsContainer.find('> .tabbable-line > .tab-content .nav-tabs > li:not(:first) > a').on('click', function (e) {
-					var id = $(this).attr('href').substr(1).split('_').slice(1);
-					for (var a = 0, b = layoutsState.length; a < b; ++a) {
-						if (layoutsState[a].handle == id[0]) {
-							for (var c = 0, d = layoutsState[a].tabs.length; c < d; ++c) {
-								layoutsState[a].tabs[c].active = layoutsState[a].tabs[c].handle == id[1];
-							}
-						}
-					}
-				});
-
-				// Reorder tabs & fields
-				// TODO change order in state
-				$layoutsContainer.find('.nav-tabs').sortable({
-					items: 'li:not(:first)'
-				});
-				$layoutsContainer.find('.tab-pane tbody').sortable({
-					handle: '.fa-reorder',
-					axis: 'y',
-					helper: function (e, $tr) {
-						var widths = $tr.children('td').map(function () { return $(this).width(); }).get(),
-							$clone = $tr.clone(false, false);
-						$clone.children('td').each(function (i) {
-							$(this).width(widths[i]);
-						});
-						return $clone;
-					}
-				});
-
-				// Disable edit/delete if no items
-				$('[href="#copylayout"], [href="#editlayout"], [href="#deletelayout"]').toggleClass('disabled', layoutsState.length == 0);
-
-				// Update input with current state
-				var save = _.map(layoutsState, function (layout) {
-					return _.extend(
-						_.omit(layout, 'active', 'tabs'),
-						{
-							tabs: _.map(layout.tabs, function (tab) {
-								return _.omit(tab, 'active');
-							})
-						}
-					)
-				});
-				$layoutsInput.val(JSON.stringify(save));
-			};
-			updateLayouts();
-
-			// Get Active layout
-			var getActiveLayout = function () {
+				// Initial state
 				for (var a = 0, b = layoutsState.length; a < b; ++a) {
-					if (layoutsState[a].active == true) {
-						return layoutsState[a];
+					layoutsState[a].active = a == 0;
+
+					for (var c = 0, d = layoutsState[a].tabs.length; c < d; ++c) {
+						layoutsState[a].tabs[c].active = c == 0;
 					}
 				}
-				return null;
-			};
 
-			// Get Active tab
-			var getActiveTab = function () {
-				var activeLayout = getActiveLayout();
-				for (var a = 0, b = activeLayout.tabs.length; a < b; ++a) {
-					if (activeLayout.tabs[a].active == true) {
-						return activeLayout.tabs[a];
-					}
-				}
-				return null;
-			};
+				var uid = 0;
 
-			// Get Field by layout-tag-field handle
-			var getField = function (layout, tab, field) {
-				for (var a = 0, b = layoutsState.length; a < b; ++a) {
-					if (layoutsState[a].handle == layout) {
-						for (var c = 0, d = layoutsState[a].tabs.length; c < d; ++c) {
-							if (layoutsState[a].tabs[c].handle == tab) {
-								for (var e = 0, f = layoutsState[a].tabs[c].fields.length; e < f; ++e) {
-									if (layoutsState[a].tabs[c].fields[e].handle == field) {
-										return layoutsState[a].tabs[c].fields[e];
-									}
+				// Refresh layouts form
+				var updateLayouts = function () {
+
+					// Render
+					$layoutsContainer.empty().html(templates.layouts.render({
+						layouts: layoutsState
+					}));
+
+					// Maintain active state
+					$layoutsContainer.find('> .tabbable-line > .nav-tabs > li:not(:first) > a').on('click', function (e) {
+						var id = $(this).attr('href').substr(1).split('_').slice(1);
+						for (var a = 0, b = layoutsState.length; a < b; ++a) {
+							layoutsState[a].active = layoutsState[a].handle == id[0];
+						}
+					});
+					$layoutsContainer.find('> .tabbable-line > .tab-content .nav-tabs > li:not(:first) > a').on('click', function (e) {
+						var id = $(this).attr('href').substr(1).split('_').slice(1);
+						for (var a = 0, b = layoutsState.length; a < b; ++a) {
+							if (layoutsState[a].handle == id[0]) {
+								for (var c = 0, d = layoutsState[a].tabs.length; c < d; ++c) {
+									layoutsState[a].tabs[c].active = layoutsState[a].tabs[c].handle == id[1];
 								}
-								break;
 							}
 						}
-						break;
+					});
+
+					// Reorder tabs & fields
+					// TODO change order in state
+					$layoutsContainer.find('.nav-tabs').sortable({
+						items: 'li:not(:first)'
+					});
+					$layoutsContainer.find('.tab-pane tbody').sortable({
+						handle: '.fa-reorder',
+						axis: 'y',
+						helper: function (e, $tr) {
+							var widths = $tr.children('td').map(function () { return $(this).width(); }).get(),
+								$clone = $tr.clone(false, false);
+							$clone.children('td').each(function (i) {
+								$(this).width(widths[i]);
+							});
+							return $clone;
+						}
+					});
+
+					// Disable edit/delete if no items
+					$('[href="#copylayout"], [href="#editlayout"], [href="#deletelayout"]').toggleClass('disabled', layoutsState.length == 0);
+
+					// Update input with current state
+					var removeBlockActive = function (block) {
+						delete block.active;
+						block.fields = _.map(block.fields, function (field) {
+							if (field.input == 'matrix') {
+								field.blocks = _.map(field.blocks, removeBlockActive);
+							}
+							return field;
+						});
+						return block;
+					};
+					var save = _.map(layoutsState, function (layout) {
+						return _.extend(
+							_.omit(layout, 'active', 'tabs'),
+							{
+								tabs: _.map(layout.tabs, function (tab) {
+									tab.fields = _.map(tab.fields, function (field) {
+										if (field.input == 'matrix') {
+											field.blocks = _.map(field.blocks, removeBlockActive);
+										}
+										return field;
+									});
+									return _.omit(tab, 'active');
+								})
+							}
+						)
+					});
+					$layoutsInput.val(JSON.stringify(save));
+				};
+				updateLayouts();
+
+				// Get Active layout
+				var getActiveLayout = function () {
+					for (var a = 0, b = layoutsState.length; a < b; ++a) {
+						if (layoutsState[a].active == true) {
+							return layoutsState[a];
+						}
 					}
-				}
-				return null;
-			};
+					return null;
+				};
 
-			// Create modal and listen for close event
-			var showModal = function (renderer, state, onClose) {
-				state.__uid = ++uid;
+				// Get Active tab
+				var getActiveTab = function () {
+					var activeLayout = getActiveLayout();
+					for (var a = 0, b = activeLayout.tabs.length; a < b; ++a) {
+						if (activeLayout.tabs[a].active == true) {
+							return activeLayout.tabs[a];
+						}
+					}
+					return null;
+				};
 
-				var $modal = $('<div class="modal fade" tabindex="-1" data-backdrop="static" aria-hidden="true"></div>').appendTo('body'),
-					$form,
-					saveState;
+				// Get Field by layout-tag-field handle
+				var getField = function (layout, tab, field) {
+					for (var a = 0, b = layoutsState.length; a < b; ++a) {
+						if (layoutsState[a].handle == layout) {
+							for (var c = 0, d = layoutsState[a].tabs.length; c < d; ++c) {
+								if (layoutsState[a].tabs[c].handle == tab) {
+									for (var e = 0, f = layoutsState[a].tabs[c].fields.length; e < f; ++e) {
+										if (layoutsState[a].tabs[c].fields[e].handle == field) {
+											return layoutsState[a].tabs[c].fields[e];
+										}
+									}
+									break;
+								}
+							}
+							break;
+						}
+					}
+					return null;
+				};
 
-				var updateContent = function () {
-					$modal.empty().html(renderer.render(state));
-					$form = $modal.find('form');
+				// Create modal and listen for close event
+				var showModal = function (renderer, state, onClose) {
+					state.__uid = ++uid;
 
-					$form.on('submit', function (e) {
+					var $modal = $('<div class="modal fade" tabindex="-1" data-backdrop="static" aria-hidden="true"></div>').appendTo('body'),
+						$form,
+						saveState;
+
+					var updateContent = function () {
+						$modal.empty().html(renderer.render(state));
+						$form = $modal.find('form');
+
+						$form.on('submit', function (e) {
+							e.preventDefault();
+
+							updateState();
+							saveState = _.merge({}, _.omit(state, '__uid'));
+							$modal.modal('hide');
+						});
+
+						$modal.find('.md-checkbox').each(function () {
+							$(this)
+								.find('.md-check').attr('id', function (i, val) {
+									return val + state.__uid;
+								}).end()
+								.find('[for]').attr('for', function (i, val) {
+									return val + state.__uid;
+								}).end()
+								.siblings('[for]').attr('for', function (i, val) {
+									return val + state.__uid;
+								})
+						});
+
+						$('body').trigger('refresh-inputs');
+					}
+					var updateState = function () {
+						_.keys(_.omit(state, '__action', '__uid')).forEach(function (key) { delete state[key]; });
+						_.merge(state, $form.serializeObject());
+					}
+					updateContent();
+
+					// Modal closed, do the callback
+					$modal.on('hide.bs.modal', function (e) {
+						if (typeof onClose == 'function') {
+							onClose(saveState, state);
+						}
+					});
+					$modal.on('shown.bs.modal', function (e) {
+						$modal.find(':input[autofocus]:first').focus();
+					})
+
+					$modal.modal('show');
+
+					return {
+						updateContent: updateContent,
+						updateState: updateState,
+						$modal: $modal
+					}
+				};
+
+				// Events
+				{
+					// TODO name must be unique across layouts, tabs, fields, blocks
+
+					// Add Layout
+					$('[href="#createlayout"]').on('click', function (e) {
 						e.preventDefault();
 
-						updateState();
-						saveState = _.merge({}, _.omit(state, '__uid'));
-						$modal.modal('hide');
-					});
-
-					$modal.find('.md-checkbox').each(function () {
-						$(this)
-							.find('.md-check').attr('id', function (i, val) {
-								return val + state.__uid;
-							}).end()
-							.find('[for]').attr('for', function (i, val) {
-								return val + state.__uid;
-							}).end()
-							.siblings('[for]').attr('for', function (i, val) {
-								return val + state.__uid;
-							})
-					});
-
-					$('body').trigger('refresh-inputs');
-				}
-				var updateState = function () {
-					_.keys(_.omit(state, '__action', '__uid')).forEach(function (key) { delete state[key]; });
-					_.merge(state, $form.serializeObject());
-				}
-				updateContent();
-
-				// Modal closed, do the callback
-				$modal.on('hide.bs.modal', function (e) {
-					if (typeof onClose == 'function') {
-						onClose(saveState, state);
-					}
-				});
-				$modal.on('shown.bs.modal', function (e) {
-					$modal.find(':input[autofocus]:first').focus();
-				})
-
-				$modal.modal('show');
-
-				return {
-					updateContent: updateContent,
-					updateState: updateState,
-					$modal: $modal
-				}
-			};
-
-			// Events
-			{
-				// TODO name must be unique across layouts, tabs, fields, blocks
-
-				// Add Layout
-				$('[href="#createlayout"]').on('click', function (e) {
-					e.preventDefault();
-
-					showModal(templates.layout, {__action: 'add'}, function (state) {
-						if (state) {
-							for (var a = 0, b = layoutsState.length; a < b; ++a) {
-								layoutsState[a].active = false;
-							}
-
-							layoutsState.push(_.merge(_.omit(state, '__action'), {
-								active: true,
-								tabs: []
-							}));
-
-							updateLayouts();
-						}
-
-					});
-				});
-
-				// Edit Layout
-				$('[href="#editlayout"]').on('click', function (e) {
-					e.preventDefault();
-
-					var layout = getActiveLayout();
-					if (layout) {
-						showModal(templates.layout, _.merge({__action: 'edit'}, layout), function (state) {
+						showModal(templates.layout, {__action: 'add'}, function (state) {
 							if (state) {
-								_.merge(layout, _.omit(state, '__action'));
-
-								updateLayouts();
-							}
-
-						});
-					}
-
-				});
-
-				// Copy Layout
-				$('[href="#copylayout"]').on('click', function (e) {
-					e.preventDefault();
-
-					var layout = getActiveLayout();
-					if (layout) {
-						showModal(templates.copy, {json: JSON.stringify(
-							_.extend(
-								_.omit(layout, 'active', 'tabs'),
-								{
-									tabs: _.map(layout.tabs, function (tab) {
-										return _.omit(tab, 'active');
-									})
-								}
-							)
-						)});
-					}
-				});
-
-				// Paste Layout
-				$('[href="#pastelayout"]').on('click', function (e) {
-					e.preventDefault();
-
-					showModal(templates.paste, {}, function (state) {
-						if (state) {
-							var layout;
-							try {
-								layout = JSON.parse(state.json);
-							} catch (e) {}
-
-							if (layout) {
 								for (var a = 0, b = layoutsState.length; a < b; ++a) {
 									layoutsState[a].active = false;
 								}
 
-								if (layout.tabs.length > 0)
-									layout.tabs[0].active = true;
-
-								layoutsState.push(_.merge(layout, {
+								layoutsState.push(_.merge(_.omit(state, '__action'), {
 									active: true,
-									name: state.name,
-									label: state.label || (layout.label + ' copy')
+									tabs: []
 								}));
 
 								updateLayouts();
 							}
+
+						});
+					});
+
+					// Edit Layout
+					$('[href="#editlayout"]').on('click', function (e) {
+						e.preventDefault();
+
+						var layout = getActiveLayout();
+						if (layout) {
+							showModal(templates.layout, _.merge({__action: 'edit'}, layout), function (state) {
+								if (state) {
+									_.merge(layout, _.omit(state, '__action'));
+
+									updateLayouts();
+								}
+
+							});
 						}
 
 					});
-				});
 
-				// Delete layout
-				$('[href="#deletelayout"]').on('click', function (e) {
-					e.preventDefault();
+					// Copy Layout
+					$('[href="#copylayout"]').on('click', function (e) {
+						e.preventDefault();
 
-					var layout = getActiveLayout();
-					if (layout) {
-						showModal(templates.delete, {}, function (state) {
-							if (state) {
-								var i = layoutsState.indexOf(layout);
-								if (i > -1) {
-									layoutsState.splice(i, 1);
-									if (layoutsState.length) {
-										layoutsState[0].active = true;
+						var layout = getActiveLayout();
+						if (layout) {
+							showModal(templates.copy, {json: JSON.stringify(
+								_.extend(
+									_.omit(layout, 'active', 'tabs'),
+									{
+										tabs: _.map(layout.tabs, function (tab) {
+											return _.omit(tab, 'active');
+										})
 									}
+								)
+							)});
+						}
+					});
+
+					// Paste Layout
+					$('[href="#pastelayout"]').on('click', function (e) {
+						e.preventDefault();
+
+						showModal(templates.paste, {}, function (state) {
+							if (state) {
+								var layout;
+								try {
+									layout = JSON.parse(state.json);
+								} catch (e) {}
+
+								if (layout) {
+									for (var a = 0, b = layoutsState.length; a < b; ++a) {
+										layoutsState[a].active = false;
+									}
+
+									if (layout.tabs.length > 0)
+										layout.tabs[0].active = true;
+
+									layoutsState.push(_.merge(layout, {
+										active: true,
+										name: state.name,
+										label: state.label || (layout.label + ' copy')
+									}));
+
 									updateLayouts();
 								}
 							}
 
 						});
-					}
-				});
+					});
 
-				// Add Tab
-				$layoutsContainer.on('click', '[href="#createtab"]', function (e) {
-					e.preventDefault();
+					// Delete layout
+					$('[href="#deletelayout"]').on('click', function (e) {
+						e.preventDefault();
 
-					var layout = getActiveLayout();
-					if (layout) {
-						showModal(templates.tab, {__action: 'add'}, function (state) {
-							if (state) {
-								for (var a = 0, b = layout.tabs.length; a < b; ++a) {
-									layout.tabs[a].active = false;
+						var layout = getActiveLayout();
+						if (layout) {
+							showModal(templates.delete, {}, function (state) {
+								if (state) {
+									var i = layoutsState.indexOf(layout);
+									if (i > -1) {
+										layoutsState.splice(i, 1);
+										if (layoutsState.length) {
+											layoutsState[0].active = true;
+										}
+										updateLayouts();
+									}
 								}
 
-								layout.tabs.push(_.merge(_.omit(state, '__action'), {
-									active: true,
-									fields: []
-								}));
+							});
+						}
+					});
 
-								updateLayouts();
-							}
+					// Add Tab
+					$layoutsContainer.on('click', '[href="#createtab"]', function (e) {
+						e.preventDefault();
 
-						});
-					}
-				});
-
-				// Edit Tab
-				$layoutsContainer.on('click', '[href="#edittab"]', function (e) {
-					e.preventDefault();
-
-					var tab = getActiveTab();
-					if (tab) {
-						showModal(templates.tab, _.merge({__action: 'edit'}, tab), function (state) {
-							if (state) {
-								_.merge(tab, _.omit(state, '__action'));
-
-								updateLayouts();
-							}
-
-						});
-					}
-				});
-
-				// Copy Tab
-				$layoutsContainer.on('click', '[href="#copytab"]', function (e) {
-					e.preventDefault();
-
-					var tab = getActiveTab();
-					if (tab) {
-						showModal(templates.copy, {json: JSON.stringify(_.omit(tab, 'active'))});
-					}
-				});
-
-				// Paste Tab
-				$layoutsContainer.on('click', '[href="#pastetab"]', function (e) {
-					e.preventDefault();
-
-					var layout = getActiveLayout();
-					if (layout) {
-						showModal(templates.paste, {}, function (state) {
-							if (state) {
-								var tab;
-								try {
-									tab = JSON.parse(state.json);
-								} catch (e) {}
-
-								if (tab) {
+						var layout = getActiveLayout();
+						if (layout) {
+							showModal(templates.tab, {__action: 'add'}, function (state) {
+								if (state) {
 									for (var a = 0, b = layout.tabs.length; a < b; ++a) {
 										layout.tabs[a].active = false;
 									}
 
-									layout.tabs.push(_.merge(tab, {
+									layout.tabs.push(_.merge(_.omit(state, '__action'), {
 										active: true,
-										name: state.name,
-										label: state.label || (tab.label + ' copy')
+										fields: []
 									}));
 
 									updateLayouts();
 								}
-							}
 
-						});
-					}
-				});
-
-				// Delete Tab
-				$layoutsContainer.on('click', '[href="#deletetab"]', function (e) {
-					e.preventDefault();
-
-					var tab = getActiveTab();
-					if (tab) {
-						var layout = getActiveLayout();
-						showModal(templates.delete, {}, function (state) {
-							if (state) {
-								var i = layout.tabs.indexOf(tab);
-								if (i > -1) {
-									var i = layout.tabs.splice(i, 1);
-									if (layout.tabs.length) {
-										layout.tabs[0].active = true;
-									}
-									updateLayouts();
-								}
-							}
-
-						});
-					}
-				});
-
-				// Copy Field
-				$layoutsContainer.on('click', '[href="#copyfield"]', function (e) {
-					e.preventDefault();
-
-					var $btn = $(this),
-						field = getField($btn.data('layout'), $btn.data('tab'), $btn.data('field'));
-					if (field) {
-						showModal(templates.copy, {json: JSON.stringify(field)});
-					}
-				});
-
-				// Paste Field
-				$layoutsContainer.on('click', '[href="#pastefield"]', function (e) {
-					e.preventDefault();
-
-					var tab = getActiveTab();
-					if (tab) {
-						showModal(templates.paste, {}, function (state) {
-							if (state) {
-								var field;
-								try {
-									field = JSON.parse(state.json);
-								} catch (e) {}
-
-								if (field) {
-									tab.fields.push(_.merge(field, {
-										name: state.name,
-										label: state.label || (field.label + ' copy')
-									}));
-
-									updateLayouts();
-								}
-							}
-
-						});
-					}
-				});
-
-				// Delete Field
-				$layoutsContainer.on('click', '[href="#deletefield"]', function (e) {
-					e.preventDefault();
-
-					var $btn = $(this),
-						field = getField($btn.data('layout'), $btn.data('tab'), $btn.data('field'));
-					if (field) {
-						var tab = getActiveTab();
-						showModal(templates.delete, {}, function (state) {
-							if (state) {
-								var i = tab.fields.indexOf(field);
-								if (i > -1) {
-									var i = tab.fields.splice(i, 1);
-									updateLayouts();
-								}
-							}
-
-						});
-					}
-				});
-
-				var showFieldModal = function (fieldState, onClose) {
-					var blocks = fieldState.blocks || [];
-					for (var a = 0, b = blocks.length; a < b; ++a) {
-						blocks[a].active = a == 0;
-					}
-
-					var modal = showModal(templates.field, fieldState, function (state) {
-						if (state && state.input == 'matrix') {
-							state.blocks = blocks;
+							});
 						}
-						onClose(state);
 					});
-					var updateContent = function () {
-						modal.$modal.addClass('bs-modal-lg').children('.modal-dialog').addClass('modal-lg');
-						modal.$modal.find('[name="input"]').on('change', function (e) {
-							modal.updateState();
-							modal.updateContent();
-							updateContent();
-						});
-						if (fieldState.input == 'matrix') {
 
-							_.extend(fieldState, {blocks: blocks});
+					// Edit Tab
+					$layoutsContainer.on('click', '[href="#edittab"]', function (e) {
+						e.preventDefault();
 
-							var $blocks = $(templates.blocks.render(fieldState));
-							modal.$modal.find('[name="input"]:last').parent().after($blocks);
+						var tab = getActiveTab();
+						if (tab) {
+							showModal(templates.tab, _.merge({__action: 'edit'}, tab), function (state) {
+								if (state) {
+									_.merge(tab, _.omit(state, '__action'));
 
-							// Maintain active state
-							$blocks.find('.nav-tabs > li:not(:first) > a').on('click', function (e) {
-								var id = $(this).attr('href').substr(1).split('_').slice(2);
-								for (var a = 0, b = blocks.length; a < b; ++a) {
-									blocks[a].active = blocks[a].handle == id[0];
+									updateLayouts();
 								}
-							});
 
-							// Reorder tabs & fields
-							// TODO change order in state
-							$blocks.find('.nav-tabs').sortable({
-								items: 'li:not(:first)'
 							});
-							$blocks.find('.tab-pane tbody').sortable({
-								handle: '.fa-reorder',
-								axis: 'y',
-								helper: function (e, $tr) {
-									var widths = $tr.children('td').map(function () { return $(this).width(); }).get(),
-										$clone = $tr.clone(false, false);
-									$clone.children('td').each(function (i) {
-										$(this).width(widths[i]);
-									});
-									return $clone;
-								}
-							});
+						}
+					});
 
-							// Get Active block
-							var getActiveBlock = function () {
-								for (var a = 0, b = blocks.length; a < b; ++a) {
-									if (blocks[a].active == true) {
-										return blocks[a];
-									}
-								}
-								return null;
-							};
+					// Copy Tab
+					$layoutsContainer.on('click', '[href="#copytab"]', function (e) {
+						e.preventDefault();
 
-							// Get Field
-							var getField = function (block, field) {
-								for (var c = 0, d = blocks.length; c < d; ++c) {
-									if (blocks[c].handle == block) {
-										for (var e = 0, f = blocks[c].fields.length; e < f; ++e) {
-											if (blocks[c].fields[e].handle == field) {
-												return blocks[c].fields[e];
-											}
+						var tab = getActiveTab();
+						if (tab) {
+							showModal(templates.copy, {json: JSON.stringify(_.omit(tab, 'active'))});
+						}
+					});
+
+					// Paste Tab
+					$layoutsContainer.on('click', '[href="#pastetab"]', function (e) {
+						e.preventDefault();
+
+						var layout = getActiveLayout();
+						if (layout) {
+							showModal(templates.paste, {}, function (state) {
+								if (state) {
+									var tab;
+									try {
+										tab = JSON.parse(state.json);
+									} catch (e) {}
+
+									if (tab) {
+										for (var a = 0, b = layout.tabs.length; a < b; ++a) {
+											layout.tabs[a].active = false;
 										}
-										break;
+
+										layout.tabs.push(_.merge(tab, {
+											active: true,
+											name: state.name,
+											label: state.label || (tab.label + ' copy')
+										}));
+
+										updateLayouts();
 									}
 								}
-								return null;
+
+							});
+						}
+					});
+
+					// Delete Tab
+					$layoutsContainer.on('click', '[href="#deletetab"]', function (e) {
+						e.preventDefault();
+
+						var tab = getActiveTab();
+						if (tab) {
+							var layout = getActiveLayout();
+							showModal(templates.delete, {}, function (state) {
+								if (state) {
+									var i = layout.tabs.indexOf(tab);
+									if (i > -1) {
+										var i = layout.tabs.splice(i, 1);
+										if (layout.tabs.length) {
+											layout.tabs[0].active = true;
+										}
+										updateLayouts();
+									}
+								}
+
+							});
+						}
+					});
+
+					// Copy Field
+					$layoutsContainer.on('click', '[href="#copyfield"]', function (e) {
+						e.preventDefault();
+
+						var $btn = $(this),
+							field = getField($btn.data('layout'), $btn.data('tab'), $btn.data('field'));
+						if (field) {
+							showModal(templates.copy, {json: JSON.stringify(field)});
+						}
+					});
+
+					// Paste Field
+					$layoutsContainer.on('click', '[href="#pastefield"]', function (e) {
+						e.preventDefault();
+
+						var tab = getActiveTab();
+						if (tab) {
+							showModal(templates.paste, {}, function (state) {
+								if (state) {
+									var field;
+									try {
+										field = JSON.parse(state.json);
+									} catch (e) {}
+
+									if (field) {
+										tab.fields.push(_.merge(field, {
+											name: state.name,
+											label: state.label || (field.label + ' copy')
+										}));
+
+										updateLayouts();
+									}
+								}
+
+							});
+						}
+					});
+
+					// Delete Field
+					$layoutsContainer.on('click', '[href="#deletefield"]', function (e) {
+						e.preventDefault();
+
+						var $btn = $(this),
+							field = getField($btn.data('layout'), $btn.data('tab'), $btn.data('field'));
+						if (field) {
+							var tab = getActiveTab();
+							showModal(templates.delete, {}, function (state) {
+								if (state) {
+									var i = tab.fields.indexOf(field);
+									if (i > -1) {
+										var i = tab.fields.splice(i, 1);
+										updateLayouts();
+									}
+								}
+
+							});
+						}
+					});
+
+					var showFieldModal = function (fieldState, onClose) {
+						var blocks = fieldState.blocks || [];
+						for (var a = 0, b = blocks.length; a < b; ++a) {
+							blocks[a].active = a == 0;
+						}
+
+						var modal = showModal(templates.field, fieldState, function (state) {
+							if (state && state.input == 'matrix') {
+								state.blocks = blocks;
 							}
+							onClose(state);
+						});
+						var updateContent = function () {
+							modal.$modal.addClass('bs-modal-lg').children('.modal-dialog').addClass('modal-lg');
+							modal.$modal.find('[name="input"]').on('change', function (e) {
+								modal.updateState();
+								modal.updateContent();
+								updateContent();
+							});
+							if (fieldState.input == 'matrix') {
 
-							// Events
-							{
-								// Add Block
-								$blocks.on('click', '[href="#createblock"]', function (e) {
-									e.preventDefault();
+								_.extend(fieldState, {blocks: blocks});
 
-									showModal(templates.block, {__action: 'add'}, function (state) {
-										if (state) {
-											for (var a = 0, b = blocks.length; a < b; ++a) {
-												blocks[a].active = false;
-											}
+								var $blocks = $(templates.blocks.render(fieldState));
+								modal.$modal.find('[name="input"]:last').parent().after($blocks);
 
-											blocks.push(_.merge(_.omit(state, '__action'), {
-												active: true,
-												fields: []
-											}));
-
-											modal.updateContent();
-											updateContent();
-										}
-									});
+								// Maintain active state
+								$blocks.find('.nav-tabs > li:not(:first) > a').on('click', function (e) {
+									var id = $(this).attr('href').substr(1).split('_').slice(2);
+									for (var a = 0, b = blocks.length; a < b; ++a) {
+										blocks[a].active = blocks[a].handle == id[0];
+									}
 								});
 
-								// Edit Block
-								$blocks.on('click', '[href="#editblock"]', function (e) {
-									e.preventDefault();
-
-									var block = getActiveBlock();
-									if (block) {
-										showModal(templates.block, _.merge({__action: 'edit'}, block), function (state) {
-											if (state) {
-												_.merge(block, _.omit(state, '__action'));
-												modal.updateContent();
-												updateContent();
-											}
+								// Reorder tabs & fields
+								// TODO change order in state
+								$blocks.find('.nav-tabs').sortable({
+									items: 'li:not(:first)'
+								});
+								$blocks.find('.tab-pane tbody').sortable({
+									handle: '.fa-reorder',
+									axis: 'y',
+									helper: function (e, $tr) {
+										var widths = $tr.children('td').map(function () { return $(this).width(); }).get(),
+											$clone = $tr.clone(false, false);
+										$clone.children('td').each(function (i) {
+											$(this).width(widths[i]);
 										});
+										return $clone;
 									}
 								});
 
-								// Copy Block
-								$blocks.on('click', '[href="#copyblock"]', function (e) {
-									e.preventDefault();
-
-									var block = getActiveBlock();
-									if (block) {
-										showModal(templates.copy, {json: JSON.stringify(_.omit(block, 'active'))});
+								// Get Active block
+								var getActiveBlock = function () {
+									for (var a = 0, b = blocks.length; a < b; ++a) {
+										if (blocks[a].active == true) {
+											return blocks[a];
+										}
 									}
-								});
+									return null;
+								};
 
-								// Paste Block
-								$blocks.on('click', '[href="#pasteblock"]', function (e) {
-									e.preventDefault();
+								// Get Field
+								var getField = function (block, field) {
+									for (var c = 0, d = blocks.length; c < d; ++c) {
+										if (blocks[c].handle == block) {
+											for (var e = 0, f = blocks[c].fields.length; e < f; ++e) {
+												if (blocks[c].fields[e].handle == field) {
+													return blocks[c].fields[e];
+												}
+											}
+											break;
+										}
+									}
+									return null;
+								}
 
-									showModal(templates.paste, {}, function (state) {
-										if (state) {
-											var block;
-											try {
-												block = JSON.parse(state.json);
-											} catch (e) {}
+								// Events
+								{
+									// Add Block
+									$blocks.on('click', '[href="#createblock"]', function (e) {
+										e.preventDefault();
 
-											if (block) {
+										showModal(templates.block, {__action: 'add'}, function (state) {
+											if (state) {
 												for (var a = 0, b = blocks.length; a < b; ++a) {
 													blocks[a].active = false;
 												}
 
-												blocks.push(_.merge(block, {
+												blocks.push(_.merge(_.omit(state, '__action'), {
 													active: true,
-													handle: state.handle,
-													label: state.label || (block.label + ' copy')
+													fields: []
 												}));
 
 												modal.updateContent();
 												updateContent();
 											}
+										});
+									});
+
+									// Edit Block
+									$blocks.on('click', '[href="#editblock"]', function (e) {
+										e.preventDefault();
+
+										var block = getActiveBlock();
+										if (block) {
+											showModal(templates.block, _.merge({__action: 'edit'}, block), function (state) {
+												if (state) {
+													_.merge(block, _.omit(state, '__action'));
+													modal.updateContent();
+													updateContent();
+												}
+											});
+										}
+									});
+
+									// Copy Block
+									$blocks.on('click', '[href="#copyblock"]', function (e) {
+										e.preventDefault();
+
+										var block = getActiveBlock();
+										if (block) {
+											showModal(templates.copy, {json: JSON.stringify(_.omit(block, 'active'))});
+										}
+									});
+
+									// Paste Block
+									$blocks.on('click', '[href="#pasteblock"]', function (e) {
+										e.preventDefault();
+
+										showModal(templates.paste, {}, function (state) {
+											if (state) {
+												var block;
+												try {
+													block = JSON.parse(state.json);
+												} catch (e) {}
+
+												if (block) {
+													for (var a = 0, b = blocks.length; a < b; ++a) {
+														blocks[a].active = false;
+													}
+
+													blocks.push(_.merge(block, {
+														active: true,
+														handle: state.handle,
+														label: state.label || (block.label + ' copy')
+													}));
+
+													modal.updateContent();
+													updateContent();
+												}
+											}
+
+										});
+									});
+
+									// Delete Block
+									$blocks.on('click', '[href="#deleteblock"]', function (e) {
+										e.preventDefault();
+
+										var block = getActiveBlock();
+										if (block) {
+											showModal(templates.delete, {}, function (state) {
+												if (state) {
+													var i = blocks.indexOf(block);
+													if (i > -1) {
+														var i = blocks.splice(i, 1);
+														if (blocks.length) {
+															blocks[0].active = true;
+														}
+														modal.updateContent();
+														updateContent();
+													}
+												}
+
+											});
+										}
+									});
+
+									// Add Field
+									$blocks.on('click', '[href="#createfield"]', function (e) {
+										e.preventDefault();
+
+										var block = getActiveBlock();
+										if (block) {
+											showFieldModal({__action: 'add'}, function (state) {
+												if (state) {
+													block.fields.push(_.omit(state, '__action', '__uid'));
+													modal.updateState();
+													modal.updateContent();
+													updateContent();
+												}
+											});
+										}
+									});
+
+									// Edit Field
+									$blocks.on('click', '[href="#editfield"]', function (e) {
+										e.preventDefault();
+
+										var $btn = $(this),
+											field = getField($btn.data('block'), $btn.data('field'));
+
+										if (field) {
+											showFieldModal(_.merge({__action: 'edit'}, field), function (state) {
+												if (state) {
+													// Remove all keys from field
+													_.keys(field).forEach(function (key) { delete field[key]; });
+													// Update field state
+													_.merge(field, _.omit(state, '__action', '__uid'));
+													modal.updateState();
+													modal.updateContent();
+													updateContent();
+												}
+											});
 										}
 
 									});
-								});
 
-								// Delete Block
-								$blocks.on('click', '[href="#deleteblock"]', function (e) {
-									e.preventDefault();
+									// Copy Field
+									$blocks.on('click', '[href="#copyfield"]', function (e) {
+										e.preventDefault();
 
-									var block = getActiveBlock();
-									if (block) {
-										showModal(templates.delete, {}, function (state) {
-											if (state) {
-												var i = blocks.indexOf(block);
-												if (i > -1) {
-													var i = blocks.splice(i, 1);
-													if (blocks.length) {
-														blocks[0].active = true;
-													}
-													modal.updateContent();
-													updateContent();
-												}
-											}
+										var $btn = $(this),
+											field = getField($btn.data('block'), $btn.data('field'));
 
-										});
-									}
-								});
+										if (field) {
+											showModal(templates.copy, {json: JSON.stringify(field)});
+										}
+									});
 
-								// Add Field
-								$blocks.on('click', '[href="#createfield"]', function (e) {
-									e.preventDefault();
+									// Paste Field
+									$blocks.on('click', '[href="#pastefield"]', function (e) {
+										e.preventDefault();
 
-									var block = getActiveBlock();
-									if (block) {
-										showFieldModal({__action: 'add'}, function (state) {
-											if (state) {
-												block.fields.push(_.omit(state, '__action', '__uid'));
-												modal.updateState();
-												modal.updateContent();
-												updateContent();
-											}
-										});
-									}
-								});
-
-								// Edit Field
-								$blocks.on('click', '[href="#editfield"]', function (e) {
-									e.preventDefault();
-
-									var $btn = $(this),
-										field = getField($btn.data('block'), $btn.data('field'));
-
-									if (field) {
-										showFieldModal(_.merge({__action: 'edit'}, field), function (state) {
-											if (state) {
-												// Remove all keys from field
-												_.keys(field).forEach(function (key) { delete field[key]; });
-												// Update field state
-												_.merge(field, _.omit(state, '__action', '__uid'));
-												modal.updateState();
-												modal.updateContent();
-												updateContent();
-											}
-										});
-									}
-
-								});
-
-								// Copy Field
-								$blocks.on('click', '[href="#copyfield"]', function (e) {
-									e.preventDefault();
-
-									var $btn = $(this),
-										field = getField($btn.data('block'), $btn.data('field'));
-
-									if (field) {
-										showModal(templates.copy, {json: JSON.stringify(field)});
-									}
-								});
-
-								// Paste Field
-								$blocks.on('click', '[href="#pastefield"]', function (e) {
-									e.preventDefault();
-
-									var block = getActiveBlock();
-									if (block) {
-										showModal(templates.paste, {}, function (state) {
-											if (state) {
-												var field;
-												try {
-													field = JSON.parse(state.json);
-												} catch (e) {}
-
-												if (field) {
-													block.fields.push(_.merge(field, {
-														handle: state.handle,
-														label: state.label || (field.label + ' copy')
-													}));
-
-													modal.updateState();
-													modal.updateContent();
-													updateContent();
-												}
-											}
-
-										});
-									}
-								});
-
-								// Delete Field
-								$blocks.on('click', '[href="#deletefield"]', function (e) {
-									e.preventDefault();
-
-									var $btn = $(this),
-										field = getField($btn.data('block'), $btn.data('field'));
-
-									if (field) {
 										var block = getActiveBlock();
-										showModal(templates.delete, {}, function (state) {
-											if (state) {
-												var i = block.fields.indexOf(field);
-												if (i > -1) {
-													var i = block.fields.splice(i, 1);
-													modal.updateState();
-													modal.updateContent();
-													updateContent();
-												}
-											}
+										if (block) {
+											showModal(templates.paste, {}, function (state) {
+												if (state) {
+													var field;
+													try {
+														field = JSON.parse(state.json);
+													} catch (e) {}
 
-										});
-									}
-								});
+													if (field) {
+														block.fields.push(_.merge(field, {
+															handle: state.handle,
+															label: state.label || (field.label + ' copy')
+														}));
+
+														modal.updateState();
+														modal.updateContent();
+														updateContent();
+													}
+												}
+
+											});
+										}
+									});
+
+									// Delete Field
+									$blocks.on('click', '[href="#deletefield"]', function (e) {
+										e.preventDefault();
+
+										var $btn = $(this),
+											field = getField($btn.data('block'), $btn.data('field'));
+
+										if (field) {
+											var block = getActiveBlock();
+											showModal(templates.delete, {}, function (state) {
+												if (state) {
+													var i = block.fields.indexOf(field);
+													if (i > -1) {
+														block.fields.splice(i, 1);
+														modal.updateState();
+														modal.updateContent();
+														updateContent();
+													}
+												}
+
+											});
+										}
+									});
+								}
 							}
 						}
-					}
-					updateContent();
-				};
+						updateContent();
+					};
 
-				// Add Field
-				$layoutsContainer.on('click', '[href="#createfield"]', function (e) {
-					e.preventDefault();
+					// Add Field
+					$layoutsContainer.on('click', '[href="#createfield"]', function (e) {
+						e.preventDefault();
 
-					var tab = getActiveTab();
-					if (tab) {
-						showFieldModal({__action: 'add'}, function (state) {
-							if (state) {
-								tab.fields.push(_.omit(state, '__action', '__uid'));
-								updateLayouts();
-							}
-						});
-					}
-				});
+						var tab = getActiveTab();
+						if (tab) {
+							showFieldModal({__action: 'add'}, function (state) {
+								if (state) {
+									tab.fields.push(_.omit(state, '__action', '__uid'));
+									updateLayouts();
+								}
+							});
+						}
+					});
 
-				// Edit Field
-				$layoutsContainer.on('click', '[href="#editfield"]', function (e) {
-					e.preventDefault();
+					// Edit Field
+					$layoutsContainer.on('click', '[href="#editfield"]', function (e) {
+						e.preventDefault();
 
-					var $btn = $(this),
-						field = getField($btn.data('layout'), $btn.data('tab'), $btn.data('field'));
+						var $btn = $(this),
+							field = getField($btn.data('layout'), $btn.data('tab'), $btn.data('field'));
 
-					if (field) {
-						showFieldModal(_.merge({__action: 'edit'}, field), function (state) {
-							if (state) {
-								// Remove all keys from field
-								_.keys(field).forEach(function (key) { delete field[key]; });
-								// Update field state
-								_.merge(field, _.omit(state, '__action', '__uid'));
-								updateLayouts();
-							}
-						});
-					}
+						if (field) {
+							showFieldModal(_.merge({__action: 'edit'}, field), function (state) {
+								if (state) {
+									// Remove all keys from field
+									_.keys(field).forEach(function (key) { delete field[key]; });
+									// Update field state
+									_.merge(field, _.omit(state, '__action', '__uid'));
+									updateLayouts();
+								}
+							});
+						}
 
-				});
+					});
+				}
 			}
 
+			// Columns
+			{
+				var columnsState = {{ section.columns|default([])|json }},
+					$columnsInput = $(':input[name="columns"]'),
+					$columnsContainer = $('#columns');
+
+				var updateColumns = function () {
+
+					$columnsContainer.empty().html(templates.columns.render({
+						columns: columnsState
+					}));
+
+					$columnsContainer.find(':input').on('change', function (e) {
+						columnsState = $columnsContainer.find(':input').map(function () { return $(this).val(); }).get();
+						$columnsInput.val(JSON.stringify(columnsState));
+					});
+
+					$columnsInput.val(JSON.stringify(columnsState));
+				};
+
+				updateColumns();
+
+				$('[href="#addcolumn"]').on('click', function (e) {
+					e.preventDefault();
+					columnsState.push('');
+					updateColumns();
+				});
+
+				$columnsContainer.on('click', '[href="#removecolumn"]', function (e) {
+					e.preventDefault();
+
+					var path = $(this).closest('.form-group').find(':input').val()
+
+					showModal(templates.delete, {}, function (state) {
+						if (state) {
+							var i = columnsState.indexOf(path);
+							if (i > -1) {
+								columnsState.splice(i, 1);
+								updateColumns();
+							}
+						}
+
+					});
+				});
+			}
 		});
 	</script>
 {% endblock %}

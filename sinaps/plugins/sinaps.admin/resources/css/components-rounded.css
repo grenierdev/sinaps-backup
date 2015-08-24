@@ -145,8 +145,7 @@ body {
     color: #888888;
     opacity: 1 ;
     filter: alpha(opacity=100) ; }
-  .form-group.form-md-line-input .form-control,
-  .form-group.form-md-line-input .input-group {
+  .form-group.form-md-line-input .form-control {
     background: none;
     border: 0;
     border-bottom: 1px solid #e5e5e5;
@@ -160,47 +159,35 @@ body {
     padding-left: 0;
     padding-right: 0;
     font-size: 16px; }
-    .form-group.form-md-line-input .form-control::-moz-placeholder,
-    .form-group.form-md-line-input .input-group::-moz-placeholder {
+    .form-group.form-md-line-input .form-control::-moz-placeholder {
       color: #999;
       opacity: 1; }
-    .form-group.form-md-line-input .form-control:-ms-input-placeholder,
-    .form-group.form-md-line-input .input-group:-ms-input-placeholder {
+    .form-group.form-md-line-input .form-control:-ms-input-placeholder {
       color: #999; }
-    .form-group.form-md-line-input .form-control::-webkit-input-placeholder,
-    .form-group.form-md-line-input .input-group::-webkit-input-placeholder {
+    .form-group.form-md-line-input .form-control::-webkit-input-placeholder {
       color: #999; }
-    .form-group.form-md-line-input .form-control.form-control-static,
-    .form-group.form-md-line-input .input-group.form-control-static {
+    .form-group.form-md-line-input .form-control.form-control-static {
       border-bottom: 0; }
-    .form-group.form-md-line-input .form-control.input-sm,
-    .form-group.form-md-line-input .input-group.input-sm {
+    .form-group.form-md-line-input .form-control.input-sm {
       font-size: 14px;
       padding: 6px 0; }
-    .form-group.form-md-line-input .form-control.input-lg,
-    .form-group.form-md-line-input .input-group.input-lg {
+    .form-group.form-md-line-input .form-control.input-lg {
       font-size: 20px;
       padding: 14px 0; }
     .form-group.form-md-line-input .form-control ~ label,
-    .form-group.form-md-line-input .form-control ~ .form-control-focus,
-    .form-group.form-md-line-input .input-group ~ label,
-    .form-group.form-md-line-input .input-group ~ .form-control-focus {
+    .form-group.form-md-line-input .form-control ~ .form-control-focus {
       width: 100%;
       position: absolute;
       left: 0;
       bottom: 0;
       pointer-events: none; }
       .form-horizontal .form-group.form-md-line-input .form-control ~ label,
-      .form-horizontal .form-group.form-md-line-input .form-control ~ .form-control-focus,
-      .form-horizontal .form-group.form-md-line-input .input-group ~ label,
-      .form-horizontal .form-group.form-md-line-input .input-group ~ .form-control-focus {
+      .form-horizontal .form-group.form-md-line-input .form-control ~ .form-control-focus {
         width: auto;
         left: 15px;
         right: 15px; }
       .form-group.form-md-line-input .form-control ~ label:after,
-      .form-group.form-md-line-input .form-control ~ .form-control-focus:after,
-      .form-group.form-md-line-input .input-group ~ label:after,
-      .form-group.form-md-line-input .input-group ~ .form-control-focus:after {
+      .form-group.form-md-line-input .form-control ~ .form-control-focus:after {
         content: '';
         position: absolute;
         z-index: 5;
@@ -211,8 +198,7 @@ body {
         width: 0;
         visibility: hidden;
         transition: 0.2s ease all; }
-    .form-group.form-md-line-input .form-control ~ label,
-    .form-group.form-md-line-input .input-group ~ label {
+    .form-group.form-md-line-input .form-control ~ label {
       top: 0;
       margin-bottom: 0;
       font-size: 13px;
@@ -224,53 +210,32 @@ body {
     .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ label,
     .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ .form-control-focus,
     .form-group.form-md-line-input .form-control.focus:not([readonly]) ~ label,
-    .form-group.form-md-line-input .form-control.focus:not([readonly]) ~ .form-control-focus,
-    .form-group.form-md-line-input .input-group.edited:not([readonly]) ~ label,
-    .form-group.form-md-line-input .input-group.edited:not([readonly]) ~ .form-control-focus,
-    .form-group.form-md-line-input .input-group:focus:not([readonly]) ~ label,
-    .form-group.form-md-line-input .input-group:focus:not([readonly]) ~ .form-control-focus,
-    .form-group.form-md-line-input .input-group.focus:not([readonly]) ~ label,
-    .form-group.form-md-line-input .input-group.focus:not([readonly]) ~ .form-control-focus {
+    .form-group.form-md-line-input .form-control.focus:not([readonly]) ~ .form-control-focus {
       color: #888888; }
       .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ label:after,
       .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ .form-control-focus:after,
       .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ label:after,
       .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ .form-control-focus:after,
       .form-group.form-md-line-input .form-control.focus:not([readonly]) ~ label:after,
-      .form-group.form-md-line-input .form-control.focus:not([readonly]) ~ .form-control-focus:after,
-      .form-group.form-md-line-input .input-group.edited:not([readonly]) ~ label:after,
-      .form-group.form-md-line-input .input-group.edited:not([readonly]) ~ .form-control-focus:after,
-      .form-group.form-md-line-input .input-group:focus:not([readonly]) ~ label:after,
-      .form-group.form-md-line-input .input-group:focus:not([readonly]) ~ .form-control-focus:after,
-      .form-group.form-md-line-input .input-group.focus:not([readonly]) ~ label:after,
-      .form-group.form-md-line-input .input-group.focus:not([readonly]) ~ .form-control-focus:after {
+      .form-group.form-md-line-input .form-control.focus:not([readonly]) ~ .form-control-focus:after {
         visibility: visible;
         left: 0;
         width: 100%;
         background: #45B6AF; }
     .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ label,
     .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ label,
-    .form-group.form-md-line-input .form-control.focus:not([readonly]) ~ label,
-    .form-group.form-md-line-input .input-group.edited:not([readonly]) ~ label,
-    .form-group.form-md-line-input .input-group:focus:not([readonly]) ~ label,
-    .form-group.form-md-line-input .input-group.focus:not([readonly]) ~ label {
+    .form-group.form-md-line-input .form-control.focus:not([readonly]) ~ label {
       opacity: 1 ;
       filter: alpha(opacity=100) ; }
     .form-group.form-md-line-input .form-control.edited:not([readonly]) ~ .help-block,
     .form-group.form-md-line-input .form-control:focus:not([readonly]) ~ .help-block,
-    .form-group.form-md-line-input .form-control.focus:not([readonly]) ~ .help-block,
-    .form-group.form-md-line-input .input-group.edited:not([readonly]) ~ .help-block,
-    .form-group.form-md-line-input .input-group:focus:not([readonly]) ~ .help-block,
-    .form-group.form-md-line-input .input-group.focus:not([readonly]) ~ .help-block {
+    .form-group.form-md-line-input .form-control.focus:not([readonly]) ~ .help-block {
       color: #45B6AF;
       opacity: 1 ;
       filter: alpha(opacity=100) ; }
     .form-group.form-md-line-input .form-control[readonly],
     .form-group.form-md-line-input .form-control[disabled],
-    fieldset[disabled] .form-group.form-md-line-input .form-control,
-    .form-group.form-md-line-input .input-group[readonly],
-    .form-group.form-md-line-input .input-group[disabled],
-    fieldset[disabled] .form-group.form-md-line-input .input-group {
+    fieldset[disabled] .form-group.form-md-line-input .form-control {
       background: none;
       cursor: not-allowed;
       border-bottom: 1px dashed #e5e5e5; }
