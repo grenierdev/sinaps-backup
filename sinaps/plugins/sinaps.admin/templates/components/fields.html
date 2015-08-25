@@ -1,12 +1,12 @@
 {% macro input(options) %}
-	{% set fieldtype = sinaps.require('sinaps.admin').fieldTypes[options.type] %}
+	{% set fieldtype = sinaps.require('sinaps.admin').getFieldType(options.type) %}
 	{% if fieldtype %}
-		{{ fieldtype.getInputHTML(options, formResource) }}
+		{{ fieldtype.getInputHTML(options) }}
 	{% endif %}
 {% endmacro %}
 
 {% macro field(options) %}
-	{% set fieldtype = sinaps.require('sinaps.admin').fieldTypes[options.type] %}
+	{% set fieldtype = sinaps.require('sinaps.admin').getFieldType(options.type) %}
 	{% if fieldtype %}
 		{{ fieldtype.getFieldHTML(options) }}
 	{% endif %}

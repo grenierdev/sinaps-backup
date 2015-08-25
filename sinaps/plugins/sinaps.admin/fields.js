@@ -259,7 +259,8 @@ module.exports = function () {
 				decimal: 0
 			}
 		},
-		getInputTemplate: function () {
+		getInputTemplate: function (options) {
+			console.log(options);
 			return '';
 		}
 	}));

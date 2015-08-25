@@ -63,7 +63,8 @@
 		@include opacity($input-md-label-opacity);
   	}
 
-	.form-control {
+	.form-control,
+	.input-group {
 		background: none;
 		border: 0;
 		border-bottom: 1px solid $input-md-input-border;

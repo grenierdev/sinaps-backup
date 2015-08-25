@@ -38,12 +38,40 @@
 	}) }}
 {% endmacro %}
 
-{% macro form(schema, model) %}
+{% macro form(schema, model) -%}
+	{% set layoutHandle = model.get('layout')|default(schema.layouts[0].handle) %}
+	{% if layoutHandle %}
+		{% set layout = schema.getLayout(layoutHandle) %}
 
-	
-
-
-{% endmacro %}
+		<div class="tabbable-line">
+			<ul class="nav nav-tabs">
+				{% for tab in layout.tabs %}
+					<li {% if loop.first %}class="active"{% endif %}>
+						<a href="#form_tab_{{ tab.handle }}" data-toggle="tab">
+							{{ tab.label|default(tab.handle) }}
+						</a>
+					</li>
+				{% endfor %}
+			</ul>
+			<div class="tab-content">
+				{% for tab in layout.tabs %}
+					<div id="form_tab_{{ tab.handle }}" class="tab-pane {% if loop.first %}active{% endif %}">
+						{% for field in tab.fields %}
+							{% set fieldtype = sinaps.require('sinaps.admin').getFieldType(field.input) %}
+							{% if fieldtype %}
+								{{ fieldtype.getFieldHTML(field) }}
+							{% else %}
+								<div class="alert alert-danger">
+									Unkown {{ field.input }}
+								</div>
+							{% endif %}
+						{% endfor %}
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	{% endif %}
+{%- endmacro %}
 
 {#
 {% macro form(layout) %}
