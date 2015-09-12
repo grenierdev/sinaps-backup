@@ -133,7 +133,7 @@ module.exports = function () {
 		{% if field.multiple %} multiple{% endif %}\
 >\
 	{% for opt in field.options %}\
-		<option value="{{ opt.value }}" {% if opt.selected %}selected{% endif %}>{{ opt.label }}</option>\
+		<option value="{{ opt.value }}" {% if opt.value == field.value %}selected{% endif %}>{{ opt.label }}</option>\
 	{% endfor %}\
 </select>';
 		}/*,
@@ -164,7 +164,7 @@ module.exports = function () {
 			{% if field.required %} required{% endif %}\
 			{% if field.disabled %} disabled{% endif %}\
 			{% if field.readonly %} readonly{% endif %}\
-			{% if field.checked %} checked{% endif %}\
+			{% if field.checked or field.value %} checked{% endif %}\
 	/>\
 	<label for="{{ field.id|default(field.name) }}">\
 		<span></span>\
@@ -202,6 +202,7 @@ module.exports = function () {
 	 		class="{{ field.class|default("form-control") }}"\
 			id="{{ field.id|default(field.name) }}"\
 			{% if field.name %} name="{{ field.name }}"{% endif %}\
+			{% if field.value %} value="{{ field.value }}"{% endif %}\
 			{% if field.autofocus %} autofocus{% endif %}\
 			{% if field.required %} required{% endif %}\
 			{% if field.disabled %} disabled{% endif %}\
@@ -231,6 +232,7 @@ module.exports = function () {
 	 		class="{{ field.class|default("form-control timepicker timepicker-24") }}"\
 			id="{{ field.id|default(field.name) }}"\
 			{% if field.name %} name="{{ field.name }}"{% endif %}\
+			{% if field.value %} value="{{ field.value }}"{% endif %}\
 			{% if field.autofocus %} autofocus{% endif %}\
 			{% if field.required %} required{% endif %}\
 			{% if field.disabled %} disabled{% endif %}\
@@ -259,10 +261,32 @@ module.exports = function () {
 				decimal: 0
 			}
 		},
-		getInputTemplate: function (options) {
-			console.log(options);
-			return '';
-		}
+		getInputTemplate: function (field) {
+			var html = '';
+			html += '{% set tfield = field %}';
+
+			field.blocks.forEach(function (block) {
+				html += '<script type="text/x-template" data-block="' + block.handle + '">';
+
+				block.fields.forEach(function (subfield) {
+					html += '{% raw %}<input type="hidden" name="' + field.handle + '[{{ __uid }}][type]" value="' + block.handle + '" />{% endraw %}';
+
+					var fieldType = pluginAdmin.getFieldType(subfield.input);
+					if (fieldType) {
+						var tpl = _.omit(subfield, 'type', 'input', 'index', 'unique', 'finalizedField', 'value');
+						tpl.id = tpl.name = field.handle + '[{{ __uid }}][' + subfield.handle + ']';
+						tpl.value = '{{ '+ subfield.handle +'|escape }}';
+						html += '{% set field = ' + JSON.stringify(tpl) + ' %}';
+						html += fieldType.getFieldTemplate();
+					}
+				});
+
+				html += '</script>';
+			});
+
+			html += '{% set field = tfield %}';
+			return html;
+		},
 	}));
 
 }

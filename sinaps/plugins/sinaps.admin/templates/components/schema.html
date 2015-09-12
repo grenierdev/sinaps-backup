@@ -23,8 +23,7 @@
 	{% for layout in schema.layouts %}
 		{% set layouts = layouts|merge({
 			value: layout.handle,
-			label: layout.label|default(layout.name),
-			selected: layout.name == section.layout
+			label: layout.label|default(layout.name)
 		}) %}
 	{% endfor %}
 
@@ -38,10 +37,28 @@
 	}) }}
 {% endmacro %}
 
-{% macro form(schema, model) -%}
+{% macro fields(fields, model) %}
+	{% for field in tab.fields %}
+		{% set fieldtype = pluginAdmin.getFieldType(field.input) %}
+		{% if fieldtype %}
+			{% set field = field|merge({
+				id: field.handle,
+				value: model.get(field.handle)
+			}) %}
+			{{ fieldtype.getFieldHTML(field) }}
+		{% else %}
+			<div class="alert alert-danger">
+				Unkown {{ field.input }}
+			</div>
+		{% endif %}
+	{% endfor %}
+{% endmacro %}
+
+{% macro tabs(schema, model) -%}
 	{% set layoutHandle = model.get('layout')|default(schema.layouts[0].handle) %}
 	{% if layoutHandle %}
 		{% set layout = schema.getLayout(layoutHandle) %}
+		{% set pluginAdmin = sinaps.require('sinaps.admin') %}
 
 		<div class="tabbable-line">
 			<ul class="nav nav-tabs">
@@ -56,16 +73,8 @@
 			<div class="tab-content">
 				{% for tab in layout.tabs %}
 					<div id="form_tab_{{ tab.handle }}" class="tab-pane {% if loop.first %}active{% endif %}">
-						{% for field in tab.fields %}
-							{% set fieldtype = sinaps.require('sinaps.admin').getFieldType(field.input) %}
-							{% if fieldtype %}
-								{{ fieldtype.getFieldHTML(field) }}
-							{% else %}
-								<div class="alert alert-danger">
-									Unkown {{ field.input }}
-								</div>
-							{% endif %}
-						{% endfor %}
+						{{ fields(tab.fields, model) }}
+
 					</div>
 				{% endfor %}
 			</div>

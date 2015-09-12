@@ -543,8 +543,7 @@
 						{% for handle, fieldtype in sinaps.require('sinaps.admin').fieldTypes %}
 							{{ "{% set fieldtypes = fieldtypes|merge({
 								value: '" + fieldtype.handle +"',
-								label: '" + fieldtype.label +"',
-								selected: input == '"+ fieldtype.handle +"'
+								label: '" + fieldtype.label +"'
 							}) %}" }}
 						{% endfor %}
 
@@ -554,6 +553,7 @@
 								name: 'input',
 								label: 'Field type',
 								instructions: 'Changing this may result in data lost',
+								value: input,
 								options: fieldtypes
 							} %}
 						{% endraw %}

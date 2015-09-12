@@ -18,27 +18,27 @@ function FieldType (options) {
 			return '';
 		},
 
-		getInputTemplate: function () {
+		getInputTemplate: function (field) {
 			return '<!-- Could have been the input for {{ field.id }} {{ field.name }} -->';
 		},
 
-		getInputHTML: function (options) {
-			return sinaps.nunjucks.renderString(this.getInputTemplate(), {
-				field: options
+		getInputHTML: function (field) {
+			return sinaps.nunjucks.renderString(this.getInputTemplate(field), {
+				field: field
 			});
 		},
 
-		getFieldTemplate: function () {
+		getFieldTemplate: function (field) {
 			return '<div class="form-group form-md-line-input">\
-	'+ this.getInputTemplate() +'\
+	'+ this.getInputTemplate(field) +'\
 	<label for="{{ field.id|default(field.name) }}">{{ field.label }}</label>\
 	{% if field.instructions %}<span class="help-block">{{ field.instructions }}</span>{% endif %}\
 </div>';
 		},
 
-		getFieldHTML: function (options) {
-			return sinaps.nunjucks.renderString(this.getFieldTemplate(), {
-				field: options
+		getFieldHTML: function (field) {
+			return sinaps.nunjucks.renderString(this.getFieldTemplate(field), {
+				field: field
 			});
 		},
 
