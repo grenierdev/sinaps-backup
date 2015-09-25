@@ -41,11 +41,25 @@
 	{% for field in tab.fields %}
 		{% set fieldtype = pluginAdmin.getFieldType(field.input) %}
 		{% if fieldtype %}
-			{% set field = field|merge({
-				id: field.handle,
-				value: model.get(field.handle)
-			}) %}
-			{{ fieldtype.getFieldHTML(field) }}
+			{% if field.lang %}
+				{% for lang in sinaps.config.languages %}
+					<div data-lang="{{ lang }}">
+						{% set field = field|merge({
+							id: field.handle + '[' + lang + ']',
+							name: field.handle + '[' + lang + ']',
+							value: model.get(field.handle + '.' + lang)
+						}) %}
+						{{ fieldtype.getFieldHTML(field) }}
+					</div>
+				{% endfor %}
+			{% else %}
+				{% set field = field|merge({
+					id: field.handle,
+					name: field.handle,
+					value: model.get(field.handle)
+				}) %}
+				{{ fieldtype.getFieldHTML(field) }}
+			{% endif %}
 		{% else %}
 			<div class="alert alert-danger">
 				Unkown {{ field.input }}
@@ -74,7 +88,6 @@
 				{% for tab in layout.tabs %}
 					<div id="form_tab_{{ tab.handle }}" class="tab-pane {% if loop.first %}active{% endif %}">
 						{{ fields(tab.fields, model) }}
-
 					</div>
 				{% endfor %}
 			</div>

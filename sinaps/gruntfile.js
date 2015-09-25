@@ -26,7 +26,8 @@ module.exports = function (grunt) {
 					globals: {
 						sinaps: true
 					},
-					ignores: ['node_modules/**', '**/node_modules/**', 'temps/**', 'templates/**', 'plugins/*/templates/**', 'plugins/*/resources/**']
+					ignores: ['node_modules/**', '**/node_modules/**', 'temps/**', 'templates/**', 'plugins/*/templates/**', 'plugins/*/resources/**'],
+					multistr: true
 				},
 				files: {
 					src: ['./*.js', './**/*.js']

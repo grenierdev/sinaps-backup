@@ -31,7 +31,7 @@ module.exports = nunjucks.Loader.extend({
 	getSource: function(name) {
 		var paths = path.normalize(name).split(path.sep);
 		var prefix = paths.shift();
-		var fullpath = undefined;
+		var fullpath;
 
 		if (typeof this.searchPaths[prefix] == 'undefined') {
 			paths.unshift(prefix);
@@ -41,7 +41,7 @@ module.exports = nunjucks.Loader.extend({
 		fullpath = path.join(this.searchPaths[prefix], paths.join(path.sep));
 
 		// If fullpath went outside searchPaths root OR not exist
-		if (fullpath.indexOf(this.searchPaths[prefix]) > 0 || fs.existsSync(fullpath) == false) {
+		if (fullpath.indexOf(this.searchPaths[prefix]) > 0 || fs.existsSync(fullpath) === false) {
 			return null;
 		}
 
@@ -53,4 +53,4 @@ module.exports = nunjucks.Loader.extend({
 				 path: fullpath,
 				 noCache: this.noCache };
 	}
-})
+});

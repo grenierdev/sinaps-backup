@@ -135,9 +135,9 @@ module.exports = function () {
 			if (section) {
 				section.model.remove(function (err) {
 					//console.log(err);
-				})
+				});
 			}
-		})
+		});
 
 		//req.session.messages.push({type: 'info', message: 'Section(s) deleted'});
 		res.redirect('/admin/sections/~restarting?redirect=/admin/sections/');

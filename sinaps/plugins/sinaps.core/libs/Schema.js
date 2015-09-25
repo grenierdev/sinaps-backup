@@ -60,23 +60,23 @@ Schema.prototype.fields = function () {
 	});
 
 	return fields;
-}
+};
 
 Schema.prototype.virtual = function (virtual, getter, setter) {
 	this._virtuals[virtual] = {get: getter, set: setter};
-}
+};
 
 Schema.prototype.pre = function (event, callback) {
 	if (typeof this._pre[event] == 'undefined')
 		this._pre[event] = [];
 	this._pre[event].push(callback);
-}
+};
 
 Schema.prototype.post = function (event, callback) {
 	if (typeof this._post[event] == 'undefined')
 		this._post[event] = [];
 	this._post[event].push(callback);
-}
+};
 
 Schema.prototype.addLayout = function (handle, label, tabs) {
 	this.layouts.push(new Schema.Layout({

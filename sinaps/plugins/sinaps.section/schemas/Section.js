@@ -102,7 +102,7 @@ Section.methods.getLayoutSchema = function () {
 		handle: this.get('handle'),
 		label: this.get('label'),
 		layouts: layouts
-	});;
+	});
 };
 
 module.exports = Section;

@@ -31,6 +31,10 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 		return this.fieldTypes[handle];
 	},
 
+	getFieldTypeFieldTemplates: function () {
+		return _.mapValues(this.fieldTypes, function (field) { return field.getFieldTemplate(); });
+	},
+
 	// Order in which plugins are executed
 	executionOrder: -500,
 

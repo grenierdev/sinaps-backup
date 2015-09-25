@@ -7,7 +7,7 @@
 <!-- BEGIN HEAD -->
 <head>
 	<meta charset="utf-8"/>
-	<title>Metronic</title>
+	<title>Sinaps</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -34,8 +34,6 @@
 	<link href="/admin/resources/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" type="text/css"/>
 	<link href="/admin/resources/plugins/select2/select2.css" rel="stylesheet" type="text/css"/>
 	<link href="/admin/resources/plugins/jquery-multi-select/css/multi-select.css" rel="stylesheet" type="text/css"/>
-
-
 	<!-- END THEME STYLES -->
 	<link rel="shortcut icon" href="favicon.ico"/>
 </head>
@@ -594,6 +592,19 @@
 	<script src="/admin/resources/scripts/layout.js" type="text/javascript"></script>
 	<script src="/admin/resources/scripts/quick-sidebar.js" type="text/javascript"></script>
 
+	<script type="text/javascript">
+		var sinaps = {
+			fieldTypes: {
+				templates: {
+					field: {{ sinaps.require('sinaps.admin').getFieldTypeFieldTemplates()|json }}
+				}
+			}
+		};
+		sinaps.fieldTypes.templates.field = _.mapValues(sinaps.fieldTypes.templates.field, function (html) {
+			return nunjucks.compile(html);
+		});
+	</script>
+
 	{% for handle, fieldtype in sinaps.require('sinaps.admin').fieldTypes -%}
 		{% for resource in fieldtype.getIncludedResources() %}
 			{% if resource.type == 'script' %}
@@ -610,11 +621,11 @@
 			Layout.init();
 			QuickSidebar.init();
 
-			$('body').on('refresh-inputs', function (e) {
+			$('body').on('refresh-fields', function (e) {
 				{% for handle, fieldtype in sinaps.require('sinaps.admin').fieldTypes %}
 					{{ fieldtype.getIncludedJS() }}
 				{% endfor %}
-			}).trigger('refresh-inputs');
+			}).trigger('refresh-fields');
 
 			{% for message in messages %}
 				$.bootstrapGrowl({{ message.message|json }}, {

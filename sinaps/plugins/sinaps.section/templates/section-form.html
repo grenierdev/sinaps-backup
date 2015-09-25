@@ -913,20 +913,7 @@
 							$modal.modal('hide');
 						});
 
-						$modal.find('.md-checkbox').each(function () {
-							$(this)
-								.find('.md-check').attr('id', function (i, val) {
-									return val + state.__uid;
-								}).end()
-								.find('[for]').attr('for', function (i, val) {
-									return val + state.__uid;
-								}).end()
-								.siblings('[for]').attr('for', function (i, val) {
-									return val + state.__uid;
-								})
-						});
-
-						$('body').trigger('refresh-inputs');
+						$('body').trigger('refresh-fields');
 					}
 					var updateState = function () {
 						_.keys(_.omit(state, '__action', '__uid')).forEach(function (key) { delete state[key]; });

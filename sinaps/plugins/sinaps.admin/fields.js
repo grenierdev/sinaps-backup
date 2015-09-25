@@ -262,31 +262,145 @@ module.exports = function () {
 			}
 		},
 		getInputTemplate: function (field) {
-			var html = '';
-			html += '{% set tfield = field %}';
-
-			field.blocks.forEach(function (block) {
-				html += '<script type="text/x-template" data-block="' + block.handle + '">';
-
-				block.fields.forEach(function (subfield) {
-					html += '{% raw %}<input type="hidden" name="' + field.handle + '[{{ __uid }}][type]" value="' + block.handle + '" />{% endraw %}';
-
-					var fieldType = pluginAdmin.getFieldType(subfield.input);
-					if (fieldType) {
-						var tpl = _.omit(subfield, 'type', 'input', 'index', 'unique', 'finalizedField', 'value');
-						tpl.id = tpl.name = field.handle + '[{{ __uid }}][' + subfield.handle + ']';
-						tpl.value = '{{ '+ subfield.handle +'|escape }}';
-						html += '{% set field = ' + JSON.stringify(tpl) + ' %}';
-						html += fieldType.getFieldTemplate();
-					}
-				});
-
-				html += '</script>';
-			});
-
-			html += '{% set field = tfield %}';
-			return html;
+			return '<div class="input-group">\
+	<input type="hidden"\
+		id="{{ field.id|default(field.name) }}"\
+		class="sinaps-matrix"\
+		{% if field.name %} name="{{ field.name }}"{% endif %}\
+		{% if field.value %} value="{{ field.value|json|escape }}"{% endif %}\
+		data-blocks="{{ field.blocks|json|escape }}"\
+	/>\
+</div>';
 		},
+		getIncludedJS: function () {
+			var rawjs = function () {
+				var uid = 0;
+				$(".sinaps-matrix:not([data-field-discovered])").attr("data-field-discovered", "").each(function () {
+					var $matrix = $(this),
+						$blocks = $('<ul class=""></ul>').insertAfter($matrix),
+						blocks = $matrix.data('blocks'),
+						value = $matrix.val();
+
+					try {
+						value = JSON.parse(value);
+					} catch (e) {
+						value = [];
+					}
+
+					var $addgroup = $('<div class="btn-group btn-group-sm">\
+	' + blocks.map(function (block, i) { return '<a href="#" class="btn btn-default" data-type="'+ block.handle +'">'+ (i === 0 ? '<i class="fa fa-plus"></i>' : '') + block.label +'</a>'; }).join("") + '\
+</div>').insertAfter($blocks);
+					var $addselect = $('<div class="btn-group btn-group-sm dropup">\
+	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">\
+		<i class="fa fa-plus"></i> Add block\
+	</button>\
+	<ul class="dropdown-menu" role="menu">\
+		' + blocks.map(function (block) { return '<li><a href="#" data-type="'+ block.handle +'">'+ block.label +'</a></li>'; }).join("") + '\
+	</ul>\
+</div>');//.insertAfter($blocks);
+
+					var getBlock = function (type) {
+						for (var a = 0, b = blocks.length; a < b; ++a) {
+							if (blocks[a].handle == type)
+								return _.cloneDeep(blocks[a]);
+						}
+						return null;
+					};
+
+					var showModal = function (type, state, onClose) {
+						var block = getBlock(type);
+						if (!block) {
+							return;
+						}
+
+						state.__uid = ++uid;
+						state.__block = block;
+
+						var $modal = $('<div class="modal fade" tabindex="-1" data-backdrop="static" aria-hidden="true"></div>').appendTo('body'),
+							$form,
+							saveState;
+
+						var updateContent = function () {
+							var tpl = '';
+							tpl += '<div class="modal-dialog">\
+	<div class="modal-content">\
+		<form>\
+			<div class="modal-header">\
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>\
+				<h4 class="modal-title">{% if __action == "add" %}New {{ __block.label }}{% else %}Edit {{ __block.label }}{% endif %}</h4>\
+			</div>\
+			<div class="modal-body">\
+				'+ block.fields.map(function (field) {
+					var tpl = sinaps.fieldTypes.templates.field[field.input];
+					if (!tpl) {
+						return '';
+					}
+					field.id = field.handle + state.__uid;
+					field.name = field.handle;
+					field.value = state[field.handle] || '';
+					return tpl.render({field: field});
+				}).join('') +'\
+			</div>\
+			<div class="modal-footer">\
+				<button type="button" class="btn default" data-dismiss="modal">Cancel</button>\
+				<button type="submit" class="btn blue">\
+					{% if __action == "add" %}Add{% else %}Save{% endif %}\
+				</button>\
+			</div>\
+		</form>\
+	</div>\
+</div>';
+
+							$modal.empty().html(nunjucks.renderString(tpl, state));
+							$form = $modal.find('form');
+
+							$form.on('submit', function (e) {
+								e.preventDefault();
+
+								updateState();
+								saveState = _.merge({}, _.omit(state, '__uid', '__action', '__block'));
+								$modal.modal('hide');
+							});
+
+							$('body').trigger('refresh-fields');
+						};
+						var updateState = function () {
+							_.keys(_.omit(state, '__action', '__uid')).forEach(function (key) { delete state[key]; });
+							_.merge(state, $form.serializeObject());
+						};
+						updateContent();
+
+						// Modal closed, do the callback
+						$modal.on('hide.bs.modal', function (e) {
+							if (typeof onClose == 'function') {
+								onClose(saveState, state);
+							}
+						});
+						$modal.on('shown.bs.modal', function (e) {
+							$modal.find(':input[autofocus]:first').focus();
+						});
+
+						$modal.modal('show');
+
+						return {
+							updateContent: updateContent,
+							updateState: updateState,
+							$modal: $modal
+						};
+					};
+
+					$addgroup.add($addselect).on('click', '[data-type]', function (e) {
+						e.preventDefault();
+						showModal($(this).data('type'), {__action: 'add'}, function (state) {
+							console.log('Closed', state, $matrix);
+						});
+					});
+
+				});
+			};
+
+			return rawjs.toString().replace(/^\s*function \(\) \{\s*/, '').replace(/\s*}\s*$/, '');
+		}
 	}));
 
-}
+};
