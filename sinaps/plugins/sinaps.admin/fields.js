@@ -279,7 +279,10 @@ module.exports = function () {
 					var $matrix = $(this),
 						$blocks = $('<ul class=""></ul>').insertAfter($matrix),
 						blocks = $matrix.data('blocks'),
+						name = $matrix.attr('name'),
 						value = $matrix.val();
+
+					$matrix.removeAttr('name');
 
 					try {
 						value = JSON.parse(value);
@@ -389,12 +392,32 @@ module.exports = function () {
 						};
 					};
 
+					var updateBlocks = function () {
+						$blocks.empty();
+
+						_.each(value, function (block, i) {
+							_.each(_.paths(block), function (val, path) {
+								var $i = $('<input type="hidden" />');
+								$i.attr('name', name + '[' + i + ']' + '[' + path.split('.').join('][') + ']');
+								$i.val(val);
+								// TODO add <li>...</li>
+								$blocks.append($i);
+							});
+						});
+					};
+					updateBlocks();
+
 					$addgroup.add($addselect).on('click', '[data-type]', function (e) {
 						e.preventDefault();
 						showModal($(this).data('type'), {__action: 'add'}, function (state) {
-							console.log('Closed', state, $matrix);
+							if (state) {
+								value.push(state);
+							}
+							updateBlocks();
 						});
 					});
+
+					// TODO edit block
 
 				});
 			};
