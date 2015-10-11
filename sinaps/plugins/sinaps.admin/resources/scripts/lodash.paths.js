@@ -18,8 +18,8 @@ _.mixin({
 			var paths = {};
 
 			_.each(obj, function (v, k) {
-				var p = (path + '.' + k).replace(/^[\s.]+/, '');
-				if (_.isObject(v)) {
+				var p = path ? path + '.' + k : k;
+				if (_.isObject(v) || _.isArray(v)) {
 					_.merge(paths, getPaths(v, p));
 				} else {
 					paths[p] = v;

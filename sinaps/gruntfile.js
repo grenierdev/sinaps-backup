@@ -1,8 +1,5 @@
 module.exports = function (grunt) {
 
-	//var mozjpeg = require('imagemin-mozjpeg');
-	//var pngquant = require('imagemin-pngquant');
-
 	grunt.initConfig({
 
 		sass: {
@@ -71,9 +68,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-concurrent');
 	grunt.loadNpmTasks('grunt-nodemon');
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	//grunt.loadNpmTasks('grunt-contrib-imagemin');
 	grunt.loadNpmTasks('grunt-sass');
-	//grunt.loadNpmTasks('grunt-contrib-less');
 
 
 	grunt.registerTask('default', ['concurrent']);

@@ -262,7 +262,7 @@ module.exports = function () {
 			}
 		},
 		getInputTemplate: function (field) {
-			return '<div class="input-group">\
+			return '<div class="input-group matrix">\
 	<input type="hidden"\
 		id="{{ field.id|default(field.name) }}"\
 		class="sinaps-matrix"\
@@ -277,10 +277,11 @@ module.exports = function () {
 				var uid = 0;
 				$(".sinaps-matrix:not([data-field-discovered])").attr("data-field-discovered", "").each(function () {
 					var $matrix = $(this),
-						$blocks = $('<ul class=""></ul>').insertAfter($matrix),
+						$blocks = $('<ul class="blocks"></ul>').insertAfter($matrix),
 						blocks = $matrix.data('blocks'),
 						name = $matrix.attr('name'),
-						value = $matrix.val();
+						value = $matrix.val(),
+						uid = 0;
 
 					$matrix.removeAttr('name');
 
@@ -289,6 +290,10 @@ module.exports = function () {
 					} catch (e) {
 						value = [];
 					}
+
+					_.each(value, function (block) {
+						block.__uid = uid++;
+					});
 
 					var $addgroup = $('<div class="btn-group btn-group-sm">\
 	' + blocks.map(function (block, i) { return '<a href="#" class="btn btn-default" data-type="'+ block.handle +'">'+ (i === 0 ? '<i class="fa fa-plus"></i>' : '') + block.label +'</a>'; }).join("") + '\
@@ -333,7 +338,7 @@ module.exports = function () {
 				<h4 class="modal-title">{% if __action == "add" %}New {{ __block.label }}{% else %}Edit {{ __block.label }}{% endif %}</h4>\
 			</div>\
 			<div class="modal-body">\
-				'+ block.fields.map(function (field) {
+				'+ block.fields.map(function (field, i) {
 					var tpl = sinaps.fieldTypes.templates.field[field.input];
 					if (!tpl) {
 						return '';
@@ -341,6 +346,7 @@ module.exports = function () {
 					field.id = field.handle + state.__uid;
 					field.name = field.handle;
 					field.value = state[field.handle] || '';
+					field.autofocus = i == 0;
 					return tpl.render({field: field});
 				}).join('') +'\
 			</div>\
@@ -392,33 +398,141 @@ module.exports = function () {
 						};
 					};
 
+					var getBlockById = function (id) {
+						for (var a = 0, b = value.length; a < b; ++a) {
+							if (value[a].__uid == id) {
+								return value[a];
+							}
+						}
+						return undefined;
+					};
+
 					var updateBlocks = function () {
+						$matrix.val(JSON.stringify(_.map(value, function (block) {
+							return _.omit(block, '__uid');
+						})));
 						$blocks.empty();
 
 						_.each(value, function (block, i) {
-							_.each(_.paths(block), function (val, path) {
-								var $i = $('<input type="hidden" />');
-								$i.attr('name', name + '[' + i + ']' + '[' + path.split('.').join('][') + ']');
-								$i.val(val);
-								// TODO add <li>...</li>
-								$blocks.append($i);
-							});
+							$blocks.append(nunjucks.renderString('<li class="block" data-block="{{ block.__uid }}">\
+	<div class="handle"><i class="fa fa-bars"></i></div>\
+	<div class="title">{{ label }}</div>\
+	<div class="values">\
+		<input type="hidden" name="{{ name }}[type]" value="{{ block.type }}" />\
+		{% for field in fields %}\
+			{{ field.value }}\
+			<input type="hidden" name="{{ name }}{{ field.path }}" value="{{ field.value|e }}" />\
+			{% if not loop.last %} | {% endif %}\
+		{% endfor %}\
+	</div>\
+	<div class="actions">\
+		<a href="#edit"><i class="fa fa-edit"></i></a>\
+		<a href="#remove"><i class="fa fa-trash-o"></i></a>\
+	</div>\
+</li>', {
+								name: name + '[' + i + ']',
+								block: block,
+								label: blocks.filter(function (b) { return b.handle == block.type; })[0].label,
+								fields: _.map(
+									_.paths(_.omit(block, '__uid', 'type')),
+									function (v, k) {
+										return {
+											path: '[' + k.split('.').join('][') + ']',
+											name: k.split('.').pop(),
+											value: v
+										};
+									}
+								)
+							}));
+						});
+
+						// Reorder blocks
+						$blocks.sortable({
+							items: 'li',
+							handle: '.handle',
+
+							stop: function (e, ui) {
+								var ids = $blocks.sortable('toArray', { attribute: 'data-block' });
+								value = _.map(ids, function (id) { return getBlockById(id) });
+								updateBlocks();
+							}
 						});
 					};
 					updateBlocks();
 
+					// Add block based on this type
 					$addgroup.add($addselect).on('click', '[data-type]', function (e) {
 						e.preventDefault();
-						showModal($(this).data('type'), {__action: 'add'}, function (state) {
+						var type = $(this).data('type'),
+							block = blocks.filter(function (b) { return b.handle == type; })[0];
+						showModal(type, {__action: 'add'}, function (state) {
 							if (state) {
+								state.__uid = uid++;
+								state.type = block.handle;
 								value.push(state);
 							}
 							updateBlocks();
 						});
 					});
 
-					// TODO edit block
+					// Edit block
+					$blocks.on('click', '[href="#edit"]', function (e) {
+						e.preventDefault();
+						var $btn = $(this),
+							$li = $btn.closest('li'),
+							uid = $li.data('block'),
+							block = getBlockById(uid);
 
+						showModal(block.type, _.merge({__action: 'edit'}, block), function (state) {
+							if (state) {
+								_.merge(block, state);
+							}
+							updateBlocks();
+						});
+					});
+
+					// Delete block
+					$blocks.on('click', '[href="#remove"]', function (e) {
+						e.preventDefault();
+						var $btn = $(this),
+							$li = $btn.closest('li'),
+							uid = $li.data('block'),
+							block = getBlockById(uid);
+
+						var $modal = $('<div class="modal fade" tabindex="-1" data-backdrop="static" aria-hidden="true"></div>').appendTo('body'),
+							$form,
+							saveState = false;
+
+						$modal.append('<div class="modal-dialog">\
+							<div class="modal-content">\
+								<form>\
+									<div class="modal-header">\
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>\
+										<h4 class="modal-title">Remove</h4>\
+									</div>\
+									<div class="modal-body">\
+										Are you sure you want to remove this item?\
+									</div>\
+									<div class="modal-footer">\
+										<button type="button" class="btn default" data-dismiss="modal">Cancel</button>\
+										<button type="submit" class="btn red">Remove</button>\
+									</div>\
+								</form>\
+							</div>\
+						</div>');
+
+						$modal.find('form').on('submit', function (e) {
+							e.preventDefault();
+							var i = value.indexOf(block);
+							if (i > -1) {
+								value.splice(i, 1);
+							}
+							updateBlocks();
+							$modal.modal('hide');
+						});
+
+						$modal.modal('show');
+					});
 				});
 			};
 

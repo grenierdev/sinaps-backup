@@ -190,7 +190,7 @@
 						</a>
 					</li>
 					{% for layout in layouts %}
-						<li {% if layout.active %}class="active"{% endif %}>
+						<li data-layout="{{ layout.handle }}" {% if layout.active %}class="active"{% endif %}>
 							<a href="#tab_{{ layout.handle }}" data-toggle="tab" aria-expanded="true" data-layout="{{ layout.handle }}">
 								{{layout.label}}
 							</a>
@@ -209,7 +209,7 @@
 											</a>
 										</li>
 										{% for tab in layout.tabs %}
-											<li {% if tab.active %}class="active"{% endif %}>
+											<li data-layout="{{ layout.handle }}" data-tab="{{ tab.handle }}" {% if tab.active %}class="active"{% endif %}>
 												<a href="#tab_{{ layout.handle }}_{{ tab.handle }}" data-toggle="tab" aria-expanded="true" data-layout="{{ layout.handle }}" data-tab="{{ tab.handle }}">
 													{{tab.label}}
 												</a>
@@ -252,7 +252,7 @@
 													</thead>
 													<tbody>
 														{% for field in tab.fields %}
-															<tr>
+															<tr data-layout="{{ layout.handle }}" data-tab="{{ tab.handle }}" data-field="{{ field.handle }}">
 																<td><i class="fa fa-reorder"></i></td>
 																<td>{{ field.label }} ({{ field.handle }})</td>
 																<td>{{ field.input }}</td>
@@ -588,7 +588,7 @@
 								</a>
 							</li>
 							{% for block in blocks %}
-								<li {% if block.active %}class="active"{% endif %}>
+								<li data-block="{{ block.handle }}" {% if block.active %}class="active"{% endif %}>
 									<a href="#block_{{ __uid }}_{{ block.handle }}" data-toggle="tab" aria-expanded="true" data-block="{{ block.handle }}">
 										{{ block.label }}
 									</a>
@@ -631,7 +631,7 @@
 										</thead>
 										<tbody>
 											{% for field in block.fields %}
-												<tr>
+												<tr data-block="{{ block.handle }}" data-field="{{ field.handle }}">
 													<td><i class="fa fa-reorder"></i></td>
 													<td>{{ field.label }} ({{ field.handle }})</td>
 													<td>{{ field.input }}</td>
@@ -774,6 +774,69 @@
 
 				var uid = 0;
 
+				// Get Active layout
+				var getActiveLayout = function () {
+					for (var a = 0, b = layoutsState.length; a < b; ++a) {
+						if (layoutsState[a].active == true) {
+							return layoutsState[a];
+						}
+					}
+					return null;
+				};
+
+				// Get Active tab
+				var getActiveTab = function () {
+					var activeLayout = getActiveLayout();
+					for (var a = 0, b = activeLayout.tabs.length; a < b; ++a) {
+						if (activeLayout.tabs[a].active == true) {
+							return activeLayout.tabs[a];
+						}
+					}
+					return null;
+				};
+
+				// Get Field by layout handle
+				var getLayout = function (layout) {
+					for (var a = 0, b = layoutsState.length; a < b; ++a) {
+						if (layoutsState[a].handle == layout) {
+							return layoutsState[a];
+						}
+					}
+					return null;
+				};
+
+				// Get Field by layout-tab handle
+				var getTab = function (layout, tab) {
+					for (var a = 0, b = layoutsState.length; a < b; ++a) {
+						if (layoutsState[a].handle == layout) {
+							for (var c = 0, d = layoutsState[a].tabs.length; c < d; ++c) {
+								if (layoutsState[a].tabs[c].handle == tab) {
+									return layoutsState[a].tabs[c];
+								}
+							}
+						}
+					}
+					return null;
+				}
+
+				// Get Field by layout-tab-field handle
+				var getField = function (layout, tab, field) {
+					for (var a = 0, b = layoutsState.length; a < b; ++a) {
+						if (layoutsState[a].handle == layout) {
+							for (var c = 0, d = layoutsState[a].tabs.length; c < d; ++c) {
+								if (layoutsState[a].tabs[c].handle == tab) {
+									for (var e = 0, f = layoutsState[a].tabs[c].fields.length; e < f; ++e) {
+										if (layoutsState[a].tabs[c].fields[e].handle == field) {
+											return layoutsState[a].tabs[c].fields[e];
+										}
+									}
+								}
+							}
+						}
+					}
+					return null;
+				};
+
 				// Refresh layouts form
 				var updateLayouts = function () {
 
@@ -801,13 +864,38 @@
 					});
 
 					// Reorder tabs & fields
-					// TODO change order in state
-					$layoutsContainer.find('.nav-tabs').sortable({
-						items: 'li:not(:first)'
+					var $layoutTabs = $layoutsContainer.find('> .tabbable-line > .nav-tabs');
+					$layoutTabs.sortable({
+						items: 'li:not(:first)',
+						stop: function (e, ui) {
+							var layoutHandles = $(this).sortable('toArray', { attribute: 'data-layout' });
+							layoutsState = layoutHandles.map(function (handle) { return getLayout(handle); });
+							updateLayouts();
+						}
 					});
-					$layoutsContainer.find('.tab-pane tbody').sortable({
+					var $layoutTabTabs = $layoutsContainer.find('> .tabbable-line > .tab-content .nav-tabs');
+					$layoutTabTabs.sortable({
+						items: 'li:not(:first)',
+						stop: function (e, ui) {
+							var layoutHandle = ui.item.data('layout'),
+								tabHandles = $(this).sortable('toArray', { attribute: 'data-tab' }),
+								layout = getLayout(layoutHandle);
+							layout.tabs = tabHandles.map(function (handle) { return getTab(layoutHandle, handle); });
+							updateLayouts();
+						}
+					});
+					var $layoutTabFieldRows = $layoutsContainer.find('.tab-pane tbody');
+					$layoutTabFieldRows.sortable({
 						handle: '.fa-reorder',
 						axis: 'y',
+						stop: function (e, ui) {
+							var layoutHandle = ui.item.data('layout'),
+								tabHandle = ui.item.data('tab'),
+								fieldHandles = $(this).sortable('toArray', { attribute: 'data-field' }),
+								tab = getTab(layoutHandle, tabHandle);
+							tab.fields = fieldHandles.map(function (handle) { return getField(layoutHandle, tabHandle, handle); });
+							updateLayouts();
+						},
 						helper: function (e, $tr) {
 							var widths = $tr.children('td').map(function () { return $(this).width(); }).get(),
 								$clone = $tr.clone(false, false);
@@ -852,47 +940,6 @@
 				};
 				updateLayouts();
 
-				// Get Active layout
-				var getActiveLayout = function () {
-					for (var a = 0, b = layoutsState.length; a < b; ++a) {
-						if (layoutsState[a].active == true) {
-							return layoutsState[a];
-						}
-					}
-					return null;
-				};
-
-				// Get Active tab
-				var getActiveTab = function () {
-					var activeLayout = getActiveLayout();
-					for (var a = 0, b = activeLayout.tabs.length; a < b; ++a) {
-						if (activeLayout.tabs[a].active == true) {
-							return activeLayout.tabs[a];
-						}
-					}
-					return null;
-				};
-
-				// Get Field by layout-tag-field handle
-				var getField = function (layout, tab, field) {
-					for (var a = 0, b = layoutsState.length; a < b; ++a) {
-						if (layoutsState[a].handle == layout) {
-							for (var c = 0, d = layoutsState[a].tabs.length; c < d; ++c) {
-								if (layoutsState[a].tabs[c].handle == tab) {
-									for (var e = 0, f = layoutsState[a].tabs[c].fields.length; e < f; ++e) {
-										if (layoutsState[a].tabs[c].fields[e].handle == field) {
-											return layoutsState[a].tabs[c].fields[e];
-										}
-									}
-									break;
-								}
-							}
-							break;
-						}
-					}
-					return null;
-				};
-
 				// Create modal and listen for close event
 				var showModal = function (renderer, state, onClose) {
 					state.__uid = ++uid;
@@ -929,7 +976,7 @@
 					});
 					$modal.on('shown.bs.modal', function (e) {
 						$modal.find(':input[autofocus]:first').focus();
-					})
+					});
 
 					$modal.modal('show');
 
@@ -1242,6 +1289,40 @@
 							});
 							if (fieldState.input == 'matrix') {
 
+								// Get Active block
+								var getActiveBlock = function () {
+									for (var a = 0, b = blocks.length; a < b; ++a) {
+										if (blocks[a].active == true) {
+											return blocks[a];
+										}
+									}
+									return null;
+								};
+
+								// Get block by handle
+								var getBlock = function (block) {
+									for (var c = 0, d = blocks.length; c < d; ++c) {
+										if (blocks[c].handle == block) {
+											return blocks[c];
+										}
+									}
+									return null;
+								}
+
+								// Get field by block-field handle
+								var getField = function (block, field) {
+									for (var c = 0, d = blocks.length; c < d; ++c) {
+										if (blocks[c].handle == block) {
+											for (var e = 0, f = blocks[c].fields.length; e < f; ++e) {
+												if (blocks[c].fields[e].handle == field) {
+													return blocks[c].fields[e];
+												}
+											}
+										}
+									}
+									return null;
+								}
+
 								_.extend(fieldState, {blocks: blocks});
 
 								var $blocks = $(templates.blocks.render(fieldState));
@@ -1256,13 +1337,28 @@
 								});
 
 								// Reorder tabs & fields
-								// TODO change order in state
-								$blocks.find('.nav-tabs').sortable({
-									items: 'li:not(:first)'
+								var $blockTabs = $blocks.find('.nav-tabs');
+								$blockTabs.sortable({
+									items: 'li:not(:first)',
+									stop: function (e, ui) {
+										var blockHandles = $(this).sortable('toArray', { attribute: 'data-block' });
+										blocks = blockHandles.map(function (handle) { return getBlock(handle); });
+										modal.updateContent();
+										updateContent();
+									}
 								});
-								$blocks.find('.tab-pane tbody').sortable({
+								var $blockFields = $blocks.find('.tab-pane tbody');
+								$blockFields.sortable({
 									handle: '.fa-reorder',
 									axis: 'y',
+									stop: function (e, ui) {
+										var blockHandle = ui.item.data('block'),
+											fieldHandles = $(this).sortable('toArray', { attribute: 'data-field' }),
+											block = getBlock(blockHandle);
+										block.fields = fieldHandles.map(function (handle) { return getField(blockHandle, handle); });
+										modal.updateContent();
+										updateContent();
+									},
 									helper: function (e, $tr) {
 										var widths = $tr.children('td').map(function () { return $(this).width(); }).get(),
 											$clone = $tr.clone(false, false);
@@ -1272,31 +1368,6 @@
 										return $clone;
 									}
 								});
-
-								// Get Active block
-								var getActiveBlock = function () {
-									for (var a = 0, b = blocks.length; a < b; ++a) {
-										if (blocks[a].active == true) {
-											return blocks[a];
-										}
-									}
-									return null;
-								};
-
-								// Get Field
-								var getField = function (block, field) {
-									for (var c = 0, d = blocks.length; c < d; ++c) {
-										if (blocks[c].handle == block) {
-											for (var e = 0, f = blocks[c].fields.length; e < f; ++e) {
-												if (blocks[c].fields[e].handle == field) {
-													return blocks[c].fields[e];
-												}
-											}
-											break;
-										}
-									}
-									return null;
-								}
 
 								// Events
 								{
