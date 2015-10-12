@@ -439,7 +439,7 @@ module.exports = function () {
 										return {
 											path: '[' + k.split('.').join('][') + ']',
 											name: k.split('.').pop(),
-											value: v
+											value: v // TODO display something prettier defined by the field
 										};
 									}
 								)
