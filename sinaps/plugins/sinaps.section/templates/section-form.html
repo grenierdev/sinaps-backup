@@ -3,10 +3,13 @@
 {% set title = 'Sections' %}
 {% set subtitle = '' %}
 {% set breadcrumbs = [{
-	href: '/admin/sections/',
+	href: '/admin/settings/',
+	title: 'Settings'
+},{
+	href: '/admin/settings/sections/',
 	title: 'Sections'
 },{
-	href: '/admin/sections/~edit/' + section.get('handle'),
+	href: '/admin/settings/sections/edit/' + section.get('handle'),
 	title: 'Edit ' + section.label
 }] %}
 

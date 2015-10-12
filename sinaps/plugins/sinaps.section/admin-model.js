@@ -84,4 +84,23 @@ module.exports = function () {
 			model: model
 		});
 	});
+
+	pluginAdmin.router.post('/sections/:handle/create', function (req, res) {
+		var section = getSectionByHandle(req.params.handle);
+
+		if (!section) {
+			req.session.messages.push({type: 'danger', message: 'Could not find section'});
+			res.status(404).redirect('/admin/sections/');
+			return;
+		}
+
+		var model = new section.entryModel();
+		model.set(req.body);
+
+		model.save(function (err) {
+
+			console.log(err, model);
+			res.send('Bleh');
+		});
+	});
 };

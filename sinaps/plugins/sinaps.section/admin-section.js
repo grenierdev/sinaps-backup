@@ -22,13 +22,13 @@ module.exports = function () {
 		model.columns = data.columns;
 	};
 
-	pluginAdmin.router.get('/sections/', function (req, res) {
+	pluginAdmin.settings.router.get('/sections/', function (req, res) {
 		res.render('sinaps.section/section-list', {
 			sections: pluginSection.sections
 		});
 	});
 
-	pluginAdmin.router.get('/sections/~create', function (req, res) {
+	pluginAdmin.settings.router.get('/sections/create', function (req, res) {
 		var sec = new SectionModel();
 
 		if (req.session.data) {
@@ -42,7 +42,7 @@ module.exports = function () {
 		});
 	});
 
-	pluginAdmin.router.post('/sections/~create', function (req, res) {
+	pluginAdmin.settings.router.post('/sections/create', function (req, res) {
 
 		var sec = new SectionModel();
 
@@ -57,12 +57,12 @@ module.exports = function () {
 			if (err) {
 				req.session.messages.push({type: 'danger', message: 'Could not save section'});
 				req.session.data = sec.toObject();
-				res.redirect('/admin/sections/~create');
+				res.redirect('/admin/settings/sections/create');
 				return;
 			}
 
 			req.session.messages.push({type: 'success', message: 'Section saved'});
-			res.redirect('/admin/sections/~restarting?redirect=/admin/sections/~edit/' + sec.get('handle'));
+			res.redirect('/admin/settings/sections/restarting?redirect=/admin/sections/edit/' + sec.get('handle'));
 		});
 	});
 
@@ -77,12 +77,12 @@ module.exports = function () {
 		return section;
 	};
 
-	pluginAdmin.router.get('/sections/~edit/:handle', function (req, res) {
+	pluginAdmin.settings.router.get('/sections/edit/:handle', function (req, res) {
 		var sec = getSectionByHandle(req.params.handle);
 
 		if (!sec) {
 			req.session.messages.push({type: 'danger', message: 'Could not find section'});
-			res.status(404).redirect('/admin/sections/');
+			res.status(404).redirect('/admin/settings/sections/');
 			return;
 		}
 
@@ -98,12 +98,12 @@ module.exports = function () {
 
 	});
 
-	pluginAdmin.router.post('/sections/~edit/:handle', function (req, res) {
+	pluginAdmin.settings.router.post('/sections/edit/:handle', function (req, res) {
 		var sec = getSectionByHandle(req.params.handle);
 
 		if (!sec) {
 			req.session.messages.push({type: 'danger', message: 'Could not find section'});
-			res.status(404).redirect('/admin/sections/');
+			res.status(404).redirect('/admin/settings/sections/');
 			return;
 		}
 
@@ -122,11 +122,11 @@ module.exports = function () {
 				req.session.messages.push({type: 'success', message: 'Section saved'});
 			}
 
-			res.redirect('/admin/sections/~restarting?redirect=/admin/sections/~edit/' + sec.model.get('handle'));
+			res.redirect('/admin/settings/sections/restarting?redirect=/admin/sections/edit/' + sec.model.get('handle'));
 		});
 	});
 
-	pluginAdmin.router.post('/sections/~delete', function (req, res) {
+	pluginAdmin.settings.router.post('/sections/delete', function (req, res) {
 
 		var handles = _.isArray(req.body.handle) ? req.body.handle : [req.body.handle];
 
@@ -140,10 +140,10 @@ module.exports = function () {
 		});
 
 		//req.session.messages.push({type: 'info', message: 'Section(s) deleted'});
-		res.redirect('/admin/sections/~restarting?redirect=/admin/sections/');
+		res.redirect('/admin/settings/sections/restarting?redirect=/admin/sections/');
 	});
 
-	pluginAdmin.router.get('/sections/~restarting', function (req, res) {
+	pluginAdmin.settings.router.get('/sections/restarting', function (req, res) {
 		res.render('sinaps.section/section-restart', {
 			redirect: req.query.redirect
 		});

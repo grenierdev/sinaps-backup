@@ -39,6 +39,11 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 		return _.mapValues(this.fieldTypes, function (field) { return field.getFieldTemplate(); });
 	},
 
+	settings: {
+		navigation: null,
+		router: express.Router()
+	},
+
 	// Order in which plugins are executed
 	executionOrder: -500,
 
@@ -103,8 +108,18 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 		require('./fields/matrix')();
 		require('./fields/dictionary')();
 
+		this.settings.navigation = this.sidebar.navigation.addItem({
+			weight: 10000,
+			title: 'Settings',
+			href: '#',
+			icon: 'fa fa-cogs'
+		});
+
 		// Once everythign is done
 		sinaps.once('idle', function () {
+
+			// Settings router
+			this.router.use('/settings', this.settings.router);
 
 			// Resources accessible from the browser
 			this.router.use('/resources', express.static(path.resolve(__dirname + '/resources'), {

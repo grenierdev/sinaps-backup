@@ -63,10 +63,10 @@ module.exports = function () {
 							$keys.append(nunjucks.renderString('<li class="key" data-id="{{ __uid }}">\
 	<div class="handle"><i class="fa fa-bars"></i></div>\
 	<div class="inputs">\
-		<input type="text" name="{{ name }}[value]" value="{{ value|e }}" />\
+		<input type="text" name="{{ name }}[value]" value="{{ value|e }}" placeholder="{{ "Value" }}" />\
 	</div>\
 	<div class="inputs">\
-		<input type="text" name="{{ name }}[label]" value="{{ label|e }}" />\
+		<input type="text" name="{{ name }}[label]" value="{{ label|e }}" placeholder="{{ "Label" }}" />\
 	</div>\
 	<div class="actions">\
 		<a href="#remove"><i class="fa fa-trash-o"></i></a>\

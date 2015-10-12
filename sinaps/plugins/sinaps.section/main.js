@@ -86,17 +86,20 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 				this.emit('loaded');
 
 				// Admin sidebar nav group
-				var sectionNav = pluginAdmin.sidebar.navigation.addItem({
+				pluginAdmin.settings.navigation.addItem({
 					weight: 0,
 					title: 'Sections',
-					href: '/admin/sections/',
+					href: '/admin/settings/sections/',
 					icon: 'icon-drawer'
 				});
 
 				// Build model after everyone messed with the schemas
-				this.sections.forEach(function (section) {
+				_.sortBy(this.sections, function (section) {
+					return section.schema.handle;
+				}).forEach(function (section, i) {
 
-					sectionNav.addItem({
+					pluginAdmin.sidebar.navigation.addItem({
+						weight: 5000 + i,
 						title: section.schema.label,
 						href: '/admin/sections/' + section.schema.handle + '/',
 						icon: 'icon-doc'
@@ -120,7 +123,7 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 		// All plugin have initalized
 		sinaps.once('idle', function () {
 
-			sinaps.app.use(function (req, res) {
+			sinaps.app.use(function (req, res, next) {
 				res.send('Is it a section url ?');
 				/*res.status(404).render('404', {
 					requested: req.originalUrl
