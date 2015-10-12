@@ -207,7 +207,7 @@ module.exports = function () {
 							handle: '.handle',
 
 							stop: function (e, ui) {
-								var ids = $blocks.sortable('toArray', { attribute: 'data-block' });
+								var ids = $(this).sortable('toArray', { attribute: 'data-block' });
 								value = _.map(ids, function (id) { return getBlockById(id) });
 								updateBlocks();
 							}

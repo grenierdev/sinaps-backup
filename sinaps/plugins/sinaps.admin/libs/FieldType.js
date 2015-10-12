@@ -49,12 +49,13 @@ function FieldType (options) {
 			_.forEach(this.settings, function (options, name) {
 				tpl += '{% set field = '+ JSON.stringify(_.merge({
 					id: name + '"+ __uid',
-					name: name
+					name: name,
+					value: '{{ '+ name +' }}'
 				}, options)) +' %}';
 				tpl += admin.getFieldType(options.type).getFieldTemplate();
 			}.bind(this));
 
-			return tpl.replace(/\\"\+ __uid"/g, '"+ __uid');
+			return tpl.replace(/\\"\+ __uid"/g, '"+ __uid').replace(/"value":"\{\{ ([^ ]+) \}\}"/g, '"value": $1');
 		}
 
 	}, options);

@@ -10,18 +10,6 @@ module.exports = function () {
 		label: 'Text',
 		type: String,
 		settings: {
-			subtype: {
-				type: 'selectbox',
-				label: 'Type',
-				value: 'text',
-				options: [{
-					value: 'text',
-					label: 'Plain text'
-				},{
-					value: 'password',
-					label: 'Password'
-				}]
-			},
 			multiline: {
 				type: 'checkbox',
 				label: 'Allow multiline'
@@ -56,7 +44,7 @@ module.exports = function () {
 		{% if field.placeholder %} placeholder="{{ field.placeholder }}"{% endif %}\
 	>{{ field.value }}</textarea>\
 {% else %}\
-	<input type="{{ field.subtype|default("text") }}"\
+	<input type="text"\
 		id="{{ field.id|default(field.name) }}"\
 		class="{{ field.class|default("form-control input-sm") }}"\
 		{% if field.name %} name="{{ field.name }}"{% endif %}\

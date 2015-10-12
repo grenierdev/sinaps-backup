@@ -1,16 +1,17 @@
-.matrix {
+.dictionary {
 	display: block;
 	border: 0 !important;
 
-	.blocks {
+	.keys {
 		display: block;
 		padding: 0;
 		margin: 0;
 
-		> .block {
+		> .key {
+
 			position: relative;
 			display: block;
-			padding: 5px 100px 5px 5px;
+			padding: 5px 30px 5px 20px;
 			margin: 2px 0;
 			background: #f5f5f5;
 			font-size: 14px;
@@ -20,18 +21,22 @@
 			text-overflow: ellipsis;
 
 			> .handle {
-				display: inline;
+				position: absolute;
+				top: 0;
+				left: 0;
+				line-height: 36px;
 				cursor: n-resize;
 			}
 
-			> .title {
-				display: inline;
-			}
+			> .inputs {
+				display: inline-block;
+				width: 50%;
 
-			> .values {
-				display: inline;
-				opacity: 0.6;
-				font-size: 0.8em;
+				> input {
+					display: inline-block;
+					box-sizing: border-box;
+					width: 100%;
+				}
 			}
 
 			> .actions {
@@ -48,5 +53,4 @@
 			}
 		}
 	}
-
 }

@@ -4,30 +4,30 @@ var FieldType = pluginAdmin.FieldType;
 
 module.exports = function () {
 
+	// Password
 	pluginAdmin.registerFieldType(new FieldType({
-		handle: 'selectbox',
-		label: 'Selectbox',
+		handle: 'password',
+		label: 'Password',
 		type: String,
 		settings: {
-			options: {
-				type: 'dictionary',
-				label: 'Options'
+			placeholder: {
+				type: 'text',
+				label: 'Placeholder',
+				value: ''
 			}
 		},
-
 		getInputTemplate: function () {
-			return '<select class="form-control {{ field.class }}"\
+			return '<input type="password"\
 		id="{{ field.id|default(field.name) }}"\
+		class="{{ field.class|default("form-control input-sm") }}"\
 		{% if field.name %} name="{{ field.name }}"{% endif %}\
+		{% if field.value %} value="{{ field.value }}"{% endif %}\
+		{% if field.autofocus %} autofocus{% endif %}\
 		{% if field.required %} required{% endif %}\
 		{% if field.disabled %} disabled{% endif %}\
 		{% if field.readonly %} readonly{% endif %}\
-		{% if field.multiple %} multiple{% endif %}\
->\
-	{% for opt in field.options %}\
-		<option value="{{ opt.value }}" {% if opt.value == field.value %}selected{% endif %}>{{ opt.label }}</option>\
-	{% endfor %}\
-</select>';
+		{% if field.placeholder %} placeholder="{{ field.placeholder }}"{% endif %}\
+	/>';
 		}
 	}));
 };

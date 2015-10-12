@@ -25,6 +25,10 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 	registerFieldType: function (fieldtype) {
 		//this.fieldTypes.push(fieldtype);
 		this.fieldTypes[fieldtype.handle] = fieldtype;
+		var keys = _.keys(this.fieldTypes), sorted = {};
+		keys.sort();
+		keys.forEach(function (key) { sorted[key] = this.fieldTypes[key]; }.bind(this));
+		this.fieldTypes = sorted;
 	},
 
 	getFieldType: function (handle) {
@@ -89,13 +93,15 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 		}
 
 		// Load builtin fields
-		require('./fields/checkbox')();
-		require('./fields/date')();
-		require('./fields/number')();
-		require('./fields/matrix')();
-		require('./fields/selectbox')();
 		require('./fields/text')();
+		require('./fields/password')();
+		require('./fields/number')();
+		require('./fields/date')();
 		require('./fields/time')();
+		require('./fields/selectbox')();
+		require('./fields/checkbox')();
+		require('./fields/matrix')();
+		require('./fields/dictionary')();
 
 		// Once everythign is done
 		sinaps.once('idle', function () {
