@@ -16,18 +16,21 @@
 			background: #f5f5f5;
 			font-size: 14px;
 			color: #888888;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
 
 			> .handle {
-				display: inline-block;
+				display: inline;
 				cursor: n-resize;
 			}
 
 			> .title {
-				display: inline-block;
+				display: inline;
 			}
 
 			> .values {
-				display: inline-block;
+				display: inline;
 				opacity: 0.6;
 				font-size: 0.8em;
 			}

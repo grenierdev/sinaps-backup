@@ -597,13 +597,12 @@
 		var sinaps = {
 			fieldTypes: {
 				templates: {
-					field: {{ sinaps.require('sinaps.admin').getFieldTypeFieldTemplates()|json }}
+					field: _.mapValues({{ sinaps.require('sinaps.admin').getFieldTypeFieldTemplates()|json }}, function (html) {
+						return nunjucks.compile(html);
+					})
 				}
 			}
 		};
-		sinaps.fieldTypes.templates.field = _.mapValues(sinaps.fieldTypes.templates.field, function (html) {
-			return nunjucks.compile(html);
-		});
 	</script>
 
 	{% for handle, fieldtype in sinaps.require('sinaps.admin').fieldTypes -%}

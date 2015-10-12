@@ -89,7 +89,13 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 		}
 
 		// Load builtin fields
-		require('./fields')();
+		require('./fields/checkbox')();
+		require('./fields/date')();
+		require('./fields/number')();
+		require('./fields/matrix')();
+		require('./fields/selectbox')();
+		require('./fields/text')();
+		require('./fields/time')();
 
 		// Once everythign is done
 		sinaps.once('idle', function () {

@@ -6472,14 +6472,17 @@ AngularJS Basic Animations
       margin: 10px 0;
       background: #f5f5f5;
       font-size: 14px;
-      color: #888888; }
+      color: #888888;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; }
       .matrix .blocks > .block > .handle {
-        display: inline-block;
+        display: inline;
         cursor: n-resize; }
       .matrix .blocks > .block > .title {
-        display: inline-block; }
+        display: inline; }
       .matrix .blocks > .block > .values {
-        display: inline-block;
+        display: inline;
         opacity: 0.6;
         font-size: 0.8em; }
       .matrix .blocks > .block > .actions {
