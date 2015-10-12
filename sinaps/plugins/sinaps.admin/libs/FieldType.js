@@ -55,7 +55,7 @@ function FieldType (options) {
 				tpl += admin.getFieldType(options.type).getFieldTemplate();
 			}.bind(this));
 
-			return tpl.replace(/\\"\+ __uid"/g, '"+ __uid').replace(/"value":"\{\{ ([^ ]+) \}\}"/g, '"value": $1');
+			return tpl.replace(/\\"\+ __uid"/g, '"+ __uid').replace(/"value":"\{\{ ([^ ]+) \}\}"/g, '"value": $1|default(null)');
 		}
 
 	}, options);

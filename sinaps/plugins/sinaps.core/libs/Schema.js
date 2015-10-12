@@ -248,7 +248,8 @@ Schema.Field = function Field (options) {
 
 Schema.Field.prototype.finalizedField = function () {
 	var definition = {
-		type: String
+		type: String,
+		//default: this.default || null
 	};
 	if (this.default)	definition.default = this.default;
 	if (this.required)	definition.required = this.required;
@@ -288,18 +289,14 @@ Schema.Field.prototype.finalizedField = function () {
 			});
 			break;
 		case 'blocks':
-			definition = {};
+			definition = [];
 			this.blocks.forEach(function (block) {
+				var def = {};
 				block.fields.forEach(function (field) {
-					definition[field.handle] = field.finalizedField();
+					def[field.handle] = field.finalizedField();
 				});
+				definition.push(def);
 			});
-			definition.layout = {
-				type: String,
-				required: true,
-				index: true
-			};
-			definition = [definition];
 			break;
 	}
 
