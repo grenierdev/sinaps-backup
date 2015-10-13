@@ -1,6 +1,7 @@
 var util = require('util');
-var mongoose = require('mongoose');
 var _ = require('lodash');
+var mongoose = require('mongoose');
+var autopopulate = require('mongoose-autopopulate');
 
 function Schema (options) {
 	options = _.extend({
@@ -143,6 +144,8 @@ Schema.prototype.finalizedSchema = function () {
 		}.bind(this));
 	}.bind(this));
 
+	this._finalizedSchema.plugin(autopopulate);
+
 	return this._finalizedSchema;
 };
 
@@ -246,14 +249,18 @@ Schema.Field = function Field (options) {
 	_.extend(this, options);
 };
 
-Schema.Field.prototype.finalizedField = function () {
+Schema.Field.prototype.finalizedField = function (depth) {
+	depth = parseInt(depth, 10) || 0;
+
 	var definition = {
 		type: String,
-		//default: this.default || null
 	};
-	if (this.default)	definition.default = this.default;
-	if (this.required)	definition.required = this.required;
-	if (this.index)		definition.index = this.index;
+	if (this.default)
+		definition.default = this.default;
+	if (this.index)
+		definition.index = this.index;
+	if (depth == 0 && this.required)
+		definition.required = this.required;
 
 
 	var type = null;
@@ -281,22 +288,28 @@ Schema.Field.prototype.finalizedField = function () {
 		case 'date':			definition.type = Date; break;
 		case 'buffer':			definition.type = Buffer; break;
 		case 'objectid':		definition.type = mongoose.Schema.Types.ObjectId; break;
-		case 'array':			definition.type = [new Schema.Field({type: this.array}).finalizedField()]; break;
+		case 'array':			definition.type = []; break;//[new Schema.Field({type: this.array}).finalizedField(depth + 1)]; break;
 		case 'object':
 			definition = {};
 			this.fields.forEach(function (field) {
-				definition[field.handle] = field.finalizedField();
+				definition[field.handle] = field.finalizedField(depth + 1);
 			});
 			break;
 		case 'blocks':
-			definition = [];
+			definition = {
+				type: {
+					type: String,
+					default: '',
+					index: true
+				}
+			};
 			this.blocks.forEach(function (block) {
-				var def = {};
 				block.fields.forEach(function (field) {
-					def[field.handle] = field.finalizedField();
+					definition[field.handle] = field.finalizedField(depth + 1);
 				});
-				definition.push(def);
 			});
+
+			definition = [definition];
 			break;
 	}
 

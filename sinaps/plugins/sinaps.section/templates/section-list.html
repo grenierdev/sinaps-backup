@@ -41,7 +41,7 @@
 							<tr>
 								<td>{{ loop.index }}</td>
 								<td>
-									<a href="/admin/settings/sections/{{ section.schema.handle }}">{{ section.schema.label }}</a>
+									{{ section.schema.label }}
 								</td>
 								<td>
 									{% for layout in section.schema.layouts %}

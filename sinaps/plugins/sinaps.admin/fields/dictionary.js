@@ -7,7 +7,8 @@ module.exports = function () {
 	pluginAdmin.registerFieldType(new FieldType({
 		handle: 'dictionary',
 		label: 'Dictionary',
-		type: Object,
+		type: 'array',
+		//array: 'object',
 		settings: {
 
 		},

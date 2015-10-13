@@ -16,6 +16,7 @@ module.exports = function () {
 		return section;
 	};
 
+	// List
 	pluginAdmin.router.get('/sections/:handle/', function (req, res) {
 		var section = getSectionByHandle(req.params.handle);
 
@@ -27,16 +28,16 @@ module.exports = function () {
 
 		var offset = parseInt(req.query.offset, 10) || 0;
 		var limit = 50;
-		var query = section.entryModel.find({});
+		var query = {};
 
 		async.parallel({
 			count: function (done) {
-				query.count(function (err, count) {
+				section.entryModel.find(query).count(function (err, count) {
 					done(err, count);
 				});
 			},
 			entries: function (done) {
-				query.exec(function (err, entries) {
+				section.entryModel.find(query).exec(function (err, entries) {
 					done(err, entries);
 				});
 			}
@@ -65,6 +66,7 @@ module.exports = function () {
 
 	});
 
+	// New form
 	pluginAdmin.router.get('/sections/:handle/create', function (req, res) {
 		var section = getSectionByHandle(req.params.handle);
 
@@ -76,6 +78,11 @@ module.exports = function () {
 
 		var model = new section.entryModel();
 
+		if (req.session.data) {
+			model.set(req.session.data);
+			delete req.session.data;
+		}
+
 		res.render('sinaps.section/model-form', {
 			sectionSchema: section.schema,
 			sectionModel: section.model,
@@ -85,6 +92,7 @@ module.exports = function () {
 		});
 	});
 
+	// Create logic
 	pluginAdmin.router.post('/sections/:handle/create', function (req, res) {
 		var section = getSectionByHandle(req.params.handle);
 
@@ -94,13 +102,84 @@ module.exports = function () {
 			return;
 		}
 
-		var model = new section.entryModel();
-		model.set(req.body);
-
+		var model = new section.entryModel(req.body);
 		model.save(function (err) {
-
-			console.log(err, model);
-			res.send('Bleh');
+			if (err) {
+				console.error(err);
+				req.session.messages.push({type: 'danger', message: 'Could not save'});
+				req.session.data = model.toObject();
+				res.redirect(`/admin/sections/${req.params.handle}/create`);
+			} else {
+				req.session.messages.push({type: 'success', message: 'Section saved'});
+				res.redirect(`/admin/sections/${req.params.handle}/`);
+			}
 		});
 	});
+
+	// Edit form
+	pluginAdmin.router.get('/sections/:handle/edit/:id', function (req, res) {
+		var section = getSectionByHandle(req.params.handle);
+
+		if (!section) {
+			req.session.messages.push({type: 'danger', message: 'Could not find section'});
+			res.status(404).redirect('/admin/sections/');
+			return;
+		}
+
+		section.entryModel.findById(req.params.id, function (err, model) {
+			if (err) {
+				req.session.messages.push({type: 'danger', message: 'Could not find entry'});
+				res.status(404).redirect(`/admin/sections/${req.params.handle}/`);
+				return;
+			}
+
+			if (req.session.data) {
+				model.set(req.session.data);
+				delete req.session.data;
+			}
+
+			res.render('sinaps.section/model-form', {
+				sectionSchema: section.schema,
+				sectionModel: section.model,
+				entrySchema: section.entrySchema,
+				entryModel: section.entryModel,
+				model: model
+			});
+		});
+	});
+
+	// Update logic
+	pluginAdmin.router.post('/sections/:handle/edit/:id', function (req, res) {
+		var section = getSectionByHandle(req.params.handle);
+
+		if (!section) {
+			req.session.messages.push({type: 'danger', message: 'Could not find section'});
+			res.status(404).redirect('/admin/sections/');
+			return;
+		}
+
+		section.entryModel.findById(req.params.id, function (err, model) {
+			if (err) {
+				req.session.messages.push({type: 'danger', message: 'Could not find entry'});
+				res.status(404).redirect(`/admin/sections/${req.params.handle}/`);
+				return;
+			}
+
+			model.set(req.body);
+			model.save(function (err) {
+				if (err) {
+					console.error(err);
+					req.session.messages.push({type: 'danger', message: 'Could not save'});
+					req.session.data = model.toObject();
+					res.redirect(`/admin/sections/${req.params.handle}/edit/${model.id}`);
+				} else {
+					req.session.messages.push({type: 'success', message: 'Section saved'});
+					res.redirect(`/admin/sections/${req.params.handle}/`);
+				}
+			});
+		});
+	});
+
+	// TODO Delete logic
+
 };

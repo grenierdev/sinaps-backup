@@ -26,6 +26,8 @@
 		</div>
 		<div class="portlet-body">
 
+			<pre>TODO : Channel, Structure, Page</pre>
+
 			<div class="table-scrollable">
 				<table class="table table-hover">
 					<thead>
@@ -42,7 +44,13 @@
 							<tr>
 								<td>{{ loop.index }}</td>
 								{% for path, column in columns %}
-									<td>{{ path }} {{ entry.path(path) }}</td>
+									<td>
+										{% if column.lang %}
+											{{ l10n(entry.get(path)) }}
+										{% else %}
+											{{ entry.get(path) }}
+										{% endif %}
+									</td>
 								{% endfor %}
 								<td class="text-nowrap text-right">
 									<a href="/admin/sections/{{ section.schema.handle }}/edit/{{ entry.id }}" class="btn default btn-xs purple">
@@ -62,6 +70,7 @@
 					</tbody>
 				</table>
 			</div>
+			<pre>TODO : Pagination {{ offset|inspect }} / {{ count|inspect }}</pre>
 		</div>
 	</div>
 

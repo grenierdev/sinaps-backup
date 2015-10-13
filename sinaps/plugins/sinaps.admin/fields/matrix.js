@@ -189,7 +189,7 @@ module.exports = function () {
 								block: block,
 								label: blocks.filter(function (b) { return b.handle == block.type; })[0].label,
 								fields: _.map(
-									_.paths(_.omit(block, '__uid', 'type')),
+									_.paths(_.omit(block, '__uid', '_id', 'type')),
 									function (v, k) {
 										return {
 											path: '[' + k.split('.').join('][') + ']',

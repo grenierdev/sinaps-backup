@@ -18,6 +18,9 @@ module.exports = function (env) {
 	});
 
 	env.addFilter('inspect', function (input, depth) {
+		if (input && typeof input.toJSON == 'function') {
+			input = input.toJSON();
+		}
 		return util.inspect(input, {
 			depth: parseInt(depth, 10) || 1
 		});

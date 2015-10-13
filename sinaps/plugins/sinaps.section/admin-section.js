@@ -62,7 +62,7 @@ module.exports = function () {
 			}
 
 			req.session.messages.push({type: 'success', message: 'Section saved'});
-			res.redirect('/admin/settings/sections/restarting?redirect=/admin/sections/edit/' + sec.get('handle'));
+			res.redirect('/admin/settings/sections/restarting?redirect=/admin/settings/sections/edit/' + sec.get('handle'));
 		});
 	});
 
