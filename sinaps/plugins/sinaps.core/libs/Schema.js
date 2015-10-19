@@ -229,7 +229,9 @@ Schema.Field = function Field (options) {
 		lang: undefined,
 		required: undefined,
 		index: undefined,
-		unique: undefined
+		unique: undefined,
+		getter: undefined,
+		setter: undefined
 	}, options);
 
 
@@ -261,7 +263,10 @@ Schema.Field.prototype.finalizedField = function (depth) {
 		definition.index = this.index;
 	if (depth == 0 && this.required)
 		definition.required = this.required;
-
+	if (_.isFunction(this.getter))
+		definition.get = this.getter;
+	if (_.isFunction(this.setter))
+		definition.set = this.setter;
 
 	var type = null;
 

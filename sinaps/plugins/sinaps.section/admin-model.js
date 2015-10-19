@@ -166,6 +166,7 @@ module.exports = function () {
 			}
 
 			model.set(req.body);
+			
 			model.save(function (err) {
 				if (err) {
 					console.error(err);

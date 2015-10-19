@@ -7,7 +7,9 @@ function FieldType (options) {
 	_.extend(this, {
 		handle: '',
 		label: '',
-		type: {},
+		type: undefined,
+		getter: undefined,
+		setter: undefined,
 		settings: {},
 
 		getIncludedResources: function () {

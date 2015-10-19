@@ -1,5 +1,5 @@
 Tasks
-[ ] sinaps.section : Channel pagination
+[x] sinaps.section : Channel pagination
 [ ] sinaps.section : Recherche & results
 [ ] sinaps.section : Structure
 [ ] sinaps.section : Page
@@ -8,7 +8,7 @@ Tasks
 [ ] sinaps.section : Url des sections
 [ ] sinaps.core : Langue dans les Url
 
-[ ] sinaps.core : FieldType adv storage + getter/setter
+[x] sinaps.core : FieldType adv storage + getter/setter
 
 [ ] sinaps.asset : Assets source
 [ ] sinaps.asset : Assets

@@ -206,6 +206,8 @@ Section.methods.getLayoutSchema = function () {
 		container.fields = _.map(container.fields, function (field) {
 			var fieldtype = pluginAdmin.getFieldType(field.input);
 			field.type = fieldtype ? fieldtype.type : 'object';
+			field.getter = fieldtype.getter;
+			field.setter = fieldtype.setter;
 			if (field.input == 'matrix') {
 				field.blocks = _.map(field.blocks, function (block) {
 					return convertInputToType(block);

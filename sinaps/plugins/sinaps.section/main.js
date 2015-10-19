@@ -113,11 +113,13 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 								postDate: {
 									type: Date,
 									index: true,
-									required: true
+									required: true,
+									set: pluginAdmin.fieldTypes['date'].setter
 								},
 								expireDate: {
 									type: Date,
-									index: true
+									index: true,
+									set: pluginAdmin.fieldTypes['date'].setter
 								}
 							});
 							break;

@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var moment = require('moment');
 var pluginAdmin = sinaps.require('sinaps.admin');
 var FieldType = pluginAdmin.FieldType;
 
@@ -9,6 +10,10 @@ module.exports = function () {
 		handle: 'date',
 		label: 'Date',
 		type: Date,
+		setter: function (v) {
+			var m = moment(v)
+			return m.isValid() ? m.toDate() : '';
+		},
 		settings: {
 			format: {
 				type: 'text',
