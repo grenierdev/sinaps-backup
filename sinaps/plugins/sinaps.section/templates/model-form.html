@@ -38,15 +38,46 @@
 							{{ schemaForm.langSwitcher() }}
 
 							{{ schemaForm.layoutSwitcher(sectionSchema) }}
+
+							{{ fields.field({
+								type: 'date',
+								label: 'Post date',
+								name: 'postDate',
+								value: model.get('postDate')|date('YYYY-MM-DD')
+							}) }}
+
+							{{ fields.field({
+								type: 'date',
+								label: 'Expire date',
+								name: 'expireDate',
+								value: model.get('expireDate')|date('YYYY-MM-DD')
+							}) }}
+
+							{{ fields.field({
+								type: 'selectbox',
+								label: 'State',
+								name: 'state',
+								value: model.get('state'),
+								options: [{
+									value: 'published',
+									label: 'Published'
+								}, {
+									value: 'draft',
+									label: 'Draft'
+								}]
+							}) }}
+
 						</div>
 						<div class="form-actions">
 							<div class="row">
 								<div class="col-md-offset-3 col-md-9">
 									<button type="submit" class="btn btn-sm green">
 										<i class="fa fa-check"></i>
-										Save
+										{{ "Save" }}
 									</button>
-									<button type="reset" class="btn btn-sm default">Cancel</button>
+									<button type="reset" class="btn btn-sm default">
+										{{ "Cancel" }}
+									</button>
 								</div>
 							</div>
 						</div>

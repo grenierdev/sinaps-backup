@@ -12,7 +12,7 @@ module.exports = function () {
 		settings: {
 
 		},
-		getInputTemplate: function (field) {
+		getInputTemplate: function () {
 			return '<div class="input-group dictionary">\
 	<input type="hidden"\
 		id="{{ field.id|default(field.name) }}"\
@@ -21,6 +21,10 @@ module.exports = function () {
 		{% if field.value %} value="{{ field.value|json|escape }}"{% endif %}\
 	/>\
 </div>';
+		},
+
+		getValueTemplate: function () {
+			return '{{ field.value.length }} {% if field.value.length > 1 %}pairs{% else %}pair{% endif %}';
 		},
 
 		getIncludedJS: function () {

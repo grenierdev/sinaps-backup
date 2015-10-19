@@ -21,28 +21,8 @@
 }
 
 // Clustering
-var cluster = require('cluster');
 var _ = require('lodash');
 var config = _.merge({}, require('./libs/config-dist.js'), require('./config.js'));
-
-if (cluster.isMaster) {
-
-	// Workers has exited, spawn a new one
-	cluster.on('exit', function (worker) {
-		cluster.fork();
-	});
-
-	// Minimum 1 worker, maximum os.cpus().length
-	//config.workers = Math.min(Math.max(1, parseInt(config.workers, 10)), require('os').cpus().length);
-	config.workers = Math.max(1, parseInt(config.workers, 10));
-
-	// Spawn workers
-	for (var i = 0; i < config.workers; ++i) {
-		cluster.fork();
-	}
-
-	return;
-}
 
 // Requires & init
 {

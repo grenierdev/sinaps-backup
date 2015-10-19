@@ -6536,6 +6536,9 @@ AngularJS Basic Animations
           color: #888888;
           line-height: 30px; }
 
+.text-no-wrap {
+  white-space: nowrap; }
+
 /* Button */
 .btn.default {
   color: #333333;

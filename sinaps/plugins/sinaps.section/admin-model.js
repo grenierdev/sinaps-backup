@@ -26,9 +26,9 @@ module.exports = function () {
 			return;
 		}
 
-		var offset = parseInt(req.query.offset, 10) || 0;
-		var limit = 50;
-		var query = {};
+		var page = parseInt(req.query.page, 10) || 0;
+		var perpage = 50;
+		var query = {}; // TODO Search & results ?
 
 		async.parallel({
 			count: function (done) {
@@ -37,7 +37,7 @@ module.exports = function () {
 				});
 			},
 			entries: function (done) {
-				section.entryModel.find(query).exec(function (err, entries) {
+				section.entryModel.find(query).sort({ postDate: -1 }).exec(function (err, entries) {
 					done(err, entries);
 				});
 			}
@@ -54,12 +54,12 @@ module.exports = function () {
 				});
 			});
 
-			res.render('sinaps.section/model-list', {
+			res.render(`sinaps.section/model-list-${section.model.layout}`, {
 				section: section,
 				columns: columns,
 				entries: result.entries,
-				offset: offset,
-				limit: limit,
+				page: page,
+				perpage: perpage,
 				count: result.count
 			});
 		});
@@ -110,7 +110,7 @@ module.exports = function () {
 				req.session.data = model.toObject();
 				res.redirect(`/admin/sections/${req.params.handle}/create`);
 			} else {
-				req.session.messages.push({type: 'success', message: 'Section saved'});
+				req.session.messages.push({type: 'success', message: 'Entry saved'});
 				res.redirect(`/admin/sections/${req.params.handle}/`);
 			}
 		});
@@ -173,7 +173,7 @@ module.exports = function () {
 					req.session.data = model.toObject();
 					res.redirect(`/admin/sections/${req.params.handle}/edit/${model.id}`);
 				} else {
-					req.session.messages.push({type: 'success', message: 'Section saved'});
+					req.session.messages.push({type: 'success', message: 'Entry saved'});
 					res.redirect(`/admin/sections/${req.params.handle}/`);
 				}
 			});

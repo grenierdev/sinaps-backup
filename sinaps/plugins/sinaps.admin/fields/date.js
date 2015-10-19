@@ -13,7 +13,7 @@ module.exports = function () {
 			format: {
 				type: 'text',
 				label: 'Format',
-				value: 'yyyy-mm-dd'
+				value: 'YYYY-MM-DD'
 			}
 		},
 
@@ -33,6 +33,10 @@ module.exports = function () {
 		<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>\
 	</span>\
 </div>';
+		},
+
+		getValueTemplate: function () {
+			return '{% if field.value %}{{ field.value|date(field.format|default("YYYY-MM-DD")) }}{% endif %}';
 		},
 
 		getIncludedJS: function () {

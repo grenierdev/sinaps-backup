@@ -26,48 +26,40 @@
 		</div>
 		<div class="portlet-body">
 
-			<div class="table-scrollable">
-				<table class="table table-hover">
-					<thead>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th width="1"></th>
+						<th>{{ "Label" }}</th>
+						<th>{{ "Handle" }}</th>
+						<th>{{ "Type" }}</th>
+						<th>{{ "URL" }}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for section in sections %}
 						<tr>
-							<th width="1">#</th>
-							<th>Name</th>
-							<th>Layouts</th>
-							<th width="1">Actions</th>
+							<td><input type="checkbox" name="handle[]" value="{{ section.schema.handle }}" /></td>
+							<td class="text-no-wrap">
+								<a href="/admin/settings/sections/edit/{{ section.schema.handle }}">
+									{{ section.schema.label|default(section.model.handle) }}
+								</a>
+							</td>
+							<td>
+								{{ section.model.handle }}
+							</td>
+							<td>
+								{{ section.model.layout }}
+							</td>
+							<td class="text-no-wrap">
+								{% if section.model.hasurls %}
+									{{ l10n(section.model.url) }}
+								{% endif %}
+							</td>
 						</tr>
-					</thead>
-					<tbody>
-						{% for section in sections %}
-							<tr>
-								<td>{{ loop.index }}</td>
-								<td>
-									{{ section.schema.label }}
-								</td>
-								<td>
-									{% for layout in section.schema.layouts %}
-										{{ layout.label|default(layout.handle) }}{% if not loop.last %}, {% endif %}
-									{% endfor %}
-								</td>
-								<td class="text-nowrap text-right">
-									{% if section.model %}
-										<a href="/admin/settings/sections/edit/{{ section.schema.handle }}" class="btn default btn-xs purple">
-											<i class="fa fa-edit"></i>
-											Edit
-										</a>
-										<form action="/admin/settings/sections/delete" method="post" class="inline">
-											<input type="hidden" name="handle[]" value="{{ section.schema.handle }}" />
-											<button type="submit" class="btn default btn-xs red">
-												<i class="fa fa-trash-o"></i>
-												Delete
-											</button>
-										</form>
-									{% endif %}
-								</td>
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-			</div>
+					{% endfor %}
+				</tbody>
+			</table>
 		</div>
 	</div>
 

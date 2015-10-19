@@ -42,6 +42,16 @@ function FieldType (options) {
 			});
 		},
 
+		getValueTemplate: function (field) {
+			return '{{ field.value }}';
+		},
+
+		getValueHTML: function (field) {
+			return sinaps.nunjucks.renderString(this.getValueTemplate(field), {
+				field: field
+			});
+		},
+
 		getSettingTemplate: function () {
 			var tpl = '';
 			var admin = sinaps.require('sinaps.admin');

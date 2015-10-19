@@ -1,7 +1,6 @@
 var path = require('path');
 
 module.exports = {
-	workers: 1,
 	path: path.join(__dirname, '..'),
 	languages: ['en'],
 	secret: 'keyboard cat',

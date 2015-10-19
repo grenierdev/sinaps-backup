@@ -11,3 +11,10 @@
 		{{ fieldtype.getFieldHTML(options) }}
 	{% endif %}
 {% endmacro %}
+
+{% macro value(options) %}
+	{% set fieldtype = sinaps.require('sinaps.admin').getFieldType(options.type) %}
+	{% if fieldtype %}
+		{{ fieldtype.getValueHTML(options) }}
+	{% endif %}
+{% endmacro %}

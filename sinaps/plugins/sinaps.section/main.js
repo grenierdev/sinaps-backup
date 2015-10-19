@@ -106,6 +106,50 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 					});
 
 					section.entrySchema = section.schema.finalizedSchema();
+
+					switch (section.model.layout.toLowerCase()) {
+						case 'channel':
+							section.entrySchema.add({
+								postDate: {
+									type: Date,
+									index: true,
+									required: true
+								},
+								expireDate: {
+									type: Date,
+									index: true
+								}
+							});
+							break;
+						case 'structure':
+							section.entrySchema.add({
+								parentId: {
+									type: mongoose.Schema.Types.ObjectId,
+									index: true,
+									required: true
+								},
+								order: {
+									type: Number,
+									index: true,
+									required: true,
+									default: 0
+								}
+							});
+							break;
+						case 'page':
+							// Nothing special...
+							break;
+					}
+
+					section.entrySchema.add({
+						state: {
+							type: String,
+							index: true,
+							required: true,
+							default: 'published'
+						}
+					});
+
 					section.entryModel = mongoose.model(section.schema.handle, section.entrySchema);
 				});
 
@@ -124,7 +168,8 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 		sinaps.once('idle', function () {
 
 			sinaps.app.use(function (req, res, next) {
-				res.send('Is it a section url ?');
+				console.log('Is it a section url ?');
+				next();
 				/*res.status(404).render('404', {
 					requested: req.originalUrl
 				});*/

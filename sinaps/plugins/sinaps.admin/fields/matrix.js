@@ -16,7 +16,7 @@ module.exports = function () {
 				decimal: 0
 			}
 		},
-		getInputTemplate: function (field) {
+		getInputTemplate: function () {
 			return '<div class="input-group matrix">\
 	<input type="hidden"\
 		id="{{ field.id|default(field.name) }}"\
@@ -27,6 +27,11 @@ module.exports = function () {
 	/>\
 </div>';
 		},
+
+		getValueTemplate: function () {
+			return '{{ field.value.length }} {% if field.value.length > 1 %}blocks{% else %}block{% endif %}';
+		},
+
 		getIncludedJS: function () {
 			var rawjs = function () {
 				var uid = 0;
@@ -169,36 +174,41 @@ module.exports = function () {
 						$blocks.empty();
 
 						_.each(value, function (block, i) {
-							$blocks.append(nunjucks.renderString('<li class="block" data-block="{{ block.__uid }}">\
-	<div class="handle"><i class="fa fa-bars"></i></div>\
-	<div class="title">{{ label }}</div>\
-	<div class="values">\
-		<input type="hidden" name="{{ name }}[type]" value="{{ block.type }}" />\
-		{% for field in fields %}\
-			{{ field.value }}\
-			<input type="hidden" name="{{ name }}{{ field.path }}" value="{{ field.value|e }}" />\
-			{% if not loop.last %} | {% endif %}\
-		{% endfor %}\
-	</div>\
-	<div class="actions">\
-		<a href="#edit"><i class="fa fa-edit"></i></a>\
-		<a href="#remove"><i class="fa fa-trash-o"></i></a>\
-	</div>\
-</li>', {
-								name: name + '[' + i + ']',
-								block: block,
-								label: blocks.filter(function (b) { return b.handle == block.type; })[0].label,
-								fields: _.map(
-									_.paths(_.omit(block, '__uid', '_id', 'type')),
-									function (v, k) {
-										return {
-											path: '[' + k.split('.').join('][') + ']',
-											name: k.split('.').pop(),
-											value: v // TODO display something prettier defined by the field
-										};
-									}
-								)
-							}));
+							var blockDef = getBlock(block.type);
+							if (blockDef) {
+								$blocks.append(nunjucks.renderString('<li class="block" data-block="{{ block.__uid }}">\
+		<div class="handle"><i class="fa fa-bars"></i></div>\
+		<div class="title">{{ def.label }}</div>\
+		<div class="values">\
+			{% for k,v in data %}\
+				<input type="hidden" name="{{ name }}[{{ k.split(".").join("][") }}]" value="{{ v|e }}" />\
+			{% endfor %}\
+			{% for value in values %}\
+				{{ value }} {% if not loop.last %} | {% endif %}\
+			{% endfor %}\
+		</div>\
+		<div class="actions">\
+			<a href="#edit"><i class="fa fa-edit"></i></a>\
+			<a href="#remove"><i class="fa fa-trash-o"></i></a>\
+		</div>\
+	</li>', {
+									name: name + '[' + i + ']',
+									block: block,
+									def: blockDef,
+									data: _.omit(_.paths(block), function (v, k) { return /(__uid|_id$)/.test(k); }),
+									values: _.filter(_.map(blockDef.fields, function (field) {
+										var tpl = sinaps.fieldTypes.templates.value[field.input];
+										if (!tpl) {
+											return '';
+										}
+										return tpl.render({
+											field: _.merge({}, field, {
+												value: block[field.handle]
+											})
+										});
+									}))
+								}));
+							}
 						});
 
 						// Reorder blocks

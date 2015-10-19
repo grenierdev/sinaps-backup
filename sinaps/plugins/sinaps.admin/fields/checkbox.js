@@ -41,6 +41,10 @@ module.exports = function () {
 	<label for="{{ field.id|default(field.name) }}">{{ field.label }}</label>\
 	{% if field.instructions %}<span class="help-block">{{ field.instructions }}</span>{% endif %}\
 </div>';
+		},
+
+		getValueTemplate: function () {
+			return '{% if field.value %}On{% else %}Off{% endif %}';
 		}
 	}));
 };

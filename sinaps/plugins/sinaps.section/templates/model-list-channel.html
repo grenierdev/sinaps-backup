@@ -1,0 +1,168 @@
+{% extends "sinaps.admin/_frame.html" %}
+
+{% import 'sinaps.admin/components/fields.html' as fields %}
+
+{% set title = 'Sections' %}
+{% set subtitle = '' %}
+{% set breadcrumbs = [{
+	href: '/admin/sections/',
+	title: 'Sections'
+},{
+	href: '/admin/sections/' + section.schema.handle + '/',
+	title: section.schema.label
+}] %}
+
+{% set page = 0 %}
+{% set perpage = 50 %}
+{% set offset = page * perpage %}
+
+{% macro pagination (page, offset, perpage, total) %}
+	{% set pmin = max(page - 5, 0) %}
+	{% set pmax = min(page + 5, floor(total / perpage)) %}
+	{% set querystr = "" %}
+	<div class="row">
+		<div class="col-md-12">
+			<nav>
+				<ul class="pagination">
+					<li {% if page <= 0 %}class="disabled"{% endif %}>
+						<a href="?page=0&min={{ options.min }}{{ querystr }}">&laquo;</a>
+					</li>
+					<li {% if page - 1 < 0 %}class="disabled"{% endif %}>
+						<a href="?page={{ max(page - 1, 0) }}{{ querystr }}">&lsaquo;</a>
+					</li>
+					{% for p in range(pmin, pmax) %}
+						<li {% if p == page %}class="active"{% endif %}>
+							<a href="?page={{ p }}{{ querystr }}">{{ p + 1 }}</a>
+						</li>
+					{% endfor %}
+					<li {% if page + 1 > floor(total / perpage) %}class="disabled"{% endif %}>
+						<a href="?page={{ min(page + 1, floor(total / perpage)) }}{{ querystr }}">&rsaquo;</a>
+					</li>
+					<li {% if page >= floor(total / perpage) %}class="disabled"{% endif %}>
+						<a href="?page={{ floor(total / perpage) }}{{ querystr }}">&raquo;</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+{% endmacro %}
+
+{% block content %}
+
+	<div class="portlet light">
+		<div class="portlet-title">
+			<div class="caption">
+				{{ section.schema.label }}
+			</div>
+			<div class="actions">
+				<a href="/admin/sections/{{ section.schema.handle }}/?state=trash" class="btn">
+					{{ "Trash" }}
+				</a>
+				<a href="/admin/sections/{{ section.schema.handle }}/create" class="btn default btn-sm blue">
+					<i class="fa fa-plus"></i>
+					{{ "Create" }}
+				</a>
+			</div>
+		</div>
+		<div class="portlet-body">
+			{{ pagination(page * perpage, offset, perpage, count) }}
+
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th width="1"></th>
+						<th width="1"></th>
+						{% for path, column in columns %}
+							<th>{{ column.label }} {{ column.input }}</th>
+						{% endfor %}
+						<th width="1" class="text-no-wrap">{{ "Post date" }}</th>
+						<th width="1" class="text-no-wrap">{{ "Expire date" }}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for entry in entries %}
+						<tr>
+							<td><input type="checkbox" name="id[]" value="{{ entry.id }}" /></td>
+							<td>
+								{% if entry.get('state') == 'published' %}
+									<i class="fa fa-circle"></i>
+								{% elif entry.get('state') == 'draft' %}
+									<i class="fa fa-adjust"></i>
+								{% else %}
+									<i class="fa fa-circle-thin"></i>
+								{% endif %}
+							</td>
+							{% for path, column in columns %}
+								<td>
+									{% if loop.first %}
+										<a href="/admin/sections/{{ section.schema.handle }}/edit/{{ entry.id }}">
+									{% endif %}
+									{% if column.lang %}
+										{% set value = l10n(entry.get(path))|default('...') %}
+									{% else %}
+										{% set value = entry.get(path)|default('...') %}
+									{% endif %}
+									{{ fields.value({
+										type: column.input,
+										value: value
+									}) }}
+									{% if loop.first %}
+										</a>
+									{% endif %}
+								</td>
+							{% endfor %}
+							<td class="text-no-wrap">
+								{{ fields.value({
+									type: 'date',
+									value: entry.postDate
+								}) }}
+							</td>
+							<td class="text-no-wrap">
+								{{ fields.value({
+									type: 'date',
+									value: entry.expireDate
+								}) }}
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			{{ pagination(page * perpage, offset, perpage, count) }}
+		</div>
+	</div>
+
+
+{% endblock %}
+
+{% block footJS %}
+	<script>
+		$(function () {
+
+			// Show confirm dialog on delete
+			$('form[action$="~delete"]').on('submit', function (e) {
+				e.preventDefault();
+				var $form = $(this);
+
+				bootbox.dialog({
+					message: 'Are you sure you want to delete this item?',
+					title: 'Delete section',
+					buttons: {
+						cancel: {
+							className: 'btn-default',
+							label: 'Cancel'
+						},
+						delete: {
+							className: 'red',
+							label: 'Delete',
+							callback: function () {
+								$form.off('submit').submit();
+							}
+						}
+					}
+				});
+			});
+
+		});
+	</script>
+{% endblock %}

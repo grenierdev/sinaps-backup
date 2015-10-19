@@ -39,6 +39,10 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 		return _.mapValues(this.fieldTypes, function (field) { return field.getFieldTemplate(); });
 	},
 
+	getFieldTypeValueTemplates: function () {
+		return _.mapValues(this.fieldTypes, function (field) { return field.getValueTemplate(); });
+	},
+
 	settings: {
 		navigation: null,
 		router: express.Router()
