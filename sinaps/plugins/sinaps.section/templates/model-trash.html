@@ -92,7 +92,7 @@
 								</td>
 							{% endfor %}
 							<td class="text-no-wrap">
-								<a href="/admin/sections/{{ section.schema.handle }}/restore/{{ entry.id }}" class="btn btn-sm">
+								<a href="/admin/sections/{{ section.schema.handle }}/restore/{{ entry.id }}" class="btn btn-sm" role="restore">
 									{{ "Restore" }}
 								</a>
 							</td>
@@ -113,23 +113,23 @@
 		$(function () {
 
 			// Show confirm dialog on delete
-			$('form[action$="~delete"]').on('submit', function (e) {
+			$('a[role="restore"]').on('click', function (e) {
 				e.preventDefault();
-				var $form = $(this);
+				var $a = $(this);
 
 				bootbox.dialog({
-					message: 'Are you sure you want to delete this item?',
-					title: 'Delete section',
+					message: 'Are you sure you want to restore this entry?',
+					title: 'Restore entry',
 					buttons: {
 						cancel: {
 							className: 'btn-default',
 							label: 'Cancel'
 						},
 						delete: {
-							className: 'red',
-							label: 'Delete',
+							className: 'blue',
+							label: 'Restore',
 							callback: function () {
-								$form.off('submit').submit();
+								window.location = $a.attr('href');
 							}
 						}
 					}

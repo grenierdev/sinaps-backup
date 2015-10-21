@@ -100,7 +100,7 @@
 								<br />
 								<div class="row">
 									<div class="col-md-12 text-right">
-										<a href="/admin/sections/{{ sectionSchema.handle }}/delete/{{ model.id }}" class="btn red btn-sm default">
+										<a href="/admin/sections/{{ sectionSchema.handle }}/delete/{{ model.id }}" class="btn red btn-sm default" role="delete">
 											<i class="fa fa-trash"></i>
 											{{ "Delete" }}
 										</a>
@@ -114,4 +114,36 @@
 		</div>
 	</form>
 
+{% endblock %}
+
+{% block footJS %}
+	<script>
+		$(function () {
+
+			// Show confirm dialog on delete
+			$('a[role="delete"]').on('click', function (e) {
+				e.preventDefault();
+				var $a = $(this);
+
+				bootbox.dialog({
+					message: 'Are you sure you want to trash this entry?',
+					title: 'Delete entry',
+					buttons: {
+						cancel: {
+							className: 'btn-default',
+							label: 'Cancel'
+						},
+						delete: {
+							className: 'red',
+							label: 'Delete',
+							callback: function () {
+								window.location = $a.attr('href');
+							}
+						}
+					}
+				});
+			});
+
+		});
+	</script>
 {% endblock %}

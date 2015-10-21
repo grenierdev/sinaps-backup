@@ -57,7 +57,7 @@
 			<div class="actions">
 				{% if trashCount > 0 %}
 					<a href="/admin/sections/{{ section.schema.handle }}/trash" class="btn">
-						{{ "Trash" }}
+						{{ "%s in trash"|format(trashCount) }}
 					</a>
 				{% endif %}
 				<a href="/admin/sections/{{ section.schema.handle }}/create" class="btn default btn-sm blue">
@@ -133,36 +133,4 @@
 	</div>
 
 
-{% endblock %}
-
-{% block footJS %}
-	<script>
-		$(function () {
-
-			// Show confirm dialog on delete
-			$('form[action$="~delete"]').on('submit', function (e) {
-				e.preventDefault();
-				var $form = $(this);
-
-				bootbox.dialog({
-					message: 'Are you sure you want to delete this item?',
-					title: 'Delete section',
-					buttons: {
-						cancel: {
-							className: 'btn-default',
-							label: 'Cancel'
-						},
-						delete: {
-							className: 'red',
-							label: 'Delete',
-							callback: function () {
-								$form.off('submit').submit();
-							}
-						}
-					}
-				});
-			});
-
-		});
-	</script>
 {% endblock %}

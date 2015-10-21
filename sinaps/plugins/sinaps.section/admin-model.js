@@ -273,7 +273,7 @@ module.exports = function () {
 					if (err) {
 						req.session.messages.push({type: 'danger', message: 'Could not trash this entry'});
 					} else {
-						req.session.messages.push({type: 'success', message: 'Entry saved'});
+						req.session.messages.push({type: 'success', message: 'Entry trashed'});
 					}
 					res.redirect(`/admin/sections/${req.params.handle}/`);
 				});

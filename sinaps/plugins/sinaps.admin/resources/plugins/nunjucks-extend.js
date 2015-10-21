@@ -28,3 +28,11 @@ env.addFilter('date', function (input, format) {
 	var m = moment(input)
 	return m.isValid() ? m.format(format || 'YYYY-MM-DD') : '';
 });
+
+env.addFilter('format', function () {
+	var args = Array.prototype.slice.call(arguments),
+		input = args.shift();
+	return input.replace(/%s/g, function () {
+		return args.length > 0 ? args.shift() : '';
+	});
+});
