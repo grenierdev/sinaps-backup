@@ -10,6 +10,9 @@
 },{
 	href: '/admin/sections/' + section.schema.handle + '/',
 	title: section.schema.label
+},{
+	href: '/admin/sections/' + section.schema.handle + '/trash',
+	title: 'Trash'
 }] %}
 
 {% set page = 0 %}
@@ -53,17 +56,9 @@
 		<div class="portlet-title">
 			<div class="caption">
 				{{ section.schema.label }}
+				<span class="caption-helper">{{ "stuff you threw away" }}</span>
 			</div>
 			<div class="actions">
-				{% if trashCount > 0 %}
-					<a href="/admin/sections/{{ section.schema.handle }}/trash" class="btn">
-						{{ "Trash" }}
-					</a>
-				{% endif %}
-				<a href="/admin/sections/{{ section.schema.handle }}/create" class="btn default btn-sm blue">
-					<i class="fa fa-plus"></i>
-					{{ "Create" }}
-				</a>
 			</div>
 		</div>
 		<div class="portlet-body">
@@ -73,30 +68,18 @@
 				<thead>
 					<tr>
 						<th width="1"></th>
-						<th width="1"></th>
 						{% for path, column in columns %}
 							<th>{{ column.label }}</th>
 						{% endfor %}
-						<th width="1" class="text-no-wrap">{{ "Post date" }}</th>
-						<th width="1" class="text-no-wrap">{{ "Expire date" }}</th>
+						<th width="1"></th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for entry in entries %}
 						<tr>
 							<td><input type="checkbox" name="id[]" value="{{ entry.id }}" /></td>
-							<td>
-								{% if entry.get('state') == 'published' %}
-									<i class="fa fa-circle"></i>
-								{% else %}
-									<i class="fa fa-adjust"></i>
-								{% endif %}
-							</td>
 							{% for path, column in columns %}
 								<td>
-									{% if loop.first %}
-										<a href="/admin/sections/{{ section.schema.handle }}/edit/{{ entry.id }}">
-									{% endif %}
 									{% if column.lang %}
 										{% set value = l10n(entry.get(path))|default('...') %}
 									{% else %}
@@ -106,22 +89,12 @@
 										type: column.input,
 										value: value
 									}) }}
-									{% if loop.first %}
-										</a>
-									{% endif %}
 								</td>
 							{% endfor %}
 							<td class="text-no-wrap">
-								{{ fields.value({
-									type: 'date',
-									value: entry.postDate
-								}) }}
-							</td>
-							<td class="text-no-wrap">
-								{{ fields.value({
-									type: 'date',
-									value: entry.expireDate
-								}) }}
+								<a href="/admin/sections/{{ section.schema.handle }}/restore/{{ entry.id }}" class="btn btn-sm">
+									{{ "Restore" }}
+								</a>
 							</td>
 						</tr>
 					{% endfor %}

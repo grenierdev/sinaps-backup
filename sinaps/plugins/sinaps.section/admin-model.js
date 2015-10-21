@@ -28,11 +28,18 @@ module.exports = function () {
 
 		var page = parseInt(req.query.page, 10) || 0;
 		var perpage = 50;
-		var query = {}; // TODO Search & results ?
+		var query = {
+			state: { $ne: 'trashed' }
+		}; // TODO Search & results ?
 
 		async.parallel({
 			count: function (done) {
 				section.entryModel.find(query).count(function (err, count) {
+					done(err, count);
+				});
+			},
+			trashCount: function (done) {
+				section.entryModel.find({ state: 'trashed' }).count(function (err, count) {
 					done(err, count);
 				});
 			},
@@ -60,10 +67,61 @@ module.exports = function () {
 				entries: result.entries,
 				page: page,
 				perpage: perpage,
-				count: result.count
+				count: result.count,
+				trashCount: result.trashCount
 			});
 		});
 
+	});
+
+	// Trash bin
+	pluginAdmin.router.get('/sections/:handle/trash', function (req, res) {
+		var section = getSectionByHandle(req.params.handle);
+
+		if (!section) {
+			req.session.messages.push({type: 'danger', message: 'Could not find section'});
+			res.status(404).redirect('/admin/sections/');
+			return;
+		}
+
+		var page = parseInt(req.query.page, 10) || 0;
+		var perpage = 50;
+		var query = { state: 'trashed' };
+
+		async.parallel({
+			count: function (done) {
+				section.entryModel.find(query).count(function (err, count) {
+					done(err, count);
+				});
+			},
+			entries: function (done) {
+				section.entryModel.find(query).exec(function (err, entries) {
+					done(err, entries);
+				});
+			}
+		}, function (err, result) {
+
+			var fields = section.schema.fields(),
+				columns = {};
+
+			section.model.columns.forEach(function (path) {
+				_.map(fields, function (f, p) {
+					if (p.split('.').slice(2).join('.') == path) {
+						columns[path] = f;
+					}
+				});
+			});
+
+			res.render(`sinaps.section/model-trash`, {
+				section: section,
+				columns: columns,
+				entries: result.entries,
+				page: page,
+				perpage: perpage,
+				count: result.count,
+				trashCount: result.trashCount
+			});
+		});
 	});
 
 	// New form
@@ -84,6 +142,7 @@ module.exports = function () {
 		}
 
 		res.render('sinaps.section/model-form', {
+			_action: 'create',
 			sectionSchema: section.schema,
 			sectionModel: section.model,
 			entrySchema: section.entrySchema,
@@ -139,6 +198,7 @@ module.exports = function () {
 			}
 
 			res.render('sinaps.section/model-form', {
+				_action: 'edit',
 				sectionSchema: section.schema,
 				sectionModel: section.model,
 				entrySchema: section.entrySchema,
@@ -166,7 +226,7 @@ module.exports = function () {
 			}
 
 			model.set(req.body);
-			
+
 			model.save(function (err) {
 				if (err) {
 					console.error(err);
@@ -181,6 +241,74 @@ module.exports = function () {
 		});
 	});
 
-	// TODO Delete logic
+	// Delete
+	pluginAdmin.router.get('/sections/:handle/delete/:id', function (req, res) {
+		var section = getSectionByHandle(req.params.handle);
+
+		if (!section) {
+			req.session.messages.push({type: 'danger', message: 'Could not find section'});
+			res.status(404).redirect('/admin/sections/');
+			return;
+		}
+
+		section.entryModel.findById(req.params.id, function (err, model) {
+			if (err) {
+				req.session.messages.push({type: 'danger', message: 'Could not find entry'});
+				res.status(404).redirect(`/admin/sections/${req.params.handle}/`);
+				return;
+			}
+
+			if (model.state == 'trashed') {
+				model.remove(function (err) {
+					if (err) {
+						req.session.messages.push({type: 'danger', message: 'Could remove entry from bin'});
+					} else {
+						req.session.messages.push({type: 'success', message: 'Entry pulverized'});
+					}
+					res.redirect(`/admin/sections/${req.params.handle}/`);
+				});
+			} else {
+				model.state = 'trashed';
+				model.save(function (err) {
+					if (err) {
+						req.session.messages.push({type: 'danger', message: 'Could not trash this entry'});
+					} else {
+						req.session.messages.push({type: 'success', message: 'Entry saved'});
+					}
+					res.redirect(`/admin/sections/${req.params.handle}/`);
+				});
+			}
+		});
+	});
+
+	// Restore to draft
+	pluginAdmin.router.get('/sections/:handle/restore/:id', function (req, res) {
+		var section = getSectionByHandle(req.params.handle);
+
+		if (!section) {
+			req.session.messages.push({type: 'danger', message: 'Could not find section'});
+			res.status(404).redirect('/admin/sections/');
+			return;
+		}
+
+		section.entryModel.findById(req.params.id, function (err, model) {
+			if (err) {
+				req.session.messages.push({type: 'danger', message: 'Could not find entry'});
+				res.status(404).redirect(`/admin/sections/${req.params.handle}/`);
+				return;
+			}
+
+			model.state = 'draft';
+			model.save(function (err) {
+				if (err) {
+					req.session.messages.push({type: 'danger', message: 'Could not restore this entry'});
+					res.redirect(`/admin/sections/${req.params.handle}/trash`);
+				} else {
+					req.session.messages.push({type: 'success', message: 'Entry restored as draft'});
+					res.redirect(`/admin/sections/${req.params.handle}/edit/${model.id}`);
+				}
+			});
+		});
+	});
 
 };

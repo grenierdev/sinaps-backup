@@ -1,9 +1,10 @@
 Tasks
 [x] sinaps.section : Channel pagination
-[ ] sinaps.section : Recherche & results
+[x] sinaps.section : Delete / trash channel ?
+[ ] sinaps.section : Change layout
 [ ] sinaps.section : Structure
 [ ] sinaps.section : Page
-[ ] sinaps.section : Delete / trash channel ?
+[ ] sinaps.section : Recherche & results
 
 [ ] sinaps.section : Url des sections
 [ ] sinaps.core : Langue dans les Url
