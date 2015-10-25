@@ -1,7 +1,7 @@
 Tasks
 [x] sinaps.section : Channel pagination
 [x] sinaps.section : Delete / trash channel
-[ ] sinaps.section : Change layout
+[x] sinaps.section : Change layout
 [ ] sinaps.section : Structure
 [ ] sinaps.section : Page
 [ ] sinaps.section : Recherche & results
