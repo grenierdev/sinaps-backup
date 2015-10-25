@@ -141,6 +141,8 @@ module.exports = function () {
 			delete req.session.data;
 		}
 
+		model.set('layout', req.query.layout || model.layout);
+
 		res.render('sinaps.section/model-form', {
 			_action: 'create',
 			sectionSchema: section.schema,
@@ -196,6 +198,8 @@ module.exports = function () {
 				model.set(req.session.data);
 				delete req.session.data;
 			}
+
+			model.set('layout', req.query.layout || model.layout);
 
 			res.render('sinaps.section/model-form', {
 				_action: 'edit',

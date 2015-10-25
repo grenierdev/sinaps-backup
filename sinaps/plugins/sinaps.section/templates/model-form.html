@@ -46,7 +46,7 @@
 						<div class="form-body">
 							{{ schemaForm.langSwitcher() }}
 
-							{{ schemaForm.layoutSwitcher(sectionSchema) }}
+							{{ schemaForm.layoutSwitcher(sectionSchema, model.get('layout')) }}
 
 							{{ fields.field({
 								type: 'date',
@@ -59,7 +59,7 @@
 								type: 'date',
 								label: 'Expire date',
 								name: 'expireDate',
-								value: model.get('expireDate')|date('YYYY-MM-DD')
+								value: model.get('expireDate')|default('')|date('YYYY-MM-DD')
 							}) }}
 
 							{{ fields.field({
@@ -142,6 +142,12 @@
 						}
 					}
 				});
+			});
+
+			// Layout refresh page with query string
+			$('#layout').on('change', function (e) {
+				var layout = $(this).val();
+				window.location.search = '?layout=' + layout;
 			});
 
 		});

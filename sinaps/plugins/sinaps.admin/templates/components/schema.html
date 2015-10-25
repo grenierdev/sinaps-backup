@@ -17,7 +17,7 @@
 	{% endif %}
 {% endmacro %}
 
-{% macro layoutSwitcher(schema) %}
+{% macro layoutSwitcher(schema, currentLayout) %}
 
 	{% set layouts = [] %}
 	{% for layout in schema.layouts %}
@@ -30,7 +30,7 @@
 	{{ fields.field({
 		type: 'selectbox',
 		name: 'layout',
-		value: section.layout,
+		value: currentLayout,
 		label: 'Layout',
 		options: layouts,
 		required: true
