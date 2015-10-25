@@ -128,7 +128,9 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 								parentId: {
 									type: mongoose.Schema.Types.ObjectId,
 									index: true,
-									required: true
+									set: function () {
+										return null;
+									}
 								},
 								order: {
 									type: Number,

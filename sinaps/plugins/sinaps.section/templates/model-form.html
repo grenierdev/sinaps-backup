@@ -47,6 +47,15 @@
 							{{ schemaForm.langSwitcher() }}
 
 							{{ schemaForm.layoutSwitcher(sectionSchema, model.get('layout')) }}
+							
+							{% if sectionModel.layout == 'structure' %}
+								{{ fields.field({
+									type: 'text',
+									label: 'Parent',
+									name: 'parentId',
+									value: model.get('parentId')
+								}) }}
+							{% endif %}
 
 							{{ fields.field({
 								type: 'date',

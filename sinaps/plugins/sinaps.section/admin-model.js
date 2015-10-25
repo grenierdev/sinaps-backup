@@ -30,7 +30,21 @@ module.exports = function () {
 		var perpage = 50;
 		var query = {
 			state: { $ne: 'trashed' }
-		}; // TODO Search & results ?
+		};
+
+		switch (section.model.layout) {
+			case 'structure':
+				limit = null;
+				page = 0;
+				break;
+			case 'page':
+				console.error('Whhhhaaaatttt');
+				break;
+			case 'channel':
+			default:
+				// TODO Search & results ?
+				break;
+		}
 
 		async.parallel({
 			count: function (done) {
@@ -44,7 +58,7 @@ module.exports = function () {
 				});
 			},
 			entries: function (done) {
-				section.entryModel.find(query).sort({ postDate: -1 }).exec(function (err, entries) {
+				section.entryModel.find(query).limit(perpage).skip(page * perpage).sort({ postDate: -1 }).exec(function (err, entries) {
 					done(err, entries);
 				});
 			}

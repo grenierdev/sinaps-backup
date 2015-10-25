@@ -122,7 +122,7 @@ module.exports = function () {
 				req.session.messages.push({type: 'success', message: 'Section saved'});
 			}
 
-			res.redirect('/admin/settings/sections/restarting?redirect=/admin/sections/edit/' + sec.model.get('handle'));
+			res.redirect('/admin/settings/sections/restarting?redirect=/admin/settings/sections/edit/' + sec.model.get('handle'));
 		});
 	});
 
@@ -140,7 +140,7 @@ module.exports = function () {
 		});
 
 		//req.session.messages.push({type: 'info', message: 'Section(s) deleted'});
-		res.redirect('/admin/settings/sections/restarting?redirect=/admin/sections/');
+		res.redirect('/admin/settings/sections/restarting?redirect=/admin/settings/sections/');
 	});
 
 	pluginAdmin.settings.router.get('/sections/restarting', function (req, res) {
