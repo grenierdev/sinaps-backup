@@ -1,6 +1,6 @@
 Tasks
 [x] sinaps.section : Channel pagination
-[x] sinaps.section : Delete / trash channel ?
+[x] sinaps.section : Delete / trash channel
 [ ] sinaps.section : Change layout
 [ ] sinaps.section : Structure
 [ ] sinaps.section : Page
@@ -24,6 +24,7 @@ Tasks
 
 [ ] sinaps.core : Plugin's options/configurations
 [x] sinaps.admin : Field pretty value from data
+[ ] sinaps.section : Versioning...
 
 [ ] validation & feedback
 [ ] demo site + examples/tutos
