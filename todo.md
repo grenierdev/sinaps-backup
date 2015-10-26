@@ -2,6 +2,7 @@ Tasks
 [x] sinaps.section : Channel pagination
 [x] sinaps.section : Delete / trash channel
 [x] sinaps.section : Change layout
+[ ] sinaps.section : Field entry picker
 [ ] sinaps.section : Structure
 [ ] sinaps.section : Page
 [ ] sinaps.section : Recherche & results
@@ -16,7 +17,6 @@ Tasks
 [ ] sinaps.asset : Assets transform
 
 [ ] sinaps.asset : Field asset picker
-[ ] sinaps.section : Field entry picker
 
 [ ] sinaps.user : Users
 [ ] sinaps.user : Permissions
