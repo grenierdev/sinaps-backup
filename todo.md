@@ -1,38 +1,54 @@
-Tasks
-[x] sinaps.section : Channel pagination
-[x] sinaps.section : Delete / trash channel
-[x] sinaps.section : Change layout
-[ ] sinaps.section : Field entry picker
-[ ] sinaps.section : Structure
-[ ] sinaps.section : Page
-[ ] sinaps.section : Recherche & results
+#### Reskin
+- [ ] Frame
+- [ ] Frame - Sidebar
+- [ ] Frame - Page title/helper
+- [ ] Frame - Breadcrumb
+- [ ] Content - Portlet/Box
+- [ ] Content - Sidebar/Nav
+- [ ] Content - List/Pagination
+- [ ] Content - Tabs
+- [ ] Content - Form
+- [ ] Field - Text
+- [ ] Field - Password
+- [ ] Field - Number
+- [ ] Field - Checkbox
+- [ ] Field - Selectbox
+- [ ] Field - Date
+- [ ] Field - Time
+- [ ] Field - Dictionary
+- [ ] Field - Matrix
+- [ ] Field - Layouts
+- [ ] Field - Tabs/Fields
+- [ ] Content - Modal
+- [ ] Content - Modal-ception
 
-[ ] sinaps.section : Url des sections
-[ ] sinaps.core : Langue dans les Url
+#### Release Demo
+- [x] sinaps.section : Channel pagination
+- [x] sinaps.section : Delete / trash channel
+- [x] sinaps.section : Change layout
+- [ ] sinaps.section : Field entry picker
+- [ ] sinaps.section : Structure
+- [ ] sinaps.section : Page
+- [ ] sinaps.section : Recherche & results
+- [ ] sinaps.section : Url des sections
+- [ ] sinaps.core : Langue dans les Url
+- [x] sinaps.core : FieldType adv storage + getter/setter
+- [ ] sinaps.asset : Assets source
+- [ ] sinaps.asset : Assets
+- [ ] sinaps.asset : Assets transform
+- [ ] sinaps.asset : Field asset picker
+- [ ] sinaps.user : Users
+- [ ] sinaps.user : Permissions
+- [ ] sinaps.core : Fichier de traduction
+- [ ] sinaps.core : Plugin's options/configurations
+- [x] sinaps.admin : Field pretty value from data
+- [ ] sinaps.section : Versioning...
+- [ ] validation & feedback
+- [ ] demo site + examples/tutos
+- [ ] sinaps.core : PM2 cluster
+- [ ] sinaps.core : IPC cluster
 
-[x] sinaps.core : FieldType adv storage + getter/setter
-
-[ ] sinaps.asset : Assets source
-[ ] sinaps.asset : Assets
-[ ] sinaps.asset : Assets transform
-
-[ ] sinaps.asset : Field asset picker
-
-[ ] sinaps.user : Users
-[ ] sinaps.user : Permissions
-[ ] sinaps.core : Fichier de traduction
-
-[ ] sinaps.core : Plugin's options/configurations
-[x] sinaps.admin : Field pretty value from data
-[ ] sinaps.section : Versioning...
-
-[ ] validation & feedback
-[ ] demo site + examples/tutos
-
-[ ] sinaps.core : PM2 cluster
-[ ] sinaps.core : IPC cluster
-
-Read later
-https://nodejs.org/api/domain.html
-https://www.npmjs.com/package/node-ipc
-https://mozilla.github.io/nunjucks/templating.html#asynceach
+#### Read later
+- https://nodejs.org/api/domain.html
+- https://www.npmjs.com/package/node-ipc
+- https://mozilla.github.io/nunjucks/templating.html#asynceach

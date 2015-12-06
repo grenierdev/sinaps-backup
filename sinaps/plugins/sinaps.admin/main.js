@@ -116,7 +116,7 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 			weight: 10000,
 			title: 'Settings',
 			href: '#',
-			icon: 'fa fa-cogs'
+			icon: 'fa fa-cog'
 		});
 
 		// Once everythign is done

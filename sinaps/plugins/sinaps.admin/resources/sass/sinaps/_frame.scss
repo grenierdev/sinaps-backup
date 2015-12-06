@@ -1,0 +1,59 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,300,500,700);
+
+html {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	font-size: 12px;
+}
+
+body {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background: grayscale($color-light);
+	font-family: Roboto, Arial, sans-serif;
+	box-sizing: border-box;
+
+	> main {
+		border-left: 250px solid;
+
+		> .breadcrumb {
+
+			> li + li:before {
+				padding: 0 0.125em;
+			}
+
+			> li > a,
+			> li + li:before {
+				font-weight: 200;
+				color: lighten(grayscale($color-dark), 50%);
+			}
+
+			/*> li + li:before {
+				content: "\f105";
+				font: normal normal normal 14px/1 FontAwesome;
+			}*/
+
+		}
+	}
+}
+
+.text-normal { font-weight: 400; }
+.text-light { font-weight: 300; }
+.text-bold { font-weight: 500; }
+.text-extrabold { font-weight: 700; }
+
+#page-header {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-top: 1rem;
+
+	padding: 0 0.9375rem;
+	color: darken($color-primary, 10%);
+
+	> h1 {
+		flex-grow: 1;
+	}
+}

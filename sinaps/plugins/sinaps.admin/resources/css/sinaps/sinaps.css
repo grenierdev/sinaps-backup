@@ -1,0 +1,173 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,300,500,700);
+html {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  font-size: 12px; }
+
+body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #f7f7f7;
+  font-family: Roboto, Arial, sans-serif;
+  box-sizing: border-box; }
+  body > main {
+    border-left: 250px solid; }
+    body > main > .breadcrumb {
+      /*> li + li:before {
+				content: "\f105";
+				font: normal normal normal 14px/1 FontAwesome;
+			}*/ }
+      body > main > .breadcrumb > li + li:before {
+        padding: 0 0.125em; }
+      body > main > .breadcrumb > li > a,
+      body > main > .breadcrumb > li + li:before {
+        font-weight: 200;
+        color: #aaaaaa; }
+
+.text-normal {
+  font-weight: 400; }
+
+.text-light {
+  font-weight: 300; }
+
+.text-bold {
+  font-weight: 500; }
+
+.text-extrabold {
+  font-weight: 700; }
+
+#page-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 1rem;
+  padding: 0 0.9375rem;
+  color: #1686b0; }
+  #page-header > h1 {
+    flex-grow: 1; }
+
+body > aside[role="left"] {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  background: #252830;
+  color: #f5f6f8; }
+  body > aside[role="left"] > header {
+    position: relative;
+    display: block; }
+    body > aside[role="left"] > header > a {
+      position: relative;
+      display: block;
+      width: 100%;
+      padding-top: 20px;
+      text-align: center;
+      color: inherit;
+      text-decoration: none; }
+      body > aside[role="left"] > header > a > i {
+        display: block;
+        font-size: 50px;
+        text-align: center; }
+      body > aside[role="left"] > header > a > span {
+        font-size: 20px;
+        text-transform: uppercase; }
+  body > aside[role="left"] > footer .dropdown.open > .profile,
+  body > aside[role="left"] > footer .dropdown > .profile:hover {
+    background-color: #21232a; }
+  body > aside[role="left"] > footer .profile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 48px;
+    padding-left: 20px;
+    padding-right: 15px;
+    font-weight: 400;
+    cursor: pointer; }
+    body > aside[role="left"] > footer .profile:after {
+      content: "\f106";
+      font: normal normal normal 18px/1 FontAwesome;
+      border: 0;
+      width: auto;
+      height: auto; }
+    body > aside[role="left"] > footer .profile > .profile-picture {
+      margin-right: 20px;
+      overflow: hidden;
+      border-radius: 0.25rem; }
+    body > aside[role="left"] > footer .profile > .profile-username {
+      flex-grow: 1; }
+    body > aside[role="left"] > footer .profile + .dropdown-menu {
+      left: 100%;
+      transform: translateX(-25px);
+      top: auto;
+      bottom: 80%; }
+  body > aside[role="left"] > .nav {
+    margin-top: 40px;
+    flex-grow: 1; }
+    body > aside[role="left"] > .nav .nav-item {
+      position: relative;
+      color: #cccdd0; }
+      body > aside[role="left"] > .nav .nav-item.has-children > a:after {
+        position: absolute;
+        right: 20px;
+        top: 14px;
+        content: "\f105";
+        font: normal normal normal 18px/1 FontAwesome;
+        transition: all 0.2s ease-in-out; }
+      body > aside[role="left"] > .nav .nav-item.has-children.active > a:after,
+      body > aside[role="left"] > .nav .nav-item.has-children.current > a:after {
+        transform: rotate(90deg); }
+      body > aside[role="left"] > .nav .nav-item.active,
+      body > aside[role="left"] > .nav .nav-item.current,
+      body > aside[role="left"] > .nav .nav-item:hover {
+        color: #f5f6f8; }
+      body > aside[role="left"] > .nav .nav-item a,
+      body > aside[role="left"] > .nav .nav-item a:visited {
+        display: block;
+        padding: 12px 15px 12px 0;
+        font-size: 14px;
+        font-weight: 200;
+        line-height: 18px;
+        color: inherit;
+        text-decoration: none;
+        transition: all 0.2s ease-in-out; }
+        body > aside[role="left"] > .nav .nav-item a i,
+        body > aside[role="left"] > .nav .nav-item a:visited i {
+          float: left;
+          width: 25px;
+          margin-right: 6px;
+          font-size: 15px;
+          line-height: 22px;
+          text-align: center; }
+      body > aside[role="left"] > .nav .nav-item ul {
+        padding: 0 0 0 18px;
+        display: block;
+        list-style: none;
+        background: #1a1c22;
+        overflow: hidden; }
+    body > aside[role="left"] > .nav > .nav-item {
+      border-left: 3px solid transparent;
+      transition: all 0.2s ease-in-out; }
+      body > aside[role="left"] > .nav > .nav-item.active,
+      body > aside[role="left"] > .nav > .nav-item.current,
+      body > aside[role="left"] > .nav > .nav-item:hover {
+        border-left-color: #1ca8dd; }
+      body > aside[role="left"] > .nav > .nav-item.active > a,
+      body > aside[role="left"] > .nav > .nav-item.current > a,
+      body > aside[role="left"] > .nav > .nav-item > a:hover {
+        background-color: #21232a; }
+      body > aside[role="left"] > .nav > .nav-item > a,
+      body > aside[role="left"] > .nav > .nav-item > a:visited {
+        padding-left: 15px;
+        background-color: transparent;
+        font-size: 16px;
+        line-height: 22px; }
+      body > aside[role="left"] > .nav > .nav-item > ul {
+        padding-left: 33px; }
+
+/*# sourceMappingURL=sinaps.css.map */

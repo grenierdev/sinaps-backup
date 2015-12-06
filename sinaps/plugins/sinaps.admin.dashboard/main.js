@@ -18,7 +18,7 @@ module.exports = {
 			weight: -1000,
 			title: 'Dashboard',
 			href: '/admin/',
-			icon: 'icon-home'
+			icon: 'fa fa-home'
 		});
 
 

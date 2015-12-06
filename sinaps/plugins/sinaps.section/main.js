@@ -90,7 +90,7 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 					weight: 0,
 					title: 'Sections',
 					href: '/admin/settings/sections/',
-					icon: 'icon-drawer'
+					icon: 'fa fa-server'
 				});
 
 				// Build model after everyone messed with the schemas
@@ -102,7 +102,7 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 						weight: 5000 + i,
 						title: section.schema.label,
 						href: '/admin/sections/' + section.schema.handle + '/',
-						icon: 'icon-doc'
+						icon: 'fa fa-newspaper-o'
 					});
 
 					section.entrySchema = section.schema.finalizedSchema();
