@@ -1,11 +1,12 @@
 #### Reskin
-- [ ] Frame
-- [ ] Frame - Sidebar
-- [ ] Frame - Page title/helper
-- [ ] Frame - Breadcrumb
-- [ ] Content - Portlet/Box
-- [ ] Content - Sidebar/Nav
+- [x] Frame
+- [x] Frame - Sidebar
+- [x] Frame - Page title/helper
+- [x] Frame - Breadcrumb
+- [x] Content - Portlet/Box
+- [x] Content - Sidebar/Nav
 - [ ] Content - List/Pagination
+- [ ] Content - Modal
 - [ ] Content - Tabs
 - [ ] Content - Form
 - [ ] Field - Text
@@ -19,7 +20,6 @@
 - [ ] Field - Matrix
 - [ ] Field - Layouts
 - [ ] Field - Tabs/Fields
-- [ ] Content - Modal
 - [ ] Content - Modal-ception
 
 #### Release Demo

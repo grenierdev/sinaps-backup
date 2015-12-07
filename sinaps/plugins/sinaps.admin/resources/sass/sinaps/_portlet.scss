@@ -1,0 +1,49 @@
+
+.portlet {
+
+	display: flex;
+	flex-direction: column;
+	border: 1px solid darken(grayscale($color-light), 5%);
+	border-radius: $border-radius;
+	overflow: hidden;
+	margin-bottom: 1.25rem;
+
+	&.light {
+		background: #ffffff;
+		box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.1);
+
+		> header {
+			color: #797979;
+		}
+	}
+
+	&.dark {
+		background: $color-dark;
+		border-color: darker($color-dark, 5%);
+		color: $color-light;
+	}
+
+	> header {
+		display: flex;
+		flex-direction: row;
+		padding: 1.25rem 1.875rem;
+		border-bottom: 1px solid transparent;
+
+		> .caption {
+			text-transform: uppercase;
+			font-weight: 500;
+			flex-grow: 1;
+		}
+	}
+
+	> main {
+		padding: 1rem;
+		flex-grow: 1;
+	}
+
+	> footer {
+		display: flex;
+		flex-direction: row;
+		padding: 1.25rem 1.875rem;
+	}
+}

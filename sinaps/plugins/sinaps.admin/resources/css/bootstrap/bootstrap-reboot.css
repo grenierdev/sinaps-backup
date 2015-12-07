@@ -252,11 +252,11 @@ blockquote {
   margin: 0 0 1rem; }
 
 a {
-  color: #0275d8;
+  color: #1ca8dd;
   text-decoration: none; }
   a:focus,
   a:hover {
-    color: #014c8c;
+    color: #137499;
     text-decoration: underline; }
   a:focus {
     outline: thin dotted;

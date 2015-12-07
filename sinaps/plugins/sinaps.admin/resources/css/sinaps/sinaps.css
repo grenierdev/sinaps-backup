@@ -3,7 +3,7 @@ html {
   position: relative;
   width: 100%;
   height: 100%;
-  font-size: 12px; }
+  font-size: 16px; }
 
 body {
   position: relative;
@@ -11,20 +11,47 @@ body {
   height: 100%;
   background: #f7f7f7;
   font-family: Roboto, Arial, sans-serif;
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  overflow-x: hidden; }
   body > main {
-    border-left: 250px solid; }
+    position: relative;
+    left: 0;
+    border-left: 0 solid transparent;
+    transition: left 0.2s ease-in-out, border-left-width 0.2s ease-in-out; }
+    @media (max-width: 74.9em) {
+      body > aside[role="left"].open + main {
+        left: 250px; } }
+    @media (min-width: 62em) {
+      body > aside[role="left"] + main {
+        border-left-width: 250px; }
+      body > main [role="sidebar-toggle"],
+      body > main .breadcrumb:not(.has-breadcrumbs) {
+        display: none !important; }
+      body > main > .breadcrumb > li:nth-child(2) {
+        margin-left: 0 !important; } }
     body > main > .breadcrumb {
+      position: relative;
+      min-height: 48px;
       /*> li + li:before {
 				content: "\f105";
 				font: normal normal normal 14px/1 FontAwesome;
 			}*/ }
+      body > main > .breadcrumb > li:nth-child(2) {
+        margin-left: 30px; }
       body > main > .breadcrumb > li + li:before {
         padding: 0 0.125em; }
       body > main > .breadcrumb > li > a,
       body > main > .breadcrumb > li + li:before {
         font-weight: 200;
         color: #aaaaaa; }
+      body > main > .breadcrumb > li:nth-child(2):before {
+        display: none; }
+      body > main > .breadcrumb > li[role="sidebar-toggle"] {
+        position: absolute;
+        top: 0.875rem;
+        left: 1rem;
+        font-size: 1.25rem;
+        line-height: 1rem; }
 
 .text-normal {
   font-weight: 400; }
@@ -50,7 +77,7 @@ body {
 
 body > aside[role="left"] {
   position: fixed;
-  left: 0;
+  left: -250px;
   top: 0;
   bottom: 0;
   z-index: 100;
@@ -58,7 +85,14 @@ body > aside[role="left"] {
   flex-direction: column;
   width: 250px;
   background: #252830;
-  color: #f5f6f8; }
+  color: #f5f6f8;
+  overflow: 0;
+  transition: left 0.2s ease-in-out; }
+  @media (min-width: 62em) {
+    body > aside[role="left"] {
+      left: 0; } }
+  body > aside[role="left"].open {
+    left: 0; }
   body > aside[role="left"] > header {
     position: relative;
     display: block; }
@@ -118,7 +152,7 @@ body > aside[role="left"] {
         top: 14px;
         content: "\f105";
         font: normal normal normal 18px/1 FontAwesome;
-        transition: all 0.2s ease-in-out; }
+        transition: transform 0.2s ease-in-out; }
       body > aside[role="left"] > .nav .nav-item.has-children.active > a:after,
       body > aside[role="left"] > .nav .nav-item.has-children.current > a:after {
         transform: rotate(90deg); }
@@ -135,7 +169,7 @@ body > aside[role="left"] {
         line-height: 18px;
         color: inherit;
         text-decoration: none;
-        transition: all 0.2s ease-in-out; }
+        transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out; }
         body > aside[role="left"] > .nav .nav-item a i,
         body > aside[role="left"] > .nav .nav-item a:visited i {
           float: left;
@@ -169,5 +203,38 @@ body > aside[role="left"] {
         line-height: 22px; }
       body > aside[role="left"] > .nav > .nav-item > ul {
         padding-left: 33px; }
+
+.portlet {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #eaeaea;
+  border-radius: 0.25rem;
+  overflow: hidden;
+  margin-bottom: 1.25rem; }
+  .portlet.light {
+    background: #ffffff;
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1); }
+    .portlet.light > header {
+      color: #797979; }
+  .portlet.dark {
+    background: #252830;
+    border-color: darker(#252830, 5%);
+    color: #f5f6f8; }
+  .portlet > header {
+    display: flex;
+    flex-direction: row;
+    padding: 1.25rem 1.875rem;
+    border-bottom: 1px solid transparent; }
+    .portlet > header > .caption {
+      text-transform: uppercase;
+      font-weight: 500;
+      flex-grow: 1; }
+  .portlet > main {
+    padding: 1rem;
+    flex-grow: 1; }
+  .portlet > footer {
+    display: flex;
+    flex-direction: row;
+    padding: 1.25rem 1.875rem; }
 
 /*# sourceMappingURL=sinaps.css.map */

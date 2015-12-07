@@ -20,9 +20,9 @@
 
 	<form method="post">
 		<div class="row">
-			<div class="col-md-9">
+			<div class="col-xs-12 col-xl-9">
 				<div class="portlet light">
-					<div class="portlet-body form">
+					<main class="form">
 						<div class="form-body">
 
 							{{ fields.field({
@@ -85,12 +85,12 @@
 
 							<input type="hidden" name="columns" value="{{ section.columns|json|escape }}" />
 						</div>
-					</div>
+					</main>
 				</div>
 			</div>
-			<div class="col-md-3">
+			<div class="col-xs-12 col-xl-3">
 				<div class="portlet light">
-					<div class="portlet-body form">
+					<main class="form">
 						<div class="form-body">
 							{{ schemaForm.langSwitcher() }}
 
@@ -107,16 +107,16 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</main>
 				</div>
 
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-9">
+			<div class="col-xs-12">
 
 				<div class="portlet light">
-					<div class="portlet-title">
+					<header>
 						<div class="caption">
 							Form Layouts &amp; Tabs &amp; Fields
 						</div>
@@ -142,19 +142,19 @@
 							</div>
 
 						</div>
-					</div>
-					<div class="portlet-body" id="layouts">
+					</header>
+					<main id="layouts">
 
-					</div>
+					</main>
 				</div>
 			</div>
 		</div>
 
 		<div class="row">
-			<div class="col-md-9">
+			<div class="col-xs-12">
 
 				<div class="portlet light">
-					<div class="portlet-title">
+					<header>
 						<div class="caption">
 							List Fields
 						</div>
@@ -168,10 +168,10 @@
 							</div>
 
 						</div>
-					</div>
-					<div class="portlet-body" id="columns">
+					</header>
+					<main id="columns">
 
-					</div>
+					</main>
 				</div>
 			</div>
 		</div>

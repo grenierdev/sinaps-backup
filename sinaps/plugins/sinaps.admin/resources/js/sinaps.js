@@ -7,6 +7,7 @@ $(function () {
 
 	function sidebar () {
 		var $sidebar = $('body > aside[role="left"]'),
+			$toggler = $('body > main [role="sidebar-toggle"]'),
 			speed = 200;
 
 		$sidebar.find('a').each(function () {
@@ -37,5 +38,11 @@ $(function () {
 		});
 
 		$sidebar.find('li.active > ul').show(speed);
+
+		$toggler.on('click', function (e) {
+			e.preventDefault();
+
+			$sidebar.toggleClass('open');
+		})
 	}
 });
