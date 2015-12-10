@@ -1,0 +1,86 @@
+body > main > .modal-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 1000;
+
+	@keyframes modalOpen {
+		from { transform: scale(0); }
+		to { transform: scale(1); }
+	}
+
+	@keyframes modalClose {
+		to { transform: scale(0); }
+		from { transform: scale(1); }
+	}
+
+	@keyframes modalOpenCentered {
+		from { transform: translate3d(-50%, -50%, 0) scale(0); }
+		to { transform: translate3d(-50%, -50%, 0) scale(1); }
+	}
+
+	@keyframes modalCloseCentered {
+		to { transform: translate3d(-50%, -50%, 0) scale(0); }
+		from { transform: translate3d(-50%, -50%, 0) scale(1); }
+	}
+
+	> .modal {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		height: 100vh;
+		padding: 2rem;
+		background: white;
+		animation: modalClose 0.2s ease-in-out forwards;
+		box-shadow: 0 2px 2px rgba(0,0,0,0.2);
+
+		&.open { animation: modalOpen 0.2s ease-in-out forwards; }
+
+		&.small {
+			left: 50%;
+			top: 30vh;
+			width: 30rem;
+			height: 15rem;
+
+			animation: modalCloseCentered 0.2s ease-in-out forwards;
+			&.open { animation: modalOpenCentered 0.2s ease-in-out forwards; }
+		}
+
+
+		> .close {
+			position: absolute;
+			top: 1rem;
+			right: 1rem;
+			font-size: 2rem;
+			line-height: 1rem;
+			font-weight: 300;
+		}
+
+		> header {
+			display: block;
+			margin: -2rem -2rem 0 -2rem;
+			font-weight: 300;
+			font-size: 2rem;
+			line-height: 1;
+			padding: 1rem;
+		}
+
+		> main {
+			display: block;
+			padding-top: 1rem;
+			padding-bottom: 1rem;
+			flex-grow: 1;
+		}
+
+		> footer {
+			display: block;
+			margin: 0 -2rem -2rem -2rem;
+			padding: 1rem;
+		}
+	}
+}

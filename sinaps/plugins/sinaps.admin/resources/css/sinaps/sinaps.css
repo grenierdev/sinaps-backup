@@ -33,7 +33,9 @@ body {
       body > aside[role="left"].open + main {
         left: 250px; } }
     @media (min-width: 62em) {
-      body > aside[role="left"] + main {
+      body > aside[role="left"] + main,
+      body > aside[role="left"].open + main {
+        left: 0;
         border-left-width: 250px; }
       body > main [role="sidebar-toggle"],
       body > main .breadcrumb:not(.has-breadcrumbs) {
@@ -42,7 +44,7 @@ body {
         margin-left: 0 !important; } }
     body > main > .breadcrumb {
       position: relative;
-      min-height: 1.5rem;
+      min-height: 3rem;
       /*> li + li:before {
 				content: "\f105";
 				font: normal normal normal 14px/1 FontAwesome;
@@ -80,8 +82,7 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-top: 1rem;
-  padding: 0 0.9375rem;
+  padding: 1rem 0.9375rem 0;
   color: #1686b0; }
   #page-header > h1 {
     flex-grow: 1; }
@@ -253,5 +254,82 @@ body > aside[role="left"] {
     display: flex;
     flex-direction: row;
     padding: 1.25rem 1.875rem; }
+
+body > main > .modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; }
+
+@keyframes modalOpen {
+  from {
+    transform: scale(0); }
+  to {
+    transform: scale(1); } }
+
+@keyframes modalClose {
+  to {
+    transform: scale(0); }
+  from {
+    transform: scale(1); } }
+
+@keyframes modalOpenCentered {
+  from {
+    transform: translate3d(-50%, -50%, 0) scale(0); }
+  to {
+    transform: translate3d(-50%, -50%, 0) scale(1); } }
+
+@keyframes modalCloseCentered {
+  to {
+    transform: translate3d(-50%, -50%, 0) scale(0); }
+  from {
+    transform: translate3d(-50%, -50%, 0) scale(1); } }
+  body > main > .modal-overlay > .modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    padding: 2rem;
+    background: white;
+    animation: modalClose 0.2s ease-in-out forwards;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2); }
+    body > main > .modal-overlay > .modal.open {
+      animation: modalOpen 0.2s ease-in-out forwards; }
+    body > main > .modal-overlay > .modal.small {
+      left: 50%;
+      top: 30vh;
+      width: 30rem;
+      height: 15rem;
+      animation: modalCloseCentered 0.2s ease-in-out forwards; }
+      body > main > .modal-overlay > .modal.small.open {
+        animation: modalOpenCentered 0.2s ease-in-out forwards; }
+    body > main > .modal-overlay > .modal > .close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 2rem;
+      line-height: 1rem;
+      font-weight: 300; }
+    body > main > .modal-overlay > .modal > header {
+      display: block;
+      margin: -2rem -2rem 0 -2rem;
+      font-weight: 300;
+      font-size: 2rem;
+      line-height: 1;
+      padding: 1rem; }
+    body > main > .modal-overlay > .modal > main {
+      display: block;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      flex-grow: 1; }
+    body > main > .modal-overlay > .modal > footer {
+      display: block;
+      margin: 0 -2rem -2rem -2rem;
+      padding: 1rem; }
 
 /*# sourceMappingURL=sinaps.css.map */

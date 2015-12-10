@@ -47,7 +47,9 @@ body {
 
 		@include media-breakpoint-up(lg) {
 
-			@at-root body > aside[role="left"] + main {
+			@at-root body > aside[role="left"] + main,
+			body > aside[role="left"].open + main {
+				left: 0;
 				border-left-width: $sidebar-left-size;
 			}
 
@@ -63,7 +65,7 @@ body {
 
 		> .breadcrumb {
 			position: relative;
-			min-height: 1.5rem;
+			min-height: 3rem;
 
 			> li:nth-child(2) {
 				margin-left: 30px;
@@ -109,9 +111,8 @@ body {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	margin-top: 1rem;
 
-	padding: 0 0.9375rem;
+	padding: 1rem 0.9375rem 0;
 	color: darken($color-primary, 10%);
 
 	> h1 {

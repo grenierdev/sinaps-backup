@@ -5,7 +5,6 @@
 - [x] Frame - Breadcrumb
 - [x] Content - Portlet/Box
 - [x] Content - Sidebar/Nav
-- [ ] Content - List/Pagination
 - [ ] Content - Modal
 - [ ] Content - Tabs
 - [ ] Content - Form
@@ -20,6 +19,7 @@
 - [ ] Field - Matrix
 - [ ] Field - Layouts
 - [ ] Field - Tabs/Fields
+- [ ] Content - List/Pagination
 - [ ] Content - Modal-ception
 
 #### Release Demo
