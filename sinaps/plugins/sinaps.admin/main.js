@@ -7,7 +7,8 @@ var Navigation = require('./libs/Navigation');
 var FieldType = require('./libs/FieldType');
 
 module.exports = _.extend({}, EventEmitter.prototype, {
-	// FieldType
+	// Expose class
+	Navigation: Navigation,
 	FieldType: FieldType,
 
 	// Admin router

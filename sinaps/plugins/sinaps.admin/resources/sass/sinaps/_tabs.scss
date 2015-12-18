@@ -1,0 +1,136 @@
+$border-size: 3px;
+
+@mixin tabs-vertical() {
+	flex-direction: row;
+
+	> nav > ul.nav {
+		padding: 1rem;
+
+		> li {
+			display: block;
+
+			> a,
+			> a:visited {
+				display: block;
+				margin: 0 -1rem;
+				padding: 0.5rem 1.5rem;
+				color: $color-dark;
+				font-size: 0.8rem;
+				font-weight: 300;
+				border-left: $border-size solid transparent;
+				border-top: none;
+
+				@include transition(background .2s ease-in-out, border .2s ease-in-out);
+
+				&:hover {
+					background: darken(#ffffff, 5%);
+				}
+
+				&.active {
+					background: #ffffff;
+					border-left-color: $color-primary;
+				}
+			}
+		}
+	}
+}
+
+@mixin tabs-horizontal() {
+	flex-direction: column;
+
+	> nav > ul.nav {
+		padding: 0 1rem;
+		text-align: left;
+		white-space: nowrap;
+		letter-spacing: 0;
+
+		> li {
+			display: inline-block;
+
+			> a,
+			> a:visited {
+				display: inline-block;
+				padding: 1rem;
+				color: $color-dark;
+				font-size: 0.8rem;
+				font-weight: 300;
+				border-top: $border-size solid transparent;
+
+				@include transition(background .2s ease-in-out, border .2s ease-in-out);
+
+				&:hover {
+					background: darken(#ffffff, 5%);
+				}
+
+				&.active {
+					background: #ffffff;
+					border-top-color: $color-primary;
+				}
+			}
+		}
+	}
+}
+
+.tabs {
+
+	display: flex;
+
+	> nav {
+		background: #fafafa;
+	}
+
+	> main {
+		flex-grow: 1;
+		padding: 1rem;
+
+		 > .tab-content > .tab-pane > .tabs {
+			margin: -1rem;
+		}
+	}
+
+	@include media-breakpoint-up(xs) {
+		&.tabs-xs-vertical {
+			@include tabs-vertical();
+		}
+		&.tabs-xs-horizontal {
+			@include tabs-horizontal();
+		}
+	}
+
+	@include media-breakpoint-up(sm) {
+		&.tabs-sm-vertical {
+			@include tabs-vertical();
+		}
+		&.tabs-sm-horizontal {
+			@include tabs-horizontal();
+		}
+	}
+
+	@include media-breakpoint-up(md) {
+		&.tabs-md-vertical {
+			@include tabs-vertical();
+		}
+		&.tabs-md-horizontal {
+			@include tabs-horizontal();
+		}
+	}
+
+	@include media-breakpoint-up(lg) {
+		&.tabs-lg-vertical {
+			@include tabs-vertical();
+		}
+		&.tabs-lg-horizontal {
+			@include tabs-horizontal();
+		}
+	}
+
+	@include media-breakpoint-up(xl) {
+		&.tabs-xl-vertical {
+			@include tabs-vertical();
+		}
+		&.tabs-xl-horizontal {
+			@include tabs-horizontal();
+		}
+	}
+
+}

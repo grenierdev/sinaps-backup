@@ -1,0 +1,37 @@
+{% extends "sinaps.admin/_frame.html" %}
+
+{% set title = 'Developer' %}
+{% set subtitle = '' %}
+{% set breadcrumbs = [{
+	href: '/admin/developer/',
+	title: 'Developer'
+}] %}
+
+{% block content %}
+
+	{% set sidebar = sinaps.require('sinaps.admin.developer').sidebar %}
+
+	<div class="portlet light">
+		<main>
+
+			{% macro navItem(item) %}
+				<li class="nav-item {% if item.items.length > 0 %}has-children{% endif %}">
+					<a class="nav-link" href="#tab-{{loop.index}}">
+						{% if item.icon %}<i class="{{item.icon}} fa-fw"></i>{% endif %}
+						<span class="title">{{item.title}}</span>
+						{% if item.items.length > 0 %}<span class="arrow "></span>{% endif %}
+						{% if item.label %}<span class="badge badge-{{item.labelColor}}">{{item.label}}</span>{% endif %}
+						{% if item.badge %}<span class="badge badge-{{item.badgeColor}} badge-roundless">{{item.badge}}</span>{% endif %}
+					</a>
+				</li>
+			{% endmacro %}
+			{% for item in sidebar.items %}
+				{{navItem(item)}}
+			{% endfor %}
+
+		</main>
+	</div>
+
+
+
+{% endblock %}

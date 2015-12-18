@@ -5,8 +5,9 @@
 - [x] Frame - Breadcrumb
 - [x] Content - Portlet/Box
 - [x] Content - Sidebar/Nav
-- [ ] Content - Modal
-- [ ] Content - Tabs
+- [x] Content - Modal
+- [x] Content - Tabs
+- [ ] Styles
 - [ ] Content - Form
 - [ ] Field - Text
 - [ ] Field - Password

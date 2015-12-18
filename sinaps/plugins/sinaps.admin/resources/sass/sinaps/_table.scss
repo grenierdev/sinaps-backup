@@ -1,0 +1,50 @@
+.table {
+
+	&.table-data {
+
+		> thead th.sorted {
+			background: darken($color-light, 1%);
+		}
+	}
+
+	&.table-structure {
+
+		> tbody {
+			position: relative;
+			overflow: auto;
+
+			[data-struct-collapse],
+			[data-struct-sorthandle] {
+				display: inline-block;
+				width: 1rem;
+				text-align: center;
+				color: black;
+			}
+
+			[data-struct-collapse] {
+				margin-left: -1rem;
+
+				@include transition(transform .2s ease-in-out);
+			}
+
+			tr.open {
+				[data-struct-collapse] {
+					transform: rotate(90deg);
+				}
+			}
+
+			[data-struct-sorthandle] {
+				cursor: move;
+			}
+
+			[data-struct-pusher] {
+				display: inline-block;
+				width: 0;
+			}
+
+			.ui-sortable-helper {
+				background: white;
+			}
+		}
+	}
+}

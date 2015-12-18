@@ -19,7 +19,7 @@
 			{% macro navItem(item) %}
 				<li class="nav-item {% if item.items.length > 0 %}has-children{% endif %}">
 					<a class="nav-link" href="{{item.href|default('javascript:;')}}">
-						{% if item.icon %}<i class="{{item.icon}}"></i>{% endif %}
+						{% if item.icon %}<i class="{{item.icon}} fa-fw"></i>{% endif %}
 						<span class="title">{{item.title}}</span>
 						{% if item.items.length > 0 %}<span class="arrow "></span>{% endif %}
 						{% if item.label %}<span class="badge badge-{{item.labelColor}}">{{item.label}}</span>{% endif %}
@@ -106,10 +106,6 @@
 				</div>
 			</div>
 		</div>
-
-		<div class="modal-overlay">
-
-		</div>
 	</main>
 
 	<link href="/admin/resources/css/font-awesome.css" rel="stylesheet" type="text/css"/>
@@ -117,6 +113,7 @@
 	<link href="/admin/resources/css/bootstrap/bootstrap.css" rel="stylesheet" type="text/css"/>
 	<link href="/admin/resources/css/sinaps/sinaps.css" rel="stylesheet" type="text/css"/>
 	<script src="/admin/resources/js/plugins/jquery.js" type="text/javascript"></script>
+	<script src="/admin/resources/js/plugins/jquery-ui.js" type="text/javascript"></script>
 	<script src="/admin/resources/js/plugins/bootstrap.js" type="text/javascript"></script>
 	<script src="/admin/resources/js/plugins/lodash.js" type="text/javascript"></script>
 	<script src="/admin/resources/js/plugins/lodash.paths.js" type="text/javascript"></script>

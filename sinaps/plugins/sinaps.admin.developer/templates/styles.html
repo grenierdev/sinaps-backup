@@ -1,0 +1,435 @@
+{% extends "sinaps.admin/_frame.html" %}
+
+{% set title = 'Styles' %}
+{% set subtitle = '' %}
+{% set breadcrumbs = [{
+	href: '/admin/developer/',
+	title: 'Developer'
+}, {
+	href: '/admin/developer/styles/',
+	title: 'Styles'
+}] %}
+
+{% block content %}
+
+	<div class="portlet light">
+		<main>
+			This theme is based on Bootstrap 4, see <a href="http://v4-alpha.getbootstrap.com/getting-started/introduction/" target="_blank">bootstrap styles</a>.
+		</main>
+	</div>
+
+	<h2>Portlet</h2>
+	<div class="row">
+		<div class="col-xs-12 col-md-6">
+			<div class="portlet">
+				<header>
+					<div class="caption">
+						Portlet
+					</div>
+					<div class="actions">
+
+					</div>
+				</header>
+				<main>
+					Content
+				</main>
+				<footer>
+					Footer
+				</footer>
+			</div>
+		</div>
+		<div class="col-xs-12 col-md-6">
+			<div class="portlet light">
+				<header>
+					<div class="caption">
+						Portlet Light
+					</div>
+					<div class="actions">
+
+					</div>
+				</header>
+				<main>
+					Content
+				</main>
+				<footer>
+					Footer
+				</footer>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-12 col-md-6">
+			<h2>Sidebar</h2>
+			<div class="portlet light">
+				<main>
+					<div class="sidebar no-margin">
+						<ul class="nav">
+							<li class="nav-item">
+								<a class="nav-link" href="#">Link 1</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link active" href="#">Link 2</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">Link 3</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">Link 4</a>
+							</li>
+						</ul>
+						<main>
+							Right content
+						</main>
+					</div>
+				</main>
+			</div>
+		</div>
+		<div class="col-sm-12 col-md-6">
+			<h2>Sidebar tabs</h2>
+			<div class="portlet light">
+				<main>
+					<div class="sidebar no-margin">
+						<ul class="nav">
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" href="#tab1A" role="tab">Tab A</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link active" data-toggle="tab" href="#tab1B" role="tab">Tab B</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" href="#tab1C" role="tab">Tab C</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" href="#tab1D" role="tab">Tab D</a>
+							</li>
+						</ul>
+						<main>
+							<div class="tab-content">
+								<div class="tab-pane" id="tab1A" role="tabpanel">...A</div>
+								<div class="tab-pane active" id="tab1B" role="tabpanel">...B</div>
+								<div class="tab-pane" id="tab1C" role="tabpanel">...C</div>
+								<div class="tab-pane" id="tab1D" role="tabpanel">...D</div>
+							</div>
+						</main>
+					</div>
+				</main>
+			</div>
+		</div>
+	</div>
+
+	<h2>Tabs</h2>
+	<div class="portlet light">
+		<main>
+			<div class="tabs tabs-xs-horizontal tabs-md-vertical no-margin">
+				<nav>
+					<ul class="nav">
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#tab2A" role="tab">Tab A</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link active" data-toggle="tab" href="#tab2B" role="tab">Tab B</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#tab2C" role="tab">Tab C</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#tab2D" role="tab">Tab D</a>
+						</li>
+					</ul>
+				</nav>
+				<main>
+					<div class="tab-content">
+						<div class="tab-pane" id="tab2A" role="tabpanel">...A</div>
+						<div class="tab-pane active" id="tab2B" role="tabpanel">...B</div>
+						<div class="tab-pane" id="tab2C" role="tabpanel">...C</div>
+						<div class="tab-pane" id="tab2D" role="tabpanel">...D</div>
+					</div>
+				</main>
+			</div>
+		</main>
+	</div>
+
+	<h2>Nested tabs</h2>
+	<div class="portlet light">
+		<main>
+			<div class="tabs tabs-xs-vertical no-margin">
+				<nav>
+					<ul class="nav">
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#tab4A" role="tab">Tab A</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link active" data-toggle="tab" href="#tab4B" role="tab">Tab B</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#tab4C" role="tab">Tab C</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#tab4D" role="tab">Tab D</a>
+						</li>
+					</ul>
+				</nav>
+				<main>
+					<div class="tab-content">
+						<div class="tab-pane" id="tab4A" role="tabpanel">
+							<div class="tabs tabs-xs-vertical">
+								<nav>
+									<ul class="nav">
+										<li class="nav-item">
+											<a class="nav-link" data-toggle="tab" href="#tab5A" role="tab">Tab A.A</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link active" data-toggle="tab" href="#tab5B" role="tab">Tab A.B</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" data-toggle="tab" href="#tab5C" role="tab">Tab A.C</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" data-toggle="tab" href="#tab5D" role="tab">Tab A.D</a>
+										</li>
+									</ul>
+								</nav>
+								<main>
+									<div class="tab-content">
+										<div class="tab-pane" id="tab5A" role="tabpanel">...A.A</div>
+										<div class="tab-pane active" id="tab5B" role="tabpanel">...A.B</div>
+										<div class="tab-pane" id="tab5C" role="tabpanel">...A.C</div>
+										<div class="tab-pane" id="tab5D" role="tabpanel">...A.D</div>
+									</div>
+								</main>
+							</div>
+						</div>
+						<div class="tab-pane active" id="tab4B" role="tabpanel">...B</div>
+						<div class="tab-pane" id="tab4C" role="tabpanel">...C</div>
+						<div class="tab-pane" id="tab4D" role="tabpanel">...D</div>
+					</div>
+				</main>
+			</div>
+		</main>
+	</div>
+
+	<h2>Modals</h2>
+	<div class="portlet light">
+		<main>
+			<ul>
+				<li><a href="javascript:sinaps.modal.alert('This is a simple alert', 'Custom title', null, 'Ok button');">Alert</a></li>
+				<li><a href="javascript:sinaps.modal.confirm('This is a simple confirm', 'Custom title', null, ['Ok button', 'Cancel button']);">Confirm</a></li>
+				<li><a href="javascript:sinaps.modal.create({title: 'Fullscreen modal', suicide: true}).open().$main.append('Content');">Fullscreen modal</a></li>
+				<li><a href="javascript:sinaps.modal.create({title: 'Fullscreen modal', modal: true, suicide: true}).open().$main.append('Content<br /><br /><a href=\'#\' class=\'close-modal btn btn-primary\'>Close me</a>');">Fullscreen modal without close button</a></li>
+			</ul>
+		</main>
+	</div>
+
+	<h2>List &amp; Data list</h2>
+	<div class="portlet light">
+		<header>
+			<div class="caption">
+				Basic list
+			</div>
+		</header>
+		<main>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Category</th>
+						<th width="1"><i class="fa fa-globe disabled"></i></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for p in [1,2,3,4,5] %}
+						<tr>
+							<td>
+								Title {{p}}
+							</td>
+							<td>Test</td>
+							<td>
+								<a href="#"><i class="fa fa-globe"></i></a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</main>
+	</div>
+	<div class="portlet light">
+		<header>
+			<div class="caption">
+				Data table
+			</div>
+		</header>
+		<main>
+			<table class="table table-data">
+				<thead>
+					<tr>
+						<th width="1">
+							<input type="checkbox" value="" />
+						</th>
+						<th data-field="title">Title</th>
+						<th data-field="category">Category</th>
+						<th data-field="postDate" class="sorted">Post date <span class="pull-right"><i class="fa fa-sort-amount-desc"></i></span></th>
+						<th data-field="expireDate">Expire date</th>
+						<th width="1"></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for p in [1,2,3,4,5] %}
+						<tr>
+							<td>
+								<input type="checkbox" value="" />
+							</td>
+							<td>
+								<i class="fa fa-circle"></i>
+								Title {{p}}
+							</td>
+							<td>Test</td>
+							<td>2015-12-12</td>
+							<td>2015-12-31</td>
+							<td>
+								<a href="#" class="text-danger"><i class="fa fa-minus-circle"></i></a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</main>
+	</div>
+	<div class="portlet light">
+		<header>
+			<div class="caption">
+				Structure table
+			</div>
+		</header>
+		<main>
+			<table class="table table-structure">
+				<thead>
+					<tr>
+						<th width="1">
+							<input type="checkbox" value="" />
+						</th>
+						<th data-field="title">Title</th>
+						<th data-field="category">Category</th>
+						<th data-field="postDate">Post date</th>
+						<th width="1"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-struct-id="1" data-struct-parentid="0" data-struct-order="1">
+						<td>
+							<input type="checkbox" value="" />
+						</td>
+						<td>
+							<i class="fa fa-circle"></i>
+							1. Test
+						</td>
+						<td>Test</td>
+						<td>2015-12-12</td>
+						<td>
+							<a href="#" class="text-danger"><i class="fa fa-minus-circle"></i></a>
+						</td>
+					</tr>
+					<tr data-struct-id="2" data-struct-parentid="0" data-struct-order="0">
+						<td>
+							<input type="checkbox" value="" />
+						</td>
+						<td>
+							<i class="fa fa-circle"></i>
+							2. Test
+						</td>
+						<td>Test</td>
+						<td>2015-12-12</td>
+						<td>
+							<a href="#" class="text-danger"><i class="fa fa-minus-circle"></i></a>
+						</td>
+					</tr>
+					<tr data-struct-id="3" data-struct-parentid="2">
+						<td>
+							<input type="checkbox" value="" />
+						</td>
+						<td>
+							<i class="fa fa-circle"></i>
+							2.1 Test
+						</td>
+						<td>Test</td>
+						<td>2015-12-12</td>
+						<td>
+							<a href="#" class="text-danger"><i class="fa fa-minus-circle"></i></a>
+						</td>
+					</tr>
+					<tr data-struct-id="4" data-struct-parentid="2">
+						<td>
+							<input type="checkbox" value="" />
+						</td>
+						<td>
+							<i class="fa fa-circle"></i>
+							2.2 Test
+						</td>
+						<td>Test</td>
+						<td>2015-12-12</td>
+						<td>
+							<a href="#" class="text-danger"><i class="fa fa-minus-circle"></i></a>
+						</td>
+					</tr>
+					<tr data-struct-id="6" data-struct-parentid="0" data-struct-order="3">
+						<td>
+							<input type="checkbox" value="" />
+						</td>
+						<td>
+							<i class="fa fa-circle"></i>
+							3 Test
+						</td>
+						<td>Test</td>
+						<td>2015-12-12</td>
+						<td>
+							<a href="#" class="text-danger"><i class="fa fa-minus-circle"></i></a>
+						</td>
+					</tr>
+					<tr data-struct-id="7" data-struct-parentid="0" data-struct-order="2">
+						<td>
+							<input type="checkbox" value="" />
+						</td>
+						<td>
+							<i class="fa fa-circle"></i>
+							4 Test
+						</td>
+						<td>Test</td>
+						<td>2015-12-12</td>
+						<td>
+							<a href="#" class="text-danger"><i class="fa fa-minus-circle"></i></a>
+						</td>
+					</tr>
+					<tr data-struct-id="8" data-struct-parentid="7">
+						<td>
+							<input type="checkbox" value="" />
+						</td>
+						<td>
+							<i class="fa fa-circle"></i>
+							4.1 Test
+						</td>
+						<td>Test</td>
+						<td>2015-12-12</td>
+						<td>
+							<a href="#" class="text-danger"><i class="fa fa-minus-circle"></i></a>
+						</td>
+					</tr>
+					<tr data-struct-id="5" data-struct-parentid="3">
+						<td>
+							<input type="checkbox" value="" />
+						</td>
+						<td>
+							<i class="fa fa-circle"></i>
+							2.1.1 Test
+						</td>
+						<td>Test</td>
+						<td>2015-12-12</td>
+						<td>
+							<a href="#" class="text-danger"><i class="fa fa-minus-circle"></i></a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</main>
+	</div>
+
+{% endblock %}

@@ -85,6 +85,12 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 				// Let others extend sections
 				this.emit('loaded');
 
+				pluginAdmin.sidebar.navigation.addItem({
+					title: 'Sections',
+					href: '/admin/sections/',
+					icon: 'fa fa-newspaper-o'
+				});
+
 				// Admin sidebar nav group
 				pluginAdmin.settings.navigation.addItem({
 					weight: 0,
@@ -98,12 +104,12 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 					return section.schema.handle;
 				}).forEach(function (section, i) {
 
-					pluginAdmin.sidebar.navigation.addItem({
+					/*pluginAdmin.sidebar.navigation.addItem({
 						weight: 5000 + i,
 						title: section.schema.label,
 						href: '/admin/sections/' + section.schema.handle + '/',
 						icon: 'fa fa-newspaper-o'
-					});
+					});*/
 
 					section.entrySchema = section.schema.finalizedSchema();
 
@@ -165,8 +171,10 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 		}.bind(this));
 
 		// Initialize admin
-		require('./admin-section.js')();
-		require('./admin-model.js')();
+		//require('./admin-section.js')();
+		//require('./admin-model.js')();
+		require('./admin.js')();
+		require('./settings.js')();
 
 		// All plugin have initalized
 		sinaps.once('idle', function () {
