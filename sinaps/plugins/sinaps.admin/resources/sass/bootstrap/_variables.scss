@@ -270,8 +270,8 @@ $input-border-radius:            $border-radius !default;
 $input-border-radius-lg:         $border-radius-lg !default;
 $input-border-radius-sm:         $border-radius-sm !default;
 
-$input-border-focus:             #66afe9 !default;
-$input-box-shadow-focus:         rgba(102,175,233,.6) !default;
+$input-border-focus:             inherit !default;
+$input-box-shadow-focus:         inherit !default;
 
 $input-color-placeholder:        #999 !default;
 

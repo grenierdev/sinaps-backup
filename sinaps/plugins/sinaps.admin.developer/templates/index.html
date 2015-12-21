@@ -16,7 +16,7 @@
 
 			{% macro navItem(item) %}
 				<li class="nav-item {% if item.items.length > 0 %}has-children{% endif %}">
-					<a class="nav-link" href="#tab-{{loop.index}}">
+					<a class="nav-link" href="{{item.href}}">
 						{% if item.icon %}<i class="{{item.icon}} fa-fw"></i>{% endif %}
 						<span class="title">{{item.title}}</span>
 						{% if item.items.length > 0 %}<span class="arrow "></span>{% endif %}

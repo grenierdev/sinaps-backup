@@ -59,7 +59,7 @@
 	</div>
 
 	<div class="row">
-		<div class="col-sm-12 col-md-6">
+		<div class="col-sm-6">
 			<h2>Sidebar</h2>
 			<div class="portlet light">
 				<main>
@@ -85,7 +85,7 @@
 				</main>
 			</div>
 		</div>
-		<div class="col-sm-12 col-md-6">
+		<div class="col-sm-6">
 			<h2>Sidebar tabs</h2>
 			<div class="portlet light">
 				<main>
@@ -144,65 +144,6 @@
 						<div class="tab-pane active" id="tab2B" role="tabpanel">...B</div>
 						<div class="tab-pane" id="tab2C" role="tabpanel">...C</div>
 						<div class="tab-pane" id="tab2D" role="tabpanel">...D</div>
-					</div>
-				</main>
-			</div>
-		</main>
-	</div>
-
-	<h2>Nested tabs</h2>
-	<div class="portlet light">
-		<main>
-			<div class="tabs tabs-xs-vertical no-margin">
-				<nav>
-					<ul class="nav">
-						<li class="nav-item">
-							<a class="nav-link" data-toggle="tab" href="#tab4A" role="tab">Tab A</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link active" data-toggle="tab" href="#tab4B" role="tab">Tab B</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" data-toggle="tab" href="#tab4C" role="tab">Tab C</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" data-toggle="tab" href="#tab4D" role="tab">Tab D</a>
-						</li>
-					</ul>
-				</nav>
-				<main>
-					<div class="tab-content">
-						<div class="tab-pane" id="tab4A" role="tabpanel">
-							<div class="tabs tabs-xs-vertical">
-								<nav>
-									<ul class="nav">
-										<li class="nav-item">
-											<a class="nav-link" data-toggle="tab" href="#tab5A" role="tab">Tab A.A</a>
-										</li>
-										<li class="nav-item">
-											<a class="nav-link active" data-toggle="tab" href="#tab5B" role="tab">Tab A.B</a>
-										</li>
-										<li class="nav-item">
-											<a class="nav-link" data-toggle="tab" href="#tab5C" role="tab">Tab A.C</a>
-										</li>
-										<li class="nav-item">
-											<a class="nav-link" data-toggle="tab" href="#tab5D" role="tab">Tab A.D</a>
-										</li>
-									</ul>
-								</nav>
-								<main>
-									<div class="tab-content">
-										<div class="tab-pane" id="tab5A" role="tabpanel">...A.A</div>
-										<div class="tab-pane active" id="tab5B" role="tabpanel">...A.B</div>
-										<div class="tab-pane" id="tab5C" role="tabpanel">...A.C</div>
-										<div class="tab-pane" id="tab5D" role="tabpanel">...A.D</div>
-									</div>
-								</main>
-							</div>
-						</div>
-						<div class="tab-pane active" id="tab4B" role="tabpanel">...B</div>
-						<div class="tab-pane" id="tab4C" role="tabpanel">...C</div>
-						<div class="tab-pane" id="tab4D" role="tabpanel">...D</div>
 					</div>
 				</main>
 			</div>
@@ -429,6 +370,117 @@
 					</tr>
 				</tbody>
 			</table>
+		</main>
+	</div>
+
+	<h2>Form</h2>
+	<div class="row">
+		<div class="col-xs-12">
+			http://www.eyecon.ro/bootstrap-colorpicker/<br />
+			https://github.com/eternicode/bootstrap-datepicker/<br />
+			https://github.com/jdewit/bootstrap-timepicker<br />
+			<br />
+		</div>
+	</div>
+	<div class="portlet">
+		<main>
+			<div class="tabs tabs-xs-horizontal no-margin">
+				<nav>
+					<ul class="nav">
+						<li class="nav-item">
+							<a class="nav-link active" data-toggle="tab" href="#formBasic" role="tab">Basic</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#formAdvance" role="tab">Advanced</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#formValidation" role="tab">Validation</a>
+						</li>
+					</ul>
+				</nav>
+				<main>
+					<div class="tab-content">
+						<div class="tab-pane active" id="formBasic" role="tabpanel">
+							<form>
+								<fieldset class="form-group">
+									<label for="text">Text</label>
+									<input type="text" class="form-control form-control-success" id="text" placeholder="Simple text">
+									<small class="text-muted">We'll never share your email with anyone else.</small>
+								</fieldset>
+								<fieldset class="form-group">
+									<label for="select">Example select</label>
+									<select class="form-control" id="select">
+										<option>1</option>
+										<option>2</option>
+										<option>3</option>
+										<option>4</option>
+										<option>5</option>
+									</select>
+								</fieldset>
+								<fieldset class="form-group">
+									<label for="textarea">Example textarea</label>
+									<textarea class="form-control" id="textarea" rows="3"></textarea>
+								</fieldset>
+								<fieldset class="form-group">
+									<label for="file">File input</label>
+									<input type="file" class="form-control-file" id="file">
+									<small class="text-muted">This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.</small>
+								</fieldset>
+								<div class="radio lightswitch">
+									<label>
+										<input type="radio" name="radios" id="radio1" value="option1" checked>
+										<div class="handle"></div>
+										Option one is this and that&mdash;be sure to include why it's great
+									</label>
+								</div>
+								<div class="radio lightswitch">
+									<label>
+										<input type="radio" name="radios" id="radio2" value="option2">
+										<div class="handle"></div>
+										Option two can be something else and selecting it will deselect option one
+									</label>
+								</div>
+								<div class="radio disabled lightswitch">
+									<label>
+										<input type="radio" name="radios" id="radio3" value="option3" disabled>
+										<div class="handle"></div>
+										Option three is disabled
+									</label>
+								</div>
+								<div class="checkbox lightswitch">
+									<label>
+										<input type="checkbox">
+										<div class="handle"></div>
+										Check me out
+									</label>
+								</div>
+							</form>
+						</div>
+						<div class="tab-pane" id="formAdvance" role="tabpanel">
+
+						</div>
+						<div class="tab-pane" id="formValidation" role="tabpanel">
+							<form>
+								<fieldset class="form-group has-success">
+									<label for="success">Success</label>
+									<input type="text" class="form-control form-control-success" id="success" placeholder="Enter email">
+									<small class="text-success">We'll never share your email with anyone else.</small>
+								</fieldset>
+								<fieldset class="form-group has-warning">
+									<label for="warning">Warning</label>
+									<input type="text" class="form-control form-control-warning" id="warning" placeholder="Enter email">
+									<small class="text-warning">We'll never share your email with anyone else.</small>
+								</fieldset>
+								<fieldset class="form-group has-error">
+									<label for="error">Error</label>
+									<input type="text" class="form-control form-control-error" id="error" placeholder="Enter email">
+									<small class="text-danger">We'll never share your email with anyone else.</small>
+								</fieldset>
+							</form>
+						</div>
+					</div>
+				</main>
+			</div>
 		</main>
 	</div>
 

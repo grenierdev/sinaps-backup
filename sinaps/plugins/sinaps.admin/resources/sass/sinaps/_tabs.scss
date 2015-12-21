@@ -3,68 +3,102 @@ $border-size: 3px;
 @mixin tabs-vertical() {
 	flex-direction: row;
 
-	> nav > ul.nav {
-		padding: 1rem;
+	> nav {
+		> ul.nav {
+			padding: 1rem;
+			border-right: 1px solid darken($color-light, 5%);
 
-		> li {
-			display: block;
-
-			> a,
-			> a:visited {
+			> li {
 				display: block;
-				margin: 0 -1rem;
-				padding: 0.5rem 1.5rem;
-				color: $color-dark;
-				font-size: 0.8rem;
-				font-weight: 300;
-				border-left: $border-size solid transparent;
-				border-top: none;
 
-				@include transition(background .2s ease-in-out, border .2s ease-in-out);
+				> a,
+				> a:visited {
+					display: block;
+					margin: 0 -1rem;
+					padding: 0.5rem 1.5rem;
+					color: $color-dark;
+					font-size: 0.8rem;
+					font-weight: 300;
+					border-right: $border-size solid transparent;
+					border-bottom: none;
 
-				&:hover {
-					background: darken(#ffffff, 5%);
+					@include transition(background .2s ease-in-out, border .2s ease-in-out);
+
+					&:hover {
+						background: darken(#ffffff, 5%);
+					}
+
+					&.active {
+						border-right-color: $color-primary;
+					}
 				}
+			}
+		}
+		@at-root .portlet.light > main & {
+			background: #fafafa;
 
-				&.active {
-					background: #ffffff;
-					border-left-color: $color-primary;
+			> ul.nav {
+				border-right: none;
+
+				> li > a,
+				> li > a:visited {
+					&.active {
+						background: #ffffff;
+					}
 				}
 			}
 		}
 	}
+
 }
 
 @mixin tabs-horizontal() {
 	flex-direction: column;
 
-	> nav > ul.nav {
-		padding: 0 1rem;
-		text-align: left;
-		white-space: nowrap;
-		letter-spacing: 0;
+	> nav {
+		> ul.nav {
+			padding: 0 1rem;
+			border-bottom: 1px solid darken($color-light, 5%);
+			text-align: left;
+			white-space: nowrap;
+			letter-spacing: 0;
 
-		> li {
-			display: inline-block;
-
-			> a,
-			> a:visited {
+			> li {
 				display: inline-block;
-				padding: 1rem;
-				color: $color-dark;
-				font-size: 0.8rem;
-				font-weight: 300;
-				border-top: $border-size solid transparent;
 
-				@include transition(background .2s ease-in-out, border .2s ease-in-out);
+				> a,
+				> a:visited {
+					display: inline-block;
+					padding: 1rem;
+					color: $color-dark;
+					font-size: 0.8rem;
+					font-weight: 300;
+					border-bottom: $border-size solid transparent;
 
-				&:hover {
-					background: darken(#ffffff, 5%);
+					@include transition(background .2s ease-in-out, border .2s ease-in-out);
+
+					&:hover {
+						background: darken(#ffffff, 5%);
+					}
+
+					&.active {
+						border-bottom-color: $color-primary;
+					}
 				}
+			}
+		}
 
-				&.active {
-					background: #ffffff;
-					border-top-color: $color-primary;
+		@at-root .portlet.light > main & {
+			background: #fafafa;
+
+			> ul.nav {
+				border-bottom: none;
+
+				> li > a,
+				> li > a:visited {
+					&.active {
+						background: #ffffff;
+					}
 				}
 			}
 		}
@@ -74,10 +108,6 @@ $border-size: 3px;
 .tabs {
 
 	display: flex;
-
-	> nav {
-		background: #fafafa;
-	}
 
 	> main {
 		flex-grow: 1;

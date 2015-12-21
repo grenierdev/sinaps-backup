@@ -23,7 +23,7 @@ html {
 body {
   position: relative;
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   background: #f7f7f7;
   font-family: Roboto, Arial, sans-serif;
   box-sizing: border-box;
@@ -32,6 +32,7 @@ body {
     position: relative;
     left: 0;
     border-left: 0 solid transparent;
+    padding-bottom: 2rem;
     transition: left 0.2s ease-in-out, border-left-width 0.2s ease-in-out; }
     @media (max-width: 74.9em) {
       body > aside[role="left"].open + main {
@@ -227,14 +228,13 @@ body {
   .sidebar > ul.nav,
   .sidebar > nav {
     background: #fafafa;
-    width: 12rem;
     padding: 1rem; }
     .sidebar > ul.nav li > a,
     .sidebar > ul.nav li > a:visited,
     .sidebar > nav li > a,
     .sidebar > nav li > a:visited {
       display: block;
-      padding: 0.5rem 0 0.5rem 1.5rem;
+      padding: 0.5rem 1.5rem;
       margin-left: -1rem;
       color: #252830;
       font-size: 0.8rem;
@@ -424,8 +424,6 @@ body > main > .modal-overlay {
 
 .tabs {
   display: flex; }
-  .tabs > nav {
-    background: #fafafa; }
   .tabs > main {
     flex-grow: 1;
     padding: 1rem; }
@@ -434,7 +432,8 @@ body > main > .modal-overlay {
   .tabs.tabs-xs-vertical {
     flex-direction: row; }
     .tabs.tabs-xs-vertical > nav > ul.nav {
-      padding: 1rem; }
+      padding: 1rem;
+      border-right: 1px solid #e7e9ed; }
       .tabs.tabs-xs-vertical > nav > ul.nav > li {
         display: block; }
         .tabs.tabs-xs-vertical > nav > ul.nav > li > a,
@@ -445,20 +444,27 @@ body > main > .modal-overlay {
           color: #252830;
           font-size: 0.8rem;
           font-weight: 300;
-          border-left: 3px solid transparent;
-          border-top: none;
+          border-right: 3px solid transparent;
+          border-bottom: none;
           transition: background 0.2s ease-in-out, border 0.2s ease-in-out; }
           .tabs.tabs-xs-vertical > nav > ul.nav > li > a:hover,
           .tabs.tabs-xs-vertical > nav > ul.nav > li > a:visited:hover {
             background: #f2f2f2; }
           .tabs.tabs-xs-vertical > nav > ul.nav > li > a.active,
           .tabs.tabs-xs-vertical > nav > ul.nav > li > a:visited.active {
-            background: #ffffff;
-            border-left-color: #1ca8dd; }
+            border-right-color: #1ca8dd; }
+    .portlet.light > main .tabs.tabs-xs-vertical > nav {
+      background: #fafafa; }
+      .portlet.light > main .tabs.tabs-xs-vertical > nav > ul.nav {
+        border-right: none; }
+        .portlet.light > main .tabs.tabs-xs-vertical > nav > ul.nav > li > a.active,
+        .portlet.light > main .tabs.tabs-xs-vertical > nav > ul.nav > li > a:visited.active {
+          background: #ffffff; }
   .tabs.tabs-xs-horizontal {
     flex-direction: column; }
     .tabs.tabs-xs-horizontal > nav > ul.nav {
       padding: 0 1rem;
+      border-bottom: 1px solid #e7e9ed;
       text-align: left;
       white-space: nowrap;
       letter-spacing: 0; }
@@ -471,20 +477,27 @@ body > main > .modal-overlay {
           color: #252830;
           font-size: 0.8rem;
           font-weight: 300;
-          border-top: 3px solid transparent;
+          border-bottom: 3px solid transparent;
           transition: background 0.2s ease-in-out, border 0.2s ease-in-out; }
           .tabs.tabs-xs-horizontal > nav > ul.nav > li > a:hover,
           .tabs.tabs-xs-horizontal > nav > ul.nav > li > a:visited:hover {
             background: #f2f2f2; }
           .tabs.tabs-xs-horizontal > nav > ul.nav > li > a.active,
           .tabs.tabs-xs-horizontal > nav > ul.nav > li > a:visited.active {
-            background: #ffffff;
-            border-top-color: #1ca8dd; }
+            border-bottom-color: #1ca8dd; }
+    .portlet.light > main .tabs.tabs-xs-horizontal > nav {
+      background: #fafafa; }
+      .portlet.light > main .tabs.tabs-xs-horizontal > nav > ul.nav {
+        border-bottom: none; }
+        .portlet.light > main .tabs.tabs-xs-horizontal > nav > ul.nav > li > a.active,
+        .portlet.light > main .tabs.tabs-xs-horizontal > nav > ul.nav > li > a:visited.active {
+          background: #ffffff; }
   @media (min-width: 34em) {
     .tabs.tabs-sm-vertical {
       flex-direction: row; }
       .tabs.tabs-sm-vertical > nav > ul.nav {
-        padding: 1rem; }
+        padding: 1rem;
+        border-right: 1px solid #e7e9ed; }
         .tabs.tabs-sm-vertical > nav > ul.nav > li {
           display: block; }
           .tabs.tabs-sm-vertical > nav > ul.nav > li > a,
@@ -495,20 +508,27 @@ body > main > .modal-overlay {
             color: #252830;
             font-size: 0.8rem;
             font-weight: 300;
-            border-left: 3px solid transparent;
-            border-top: none;
+            border-right: 3px solid transparent;
+            border-bottom: none;
             transition: background 0.2s ease-in-out, border 0.2s ease-in-out; }
             .tabs.tabs-sm-vertical > nav > ul.nav > li > a:hover,
             .tabs.tabs-sm-vertical > nav > ul.nav > li > a:visited:hover {
               background: #f2f2f2; }
             .tabs.tabs-sm-vertical > nav > ul.nav > li > a.active,
             .tabs.tabs-sm-vertical > nav > ul.nav > li > a:visited.active {
-              background: #ffffff;
-              border-left-color: #1ca8dd; }
+              border-right-color: #1ca8dd; }
+      .portlet.light > main .tabs.tabs-sm-vertical > nav {
+        background: #fafafa; }
+        .portlet.light > main .tabs.tabs-sm-vertical > nav > ul.nav {
+          border-right: none; }
+          .portlet.light > main .tabs.tabs-sm-vertical > nav > ul.nav > li > a.active,
+          .portlet.light > main .tabs.tabs-sm-vertical > nav > ul.nav > li > a:visited.active {
+            background: #ffffff; }
     .tabs.tabs-sm-horizontal {
       flex-direction: column; }
       .tabs.tabs-sm-horizontal > nav > ul.nav {
         padding: 0 1rem;
+        border-bottom: 1px solid #e7e9ed;
         text-align: left;
         white-space: nowrap;
         letter-spacing: 0; }
@@ -521,20 +541,27 @@ body > main > .modal-overlay {
             color: #252830;
             font-size: 0.8rem;
             font-weight: 300;
-            border-top: 3px solid transparent;
+            border-bottom: 3px solid transparent;
             transition: background 0.2s ease-in-out, border 0.2s ease-in-out; }
             .tabs.tabs-sm-horizontal > nav > ul.nav > li > a:hover,
             .tabs.tabs-sm-horizontal > nav > ul.nav > li > a:visited:hover {
               background: #f2f2f2; }
             .tabs.tabs-sm-horizontal > nav > ul.nav > li > a.active,
             .tabs.tabs-sm-horizontal > nav > ul.nav > li > a:visited.active {
-              background: #ffffff;
-              border-top-color: #1ca8dd; } }
+              border-bottom-color: #1ca8dd; }
+      .portlet.light > main .tabs.tabs-sm-horizontal > nav {
+        background: #fafafa; }
+        .portlet.light > main .tabs.tabs-sm-horizontal > nav > ul.nav {
+          border-bottom: none; }
+          .portlet.light > main .tabs.tabs-sm-horizontal > nav > ul.nav > li > a.active,
+          .portlet.light > main .tabs.tabs-sm-horizontal > nav > ul.nav > li > a:visited.active {
+            background: #ffffff; } }
   @media (min-width: 48em) {
     .tabs.tabs-md-vertical {
       flex-direction: row; }
       .tabs.tabs-md-vertical > nav > ul.nav {
-        padding: 1rem; }
+        padding: 1rem;
+        border-right: 1px solid #e7e9ed; }
         .tabs.tabs-md-vertical > nav > ul.nav > li {
           display: block; }
           .tabs.tabs-md-vertical > nav > ul.nav > li > a,
@@ -545,20 +572,27 @@ body > main > .modal-overlay {
             color: #252830;
             font-size: 0.8rem;
             font-weight: 300;
-            border-left: 3px solid transparent;
-            border-top: none;
+            border-right: 3px solid transparent;
+            border-bottom: none;
             transition: background 0.2s ease-in-out, border 0.2s ease-in-out; }
             .tabs.tabs-md-vertical > nav > ul.nav > li > a:hover,
             .tabs.tabs-md-vertical > nav > ul.nav > li > a:visited:hover {
               background: #f2f2f2; }
             .tabs.tabs-md-vertical > nav > ul.nav > li > a.active,
             .tabs.tabs-md-vertical > nav > ul.nav > li > a:visited.active {
-              background: #ffffff;
-              border-left-color: #1ca8dd; }
+              border-right-color: #1ca8dd; }
+      .portlet.light > main .tabs.tabs-md-vertical > nav {
+        background: #fafafa; }
+        .portlet.light > main .tabs.tabs-md-vertical > nav > ul.nav {
+          border-right: none; }
+          .portlet.light > main .tabs.tabs-md-vertical > nav > ul.nav > li > a.active,
+          .portlet.light > main .tabs.tabs-md-vertical > nav > ul.nav > li > a:visited.active {
+            background: #ffffff; }
     .tabs.tabs-md-horizontal {
       flex-direction: column; }
       .tabs.tabs-md-horizontal > nav > ul.nav {
         padding: 0 1rem;
+        border-bottom: 1px solid #e7e9ed;
         text-align: left;
         white-space: nowrap;
         letter-spacing: 0; }
@@ -571,20 +605,27 @@ body > main > .modal-overlay {
             color: #252830;
             font-size: 0.8rem;
             font-weight: 300;
-            border-top: 3px solid transparent;
+            border-bottom: 3px solid transparent;
             transition: background 0.2s ease-in-out, border 0.2s ease-in-out; }
             .tabs.tabs-md-horizontal > nav > ul.nav > li > a:hover,
             .tabs.tabs-md-horizontal > nav > ul.nav > li > a:visited:hover {
               background: #f2f2f2; }
             .tabs.tabs-md-horizontal > nav > ul.nav > li > a.active,
             .tabs.tabs-md-horizontal > nav > ul.nav > li > a:visited.active {
-              background: #ffffff;
-              border-top-color: #1ca8dd; } }
+              border-bottom-color: #1ca8dd; }
+      .portlet.light > main .tabs.tabs-md-horizontal > nav {
+        background: #fafafa; }
+        .portlet.light > main .tabs.tabs-md-horizontal > nav > ul.nav {
+          border-bottom: none; }
+          .portlet.light > main .tabs.tabs-md-horizontal > nav > ul.nav > li > a.active,
+          .portlet.light > main .tabs.tabs-md-horizontal > nav > ul.nav > li > a:visited.active {
+            background: #ffffff; } }
   @media (min-width: 62em) {
     .tabs.tabs-lg-vertical {
       flex-direction: row; }
       .tabs.tabs-lg-vertical > nav > ul.nav {
-        padding: 1rem; }
+        padding: 1rem;
+        border-right: 1px solid #e7e9ed; }
         .tabs.tabs-lg-vertical > nav > ul.nav > li {
           display: block; }
           .tabs.tabs-lg-vertical > nav > ul.nav > li > a,
@@ -595,20 +636,27 @@ body > main > .modal-overlay {
             color: #252830;
             font-size: 0.8rem;
             font-weight: 300;
-            border-left: 3px solid transparent;
-            border-top: none;
+            border-right: 3px solid transparent;
+            border-bottom: none;
             transition: background 0.2s ease-in-out, border 0.2s ease-in-out; }
             .tabs.tabs-lg-vertical > nav > ul.nav > li > a:hover,
             .tabs.tabs-lg-vertical > nav > ul.nav > li > a:visited:hover {
               background: #f2f2f2; }
             .tabs.tabs-lg-vertical > nav > ul.nav > li > a.active,
             .tabs.tabs-lg-vertical > nav > ul.nav > li > a:visited.active {
-              background: #ffffff;
-              border-left-color: #1ca8dd; }
+              border-right-color: #1ca8dd; }
+      .portlet.light > main .tabs.tabs-lg-vertical > nav {
+        background: #fafafa; }
+        .portlet.light > main .tabs.tabs-lg-vertical > nav > ul.nav {
+          border-right: none; }
+          .portlet.light > main .tabs.tabs-lg-vertical > nav > ul.nav > li > a.active,
+          .portlet.light > main .tabs.tabs-lg-vertical > nav > ul.nav > li > a:visited.active {
+            background: #ffffff; }
     .tabs.tabs-lg-horizontal {
       flex-direction: column; }
       .tabs.tabs-lg-horizontal > nav > ul.nav {
         padding: 0 1rem;
+        border-bottom: 1px solid #e7e9ed;
         text-align: left;
         white-space: nowrap;
         letter-spacing: 0; }
@@ -621,20 +669,27 @@ body > main > .modal-overlay {
             color: #252830;
             font-size: 0.8rem;
             font-weight: 300;
-            border-top: 3px solid transparent;
+            border-bottom: 3px solid transparent;
             transition: background 0.2s ease-in-out, border 0.2s ease-in-out; }
             .tabs.tabs-lg-horizontal > nav > ul.nav > li > a:hover,
             .tabs.tabs-lg-horizontal > nav > ul.nav > li > a:visited:hover {
               background: #f2f2f2; }
             .tabs.tabs-lg-horizontal > nav > ul.nav > li > a.active,
             .tabs.tabs-lg-horizontal > nav > ul.nav > li > a:visited.active {
-              background: #ffffff;
-              border-top-color: #1ca8dd; } }
+              border-bottom-color: #1ca8dd; }
+      .portlet.light > main .tabs.tabs-lg-horizontal > nav {
+        background: #fafafa; }
+        .portlet.light > main .tabs.tabs-lg-horizontal > nav > ul.nav {
+          border-bottom: none; }
+          .portlet.light > main .tabs.tabs-lg-horizontal > nav > ul.nav > li > a.active,
+          .portlet.light > main .tabs.tabs-lg-horizontal > nav > ul.nav > li > a:visited.active {
+            background: #ffffff; } }
   @media (min-width: 75em) {
     .tabs.tabs-xl-vertical {
       flex-direction: row; }
       .tabs.tabs-xl-vertical > nav > ul.nav {
-        padding: 1rem; }
+        padding: 1rem;
+        border-right: 1px solid #e7e9ed; }
         .tabs.tabs-xl-vertical > nav > ul.nav > li {
           display: block; }
           .tabs.tabs-xl-vertical > nav > ul.nav > li > a,
@@ -645,20 +700,27 @@ body > main > .modal-overlay {
             color: #252830;
             font-size: 0.8rem;
             font-weight: 300;
-            border-left: 3px solid transparent;
-            border-top: none;
+            border-right: 3px solid transparent;
+            border-bottom: none;
             transition: background 0.2s ease-in-out, border 0.2s ease-in-out; }
             .tabs.tabs-xl-vertical > nav > ul.nav > li > a:hover,
             .tabs.tabs-xl-vertical > nav > ul.nav > li > a:visited:hover {
               background: #f2f2f2; }
             .tabs.tabs-xl-vertical > nav > ul.nav > li > a.active,
             .tabs.tabs-xl-vertical > nav > ul.nav > li > a:visited.active {
-              background: #ffffff;
-              border-left-color: #1ca8dd; }
+              border-right-color: #1ca8dd; }
+      .portlet.light > main .tabs.tabs-xl-vertical > nav {
+        background: #fafafa; }
+        .portlet.light > main .tabs.tabs-xl-vertical > nav > ul.nav {
+          border-right: none; }
+          .portlet.light > main .tabs.tabs-xl-vertical > nav > ul.nav > li > a.active,
+          .portlet.light > main .tabs.tabs-xl-vertical > nav > ul.nav > li > a:visited.active {
+            background: #ffffff; }
     .tabs.tabs-xl-horizontal {
       flex-direction: column; }
       .tabs.tabs-xl-horizontal > nav > ul.nav {
         padding: 0 1rem;
+        border-bottom: 1px solid #e7e9ed;
         text-align: left;
         white-space: nowrap;
         letter-spacing: 0; }
@@ -671,14 +733,98 @@ body > main > .modal-overlay {
             color: #252830;
             font-size: 0.8rem;
             font-weight: 300;
-            border-top: 3px solid transparent;
+            border-bottom: 3px solid transparent;
             transition: background 0.2s ease-in-out, border 0.2s ease-in-out; }
             .tabs.tabs-xl-horizontal > nav > ul.nav > li > a:hover,
             .tabs.tabs-xl-horizontal > nav > ul.nav > li > a:visited:hover {
               background: #f2f2f2; }
             .tabs.tabs-xl-horizontal > nav > ul.nav > li > a.active,
             .tabs.tabs-xl-horizontal > nav > ul.nav > li > a:visited.active {
-              background: #ffffff;
-              border-top-color: #1ca8dd; } }
+              border-bottom-color: #1ca8dd; }
+      .portlet.light > main .tabs.tabs-xl-horizontal > nav {
+        background: #fafafa; }
+        .portlet.light > main .tabs.tabs-xl-horizontal > nav > ul.nav {
+          border-bottom: none; }
+          .portlet.light > main .tabs.tabs-xl-horizontal > nav > ul.nav > li > a.active,
+          .portlet.light > main .tabs.tabs-xl-horizontal > nav > ul.nav > li > a:visited.active {
+            background: #ffffff; } }
+
+label {
+  font-weight: 300;
+  margin-bottom: 0; }
+
+.form-control {
+  border: 0;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+  padding-left: 0;
+  padding-right: 0;
+  margin-bottom: 1px;
+  transition: margin 0.2s ease-int-out, border 0.2s ease-in-out; }
+  .form-control:focus {
+    box-shadow: none;
+    border-width: 2px;
+    margin-bottom: 0; }
+
+.radio.lightswitch.disabled > label > .handle,
+.checkbox.lightswitch.disabled > label > .handle {
+  opacity: 0.3; }
+
+.radio.lightswitch > label > input[type="radio"],
+.radio.lightswitch > label > input[type="checkbox"],
+.checkbox.lightswitch > label > input[type="radio"],
+.checkbox.lightswitch > label > input[type="checkbox"] {
+  display: none; }
+  .radio.lightswitch > label > input[type="radio"]:checked ~ .handle:before,
+  .radio.lightswitch > label > input[type="checkbox"]:checked ~ .handle:before,
+  .checkbox.lightswitch > label > input[type="radio"]:checked ~ .handle:before,
+  .checkbox.lightswitch > label > input[type="checkbox"]:checked ~ .handle:before {
+    left: 1em; }
+  .radio.lightswitch > label > input[type="radio"]:checked ~ .handle:after,
+  .radio.lightswitch > label > input[type="checkbox"]:checked ~ .handle:after,
+  .checkbox.lightswitch > label > input[type="radio"]:checked ~ .handle:after,
+  .checkbox.lightswitch > label > input[type="checkbox"]:checked ~ .handle:after {
+    left: 1.5em; }
+
+.radio.lightswitch > label > .handle,
+.checkbox.lightswitch > label > .handle {
+  position: relative;
+  top: 0.125em;
+  margin-left: -1.25em;
+  display: inline-block;
+  width: 2em;
+  height: 1em;
+  background: #1ca8dd;
+  border-radius: 1em;
+  overflow: hidden;
+  box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.2); }
+  .radio.lightswitch > label > .handle:before,
+  .checkbox.lightswitch > label > .handle:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: block;
+    width: 1em;
+    height: 1em;
+    background: white;
+    border-radius: 100%;
+    box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.2), inset 0 0 0.25em rgba(0, 0, 0, 0.4);
+    transition: left 0.2s ease-in-out; }
+  .radio.lightswitch > label > .handle:after,
+  .checkbox.lightswitch > label > .handle:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0.5em;
+    z-index: 1;
+    display: block;
+    width: 2em;
+    height: 1em;
+    background: white;
+    transition: left 0.2s ease-in-out; }
 
 /*# sourceMappingURL=sinaps.css.map */
