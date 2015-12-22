@@ -23,7 +23,7 @@ module.exports = function () {
 		},
 
 		getInputTemplate: function () {
-			return '<div class="input-group input-medium date date-picker" data-date-format="{{ field.format|default("yyyy-mm-dd") }}">\
+			return '<div class="input-group date" role="date" data-date-format="{{ field.format|default("yyyy-mm-dd") }}">\
 	<input 	type="text"\
 	 		class="{{ field.class|default("form-control") }}"\
 			id="{{ field.id|default(field.name) }}"\
@@ -34,8 +34,8 @@ module.exports = function () {
 			{% if field.disabled %} disabled{% endif %}\
 			{% if field.readonly %} readonly{% endif %}\
 	/>\
-	<span class="input-group-btn">\
-		<button class="btn default" type="button"><i class="fa fa-calendar"></i></button>\
+	<span class="input-group-btn" style="order: -1">\
+		<button class="btn date" type="button"><i class="fa fa-calendar"></i></button>\
 	</span>\
 </div>';
 		},
@@ -44,8 +44,24 @@ module.exports = function () {
 			return '{% if field.value %}{{ field.value|date(field.format|default("YYYY-MM-DD")) }}{% endif %}';
 		},
 
+		getIncludedResources: function () {
+			return [{
+				type: 'script',
+				src: '/admin/resources/js/vendors/bootstrap-datepicker/js/bootstrap-datepicker.min.js'
+			}, {
+				type: 'css',
+				src: '/admin/resources/js/vendors/bootstrap-datepicker/css/bootstrap-datepicker4.css'
+			}];
+		},
+
 		getIncludedJS: function () {
-			return '$(".date-picker:not([data-field-discovered])").attr("data-field-discovered", "").datepicker({orientation: "left", autoclose: true});';
+			return '$(".input-group[role=\'date\']:not([data-field-discovered])").attr("data-field-discovered", "").each(function () {\
+				var $date = $(this);\
+				$date.datepicker({\
+					autoclose: true,\
+					format: $date.data("date-format") || "yyyy-mm-dd"\
+				});\
+			});';
 		}
 	}));
 };

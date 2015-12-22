@@ -31,10 +31,14 @@ function FieldType (options) {
 		},
 
 		getFieldTemplate: function (field) {
-			return '<div class="form-group form-md-line-input">\
-	'+ this.getInputTemplate(field) +'\
+			return '<div class="form-group">\
 	<label for="{{ field.id|default(field.name) }}">{{ field.label }}</label>\
-	{% if field.instructions %}<span class="help-block">{{ field.instructions }}</span>{% endif %}\
+	'+ this.getInputTemplate(field) +'\
+	{% if field.instructions %}<small class="text-muted">{{ field.instructions }}</small>{% endif %}\
+	{% if field.success %}<small class="text-success">{{ field.success }}</small>{% endif %}\
+	{% if field.info %}<small class="text-info">{{ field.info }}</small>{% endif %}\
+	{% if field.warning %}<small class="text-warning">{{ field.warning }}</small>{% endif %}\
+	{% if field.error %}<small class="text-error">{{ field.error }}</small>{% endif %}\
 </div>';
 		},
 

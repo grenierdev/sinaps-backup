@@ -10,6 +10,8 @@
 	title: 'Styles'
 }] %}
 
+{% import "sinaps.admin/components/fields.html" as fields %}
+
 {% block content %}
 
 	<div class="portlet light">
@@ -388,20 +390,18 @@
 				<nav>
 					<ul class="nav">
 						<li class="nav-item">
-							<a class="nav-link active" data-toggle="tab" href="#formBasic" role="tab">Basic</a>
+							<a class="nav-link" data-toggle="tab" href="#formBasic" role="tab">Bootstrap fields</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" data-toggle="tab" href="#formAdvance" role="tab">Advanced</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" data-toggle="tab" href="#formValidation" role="tab">Validation</a>
+							<a class="nav-link active" data-toggle="tab" href="#formAdvance" role="tab">Builtin fields</a>
 						</li>
 					</ul>
 				</nav>
 				<main>
 					<div class="tab-content">
-						<div class="tab-pane active" id="formBasic" role="tabpanel">
+						<div class="tab-pane" id="formBasic" role="tabpanel">
 							<form>
+								<h3>Basic inputs</h3>
 								<fieldset class="form-group">
 									<label for="text">Text</label>
 									<input type="text" class="form-control form-control-success" id="text" placeholder="Simple text">
@@ -420,6 +420,18 @@
 								<fieldset class="form-group">
 									<label for="textarea">Example textarea</label>
 									<textarea class="form-control" id="textarea" rows="3"></textarea>
+								</fieldset>
+								<fieldset class="form-group">
+									<label>Example checkbox</label>
+									<div>
+										<div class="checkbox checkbox-inline lightswitch">
+											<label>
+												<input type="checkbox">
+												<div class="handle"></div>
+											</label>
+										</div>
+									</div>
+									<small class="text-muted">This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.</small>
 								</fieldset>
 								<fieldset class="form-group">
 									<label for="file">File input</label>
@@ -454,13 +466,8 @@
 										Check me out
 									</label>
 								</div>
-							</form>
-						</div>
-						<div class="tab-pane" id="formAdvance" role="tabpanel">
 
-						</div>
-						<div class="tab-pane" id="formValidation" role="tabpanel">
-							<form>
+								<h3>Validation</h3>
 								<fieldset class="form-group has-success">
 									<label for="success">Success</label>
 									<input type="text" class="form-control form-control-success" id="success" placeholder="Enter email">
@@ -477,6 +484,119 @@
 									<small class="text-danger">We'll never share your email with anyone else.</small>
 								</fieldset>
 							</form>
+						</div>
+						<div class="tab-pane active" id="formAdvance" role="tabpanel">
+							{{ fields.field({
+								type: 'text',
+								id: 'fieldText',
+								name: 'text',
+								label: 'Text',
+								placeholder: 'This is a single line text field'
+							}) }}
+							{{ fields.field({
+								type: 'text',
+								multiline: true,
+								id: 'fieldMultilineText',
+								name: 'multiline',
+								label: 'Multiline',
+								placeholder: 'This is a multiline text field'
+							}) }}
+							{{ fields.field({
+								type: 'password',
+								id: 'fieldPassword',
+								name: 'password',
+								label: 'Password',
+								placeholder: 'This is a password field'
+							}) }}
+							{{ fields.field({
+								type: 'checkbox',
+								id: 'fieldCheckbox',
+								name: 'checkbox',
+								label: 'Checkbox',
+								value: true,
+								instructions: 'This is a lightswitch'
+							}) }}
+							{{ fields.field({
+								type: 'number',
+								id: 'fieldNumber',
+								name: 'number',
+								label: 'Number',
+								min: 0,
+								max: 10,
+								step: 1,
+								value: 5,
+								instructions: 'This is a number (html5) field'
+							}) }}
+							{{ fields.field({
+								type: 'selectbox',
+								id: 'fieldSelectbox',
+								name: 'selectbox',
+								label: 'Selectbox',
+								instructions: 'This is a selectbox',
+								value: 'b',
+								options: [
+									{
+										value: 'a',
+										label: 'A'
+									},
+									{
+										value: 'b',
+										label: 'B'
+									},
+									{
+										value: 'c',
+										label: 'C'
+									}
+								]
+							}) }}
+							{{ fields.field({
+								type: 'date',
+								id: 'fieldDate',
+								name: 'date',
+								label: 'Date',
+								value: '2015-12-21',
+								placeholder: 'This is a date field'
+							}) }}
+							{{ fields.field({
+								type: 'time',
+								id: 'fieldTime',
+								name: 'time',
+								label: 'Time',
+								value: '14:27',
+								placeholder: 'This is a time field'
+							}) }}
+							{{ fields.field({
+								type: 'dictionary',
+								id: 'fieldDictionary',
+								name: 'dictionary',
+								label: 'Dictionary',
+								instructions: 'This is a dictionary',
+								value: [
+									{
+										value: 'a',
+										label: 'A'
+									},
+									{
+										value: 'b',
+										label: 'B'
+									},
+									{
+										value: 'c',
+										label: 'C'
+									}
+								]
+							}) }}
+
+							{#{% for handle, fieldtype in sinaps.require('sinaps.admin').fieldTypes %}
+								{{ fields.field({
+									type: handle,
+									id: handle,
+									name: handle,
+									label: handle|capitalize,
+									placeholder: handle|capitalize,
+									instructions: handle|capitalize + ' instructions'
+								}) }}
+							{% endfor %}#}
 						</div>
 					</div>
 				</main>

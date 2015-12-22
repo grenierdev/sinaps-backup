@@ -760,13 +760,31 @@ label {
   background-color: transparent;
   box-shadow: none;
   padding-left: 0;
-  padding-right: 0;
-  margin-bottom: 1px;
-  transition: margin 0.2s ease-int-out, border 0.2s ease-in-out; }
+  margin-bottom: 1px; }
   .form-control:focus {
     box-shadow: none;
     border-width: 2px;
     margin-bottom: 0; }
+    .form-control:focus ~ .input-group-btn {
+      margin-bottom: 0;
+      border-width: 2px;
+      border-color: inherit; }
+  .input-group .form-control {
+    margin-bottom: 1px; }
+  .form-control ~ .input-group-btn {
+    height: 2.36rem;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 1px;
+    transition: border-color 0.2s ease-in-out; }
+    .form-control ~ .input-group-btn > .btn {
+      background: none;
+      outline: none;
+      border: none; }
+
+.radio.lightswitch.checkbox-inline, .radio.lightswitch.radio-inline,
+.checkbox.lightswitch.checkbox-inline,
+.checkbox.lightswitch.radio-inline {
+  padding-left: 0; }
 
 .radio.lightswitch.disabled > label > .handle,
 .checkbox.lightswitch.disabled > label > .handle {

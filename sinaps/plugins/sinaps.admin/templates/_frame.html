@@ -117,7 +117,27 @@
 	<script src="/admin/resources/js/plugins/bootstrap.js" type="text/javascript"></script>
 	<script src="/admin/resources/js/plugins/lodash.js" type="text/javascript"></script>
 	<script src="/admin/resources/js/plugins/lodash.paths.js" type="text/javascript"></script>
+	<script src="/admin/resources/js/plugins/nunjucks.js" type="text/javascript"></script>
+
+	{% for handle, fieldtype in sinaps.require('sinaps.admin').fieldTypes -%}
+		{% for resource in fieldtype.getIncludedResources() %}
+			{% if resource.type == 'script' %}
+				<script src="{{ resource.src }}" type="text/javascript"></script>
+			{% elif resource.type == 'css' %}
+				<link href="{{ resource.src }}" rel="stylesheet" type="text/css"/>
+			{% endif %}
+		{% endfor %}
+	{%- endfor %}
 
 	<script src="/admin/resources/js/sinaps.js" type="text/javascript"></script>
+	<script>
+		$(function() {
+			$('body').on('refresh-fields', function (e) {
+				{% for handle, fieldtype in sinaps.require('sinaps.admin').fieldTypes %}
+					{{ fieldtype.getIncludedJS() }}
+				{% endfor %}
+			}).trigger('refresh-fields');
+		});
+	</script>
 </body>
 </html>

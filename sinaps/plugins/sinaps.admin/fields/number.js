@@ -16,13 +16,15 @@ module.exports = function () {
 			}
 		},
 		getInputTemplate: function () {
-			return '<input type="text"\
+			return '<input type="number"\
 	id="{{ field.id|default(field.name) }}"\
 	class="{{ field.class|default("form-control input-sm") }}"\
 	{% if field.name %} name="{{ field.name }}"{% endif %}\
-	{% if field.value %} value="{{ field.value }}"{% endif %}\
+	{% if field.value != null %} value="{{ field.value }}"{% endif %}\
 	{% if field.size %} size="{{ field.size }}"{% endif %}\
-	{% if field.maxlength %} maxlength="{{ field.maxlength }}"{% endif %}\
+	{% if field.max != null %} max="{{ field.max }}"{% endif %}\
+	{% if field.min != null %} min="{{ field.min }}"{% endif %}\
+	{% if field.step %} step="{{ field.step }}"{% endif %}\
 	{% if field.autofocus %} autofocus{% endif %}\
 	{% if field.required %} required{% endif %}\
 	{% if field.disabled %} disabled{% endif %}\
