@@ -114,28 +114,52 @@
 	<link href="/admin/resources/css/sinaps/sinaps.css" rel="stylesheet" type="text/css"/>
 	<script src="/admin/resources/js/plugins/jquery.js" type="text/javascript"></script>
 	<script src="/admin/resources/js/plugins/jquery-ui.js" type="text/javascript"></script>
+	<script src="/admin/resources/js/plugins/jquery-serializeobject.js" type="text/javascript"></script>
 	<script src="/admin/resources/js/plugins/bootstrap.js" type="text/javascript"></script>
 	<script src="/admin/resources/js/plugins/lodash.js" type="text/javascript"></script>
 	<script src="/admin/resources/js/plugins/lodash.paths.js" type="text/javascript"></script>
+	<script src="/admin/resources/js/plugins/moment.js" type="text/javascript"></script>
 	<script src="/admin/resources/js/plugins/nunjucks.js" type="text/javascript"></script>
+	<script src="/admin/resources/js/plugins/nunjucks-ext.js" type="text/javascript"></script>
+	<script src="/admin/resources/js/sinaps.sidebar.js" type="text/javascript"></script>
+	<script src="/admin/resources/js/sinaps.modal.js" type="text/javascript"></script>
+	<script src="/admin/resources/js/sinaps.table.js" type="text/javascript"></script>
+
+	<script type="text/javascript">
+		var sinaps = {
+			fieldTypes: {}
+		};
+		{% for handle, fieldType in sinaps.require('sinaps.admin').getFieldTypes() %}
+			sinaps.fieldTypes[{{ fieldType.handle|json }}] = {
+				handle: {{ fieldType.handle|json }},
+				label: {{ fieldType.label|json }},
+				templates: {
+					field: nunjucks.compile({{ fieldType.getFieldTemplate()|json }}),
+					value: nunjucks.compile({{ fieldType.getValueTemplate()|json }}),
+					settings: nunjucks.compile({{ fieldType.getSettingTemplate()|json }})
+				}
+			};
+		{% endfor %}
+	</script>
 
 	{% for handle, fieldtype in sinaps.require('sinaps.admin').fieldTypes -%}
-		{% for resource in fieldtype.getIncludedResources() %}
-			{% if resource.type == 'script' %}
+		{% for resource in fieldtype.getIncludedResources() -%}
+			{% if resource.type == 'script' -%}
 				<script src="{{ resource.src }}" type="text/javascript"></script>
-			{% elif resource.type == 'css' %}
+			{%- elif resource.type == 'css' -%}
 				<link href="{{ resource.src }}" rel="stylesheet" type="text/css"/>
-			{% endif %}
-		{% endfor %}
+			{%- endif %}
+		{%- endfor %}
 	{%- endfor %}
 
-	<script src="/admin/resources/js/sinaps.js" type="text/javascript"></script>
+	{% block footJS %}{% endblock %}
+
 	<script>
 		$(function() {
 			$('body').on('refresh-fields', function (e) {
-				{% for handle, fieldtype in sinaps.require('sinaps.admin').fieldTypes %}
+				{% for handle, fieldtype in sinaps.require('sinaps.admin').fieldTypes -%}
 					{{ fieldtype.getIncludedJS() }}
-				{% endfor %}
+				{%- endfor %}
 			}).trigger('refresh-fields');
 		});
 	</script>

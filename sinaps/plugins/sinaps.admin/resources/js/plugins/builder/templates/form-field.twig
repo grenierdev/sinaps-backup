@@ -1,0 +1,50 @@
+<form>
+	<div class="form-group">
+		<label for="handle{{ __uid }}">Handle</label>
+		<input type="text" id="handle{{ __uid }}" class="form-control" name="handle" required autofocus value="{{ field.handle|escape }}">
+		<small class="text-muted">How you’ll refer to this layout in the templates.</small>
+	</div>
+	<div class="form-group">
+		<label for="label{{ __uid }}">Label</label>
+		<input type="text" id="label{{ __uid }}" class="form-control" name="label" required value="{{ field.label|escape }}">
+		<small class="text-muted">What this layout will be called in the CP.</small>
+	</div>
+	<div class="form-group">
+		<label for="instructions{{ __uid }}">Instructions</label>
+		<input type="text" id="instructions{{ __uid }}" class="form-control" name="instructions" value="{{ field.instructions|escape }}">
+		<small class="text-muted">Help text shown under the field (like this) to assist the user.</small>
+	</div>
+	<div class="checkbox lightswitch">
+		<label>
+			<input id="required{{ __uid }}" type="checkbox" name="required" {% if field.required %}checked{% endif %}>
+			<div class="handle"></div>
+			This field is required
+		</label>
+	</div>
+	<div class="checkbox lightswitch">
+		<label>
+			<input id="index{{ __uid }}" type="checkbox" name="index" {% if field.index %}checked{% endif %}>
+			<div class="handle"></div>
+			This field is indexed
+		</label>
+	</div>
+	<div class="checkbox lightswitch">
+		<label>
+			<input id="lang{{ __uid }}" type="checkbox" name="lang" {% if field.lang %}checked{% endif %}>
+			<div class="handle"></div>
+			This field is translatable
+		</label>
+	</div>
+
+	<fieldset class="form-group">
+		<label for="input{{ __uid }}">Field type</label>
+		<select class="form-control" id="input{{ __uid }}" name="input">
+			{% for handle, fieldType in __fieldTypes %}
+				<option value="{{ fieldType.handle }}" {% if field.input == fieldType.handle %}selected{% endif %}>{{ fieldType.label }}</option>
+			{% endfor %}
+		</select>
+		<small class="text-muted">Changing this may result in data lost</small>
+	</fieldset>
+
+	{{ settings|safe }}
+</form>

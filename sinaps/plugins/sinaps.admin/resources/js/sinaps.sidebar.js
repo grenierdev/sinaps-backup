@@ -1,4 +1,4 @@
-window.sinaps = window.sinaps || {};
+window.sinaps = typeof window.sinaps !== 'undefined' ? window.sinaps : {};
 
 $(function () {
 	var $sidebar = $('body > aside[role="left"]'),

@@ -5,17 +5,18 @@ label {
 
 .form-control {
 	border: 0;
+	outline: 0;
 	border-bottom: 1px solid $input-border;
 	border-radius: 0;
 	background-color: transparent;
     box-shadow: none;
     padding-left: 0;
-	margin-bottom: 1px;
+	padding-bottom: unquote("calc(") $input-padding-y unquote(" + 1px)");
 
 	&:focus {
 		box-shadow: none;
 		border-width: 2px;
-		margin-bottom: 0;
+		padding-bottom: $input-padding-y;
 
 		& ~ .input-group-btn {
 			margin-bottom: 0;

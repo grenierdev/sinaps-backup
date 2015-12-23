@@ -1,5 +1,6 @@
+window.sinaps = typeof window.sinaps !== 'undefined' ? window.sinaps : {};
+
 $(function () {
-	var sinaps = window.sinaps = {};
 
 	var $modalContainer = $('body > main', window.top.document);
 
@@ -47,6 +48,10 @@ $(function () {
 
 		this.$container.on('animationend webkitAnimationEnd oanimationend MSAnimationEnd', function (e) {
 			this.$container.trigger(this.$container.hasClass('open') ? 'modal-opened' : 'modal-closed');
+		}.bind(this));
+
+		this.$container.on('modal-opened', function (e) {
+			this.$container.find('[autofocus]:first').focus();
 		}.bind(this));
 
 		if (typeof options.onOpen === 'function') {
@@ -138,7 +143,7 @@ $(function () {
 		return this;
 	};
 
-	sinaps.modal = {
+	sinaps.Modal = {
 		create: function (options) {
 			return new Modal(options);
 		},

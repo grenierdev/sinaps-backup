@@ -1,5 +1,6 @@
+window.sinaps = typeof window.sinaps !== 'undefined' ? window.sinaps : {};
+
 $(function () {
-	var sinaps = window.sinaps = {};
 
 	// TODO collapse state save to localStorage + URL
 

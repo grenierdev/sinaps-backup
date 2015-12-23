@@ -1,0 +1,38 @@
+<div class="no-margin">
+	<h5 class="p-a">{{ label|default('Fields') }}</h5>
+	<div class="btn-toolbar" role="toolbar">
+		<div class="btn-group" role="group">
+			<a class="btn btn-sm" role="create">
+				<i class="fa fa-plus"></i>
+			</a>
+			<a class="btn btn-sm" role="paste">
+				<i class="fa fa-paste"></i>
+			</a>
+		</div>
+	</div>
+	<table class="table table-structure" style="font-size: 0.8rem">
+		<tbody>
+			{% for field in fields %}
+				<tr data-struct-id="{{ field.__uid + 1 }}" data-struct-parentid="0" data-struct-order="{{ field.__uid }}">
+					<td>
+						<a href="#" role="edit" data-fieldid="{{ field.__uid }}">
+							{{ field.label }} <small>({{ field.handle }})</small>
+						</a>
+						{% for key, value in field.flatten -%}
+							<input type="hidden" name="{{ name }}[{{ field.__uid }}][{{ key.split('.').join('][') }}]" value="{{ value|escape }}">
+						{%- endfor %}
+					</td>
+					<td>{{ field.input|capitalize }}</td>
+					<td class="text-nowrap text-right">
+						<a href="#" role="copy" data-fieldid="{{ field.__uid }}">
+							<i class="fa fa-copy"></i>
+						</a>
+						<a href="#" role="remove" data-fieldid="{{ field.__uid }}">
+							<i class="fa fa-trash-o"></i>
+						</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>

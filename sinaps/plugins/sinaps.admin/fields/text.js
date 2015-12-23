@@ -34,7 +34,7 @@ module.exports = function () {
 			return '{% if field.multiline %}\
 	<textarea\
 		id="{{ field.id|default(field.name) }}"\
-		class="{{ field.class|default("form-control input-sm") }}"\
+		class="{{ field.class|default("form-control") }}"\
 		{% if field.name %} name="{{ field.name }}"{% endif %}\
 		{% if field.rows %} rows="{{ field.rows }}"{% endif %}\
 		{% if field.autofocus %} autofocus{% endif %}\
@@ -46,7 +46,7 @@ module.exports = function () {
 {% else %}\
 	<input type="text"\
 		id="{{ field.id|default(field.name) }}"\
-		class="{{ field.class|default("form-control input-sm") }}"\
+		class="{{ field.class|default("form-control") }}"\
 		{% if field.name %} name="{{ field.name }}"{% endif %}\
 		{% if field.value %} value="{{ field.value }}"{% endif %}\
 		{% if field.size %} size="{{ field.size }}"{% endif %}\

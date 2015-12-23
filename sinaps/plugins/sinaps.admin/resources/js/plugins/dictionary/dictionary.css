@@ -13,10 +13,10 @@
 
 [role="dictionary"] .keys > .key {
 	position: relative;
-	display: block;
+	display: flex;
+	flex-direction: row;
 	padding: 0 1.875rem 0.3125rem 1.25rem;
 	margin: 0;
-	background: #f5f5f5;
 	font-size: 0.875rem;
 	color: #888888;
 	white-space: nowrap;
@@ -33,14 +33,26 @@
 }
 
 [role="dictionary"] .keys > .key > .inputs {
-	display: inline-block;
 	width: 50%;
 }
 
 [role="dictionary"] .keys > .key > .inputs > input {
-	display: inline-block;
-	box-sizing: border-box;
 	width: 100%;
+	line-height: 2;
+	border: 0;
+	outline: 0;
+	padding: 0 0 1px 0;
+	border-bottom: 1px solid #ccc;
+	border-radius: 0;
+	background-color: transparent;
+	box-shadow: none;
+	transition: border-color ease-in-out .15s;
+}
+
+[role="dictionary"] .keys > .key > .inputs > input:focus {
+	padding-bottom: 0;
+	border-color: #000000;
+	border-bottom-width: 2px;
 }
 
 [role="dictionary"] .keys > .key > .actions {

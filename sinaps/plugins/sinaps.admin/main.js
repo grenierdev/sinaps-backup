@@ -36,6 +36,10 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 		return this.fieldTypes[handle];
 	},
 
+	getFieldTypes: function () {
+		return this.fieldTypes;
+	},
+
 	getFieldTypeFieldTemplates: function () {
 		return _.mapValues(this.fieldTypes, function (field) { return field.getFieldTemplate(); });
 	},
@@ -112,6 +116,9 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 		require('./fields/checkbox')();
 		require('./fields/matrix')();
 		require('./fields/dictionary')();
+		require('./fields/builder-layouts')();
+		require('./fields/builder-tabs')();
+		require('./fields/builder-fields')();
 
 		this.settings.navigation = this.sidebar.navigation.addItem({
 			weight: 10000,

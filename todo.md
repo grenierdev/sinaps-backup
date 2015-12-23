@@ -6,27 +6,19 @@
 - [x] Content - Portlet/Box
 - [x] Content - Sidebar/Nav
 - [x] Content - Modal
+- [x] Content - Modal-ception
 - [x] Content - Tabs
 - [x] Content - Form
-- [ ] Styles
-- [ ] Field - Text
-- [ ] Field - Password
-- [ ] Field - Number
-- [ ] Field - Checkbox
-- [ ] Field - Selectbox
-- [ ] Field - Date
-- [ ] Field - Time
-- [ ] Field - Dictionary
+- [x] Field - Layouts
+- [x] Field - Tabs
+- [x] Field - Fields
 - [ ] Field - Matrix
-- [ ] Field - Layouts
-- [ ] Field - Tabs/Fields
 - [ ] Content - List/Pagination
-- [ ] Content - Modal-ception
 
 #### Release Demo
 - [x] sinaps.section : Channel pagination
 - [x] sinaps.section : Delete / trash channel
-- [x] sinaps.section : Change layout
+- [ ] sinaps.section : Change layout
 - [ ] sinaps.section : Field entry picker
 - [ ] sinaps.section : Structure
 - [ ] sinaps.section : Page
@@ -48,6 +40,7 @@
 - [ ] demo site + examples/tutos
 - [ ] sinaps.core : PM2 cluster
 - [ ] sinaps.core : IPC cluster
+- [ ] sinaps.core : HTTP/2
 
 #### Read later
 - https://nodejs.org/api/domain.html

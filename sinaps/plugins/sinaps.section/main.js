@@ -180,7 +180,7 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 		sinaps.once('idle', function () {
 
 			sinaps.app.use(function (req, res, next) {
-				console.log('Is it a section url ?');
+				console.log('Is ' + req.originalUrl + ' a section?');
 				next();
 				/*res.status(404).render('404', {
 					requested: req.originalUrl

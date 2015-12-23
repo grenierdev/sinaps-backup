@@ -1,0 +1,42 @@
+<div class="tabs tabs-nested tabs-xs-vertical no-margin">
+	<nav class="darker">
+		<h5 class="p-a">{{ label|default('Layouts') }}</h5>
+		<div class="btn-toolbar" role="toolbar">
+			<div class="btn-group" role="group">
+				<a class="btn btn-sm" role="create">
+					<i class="fa fa-plus"></i>
+				</a>
+				<a class="btn btn-sm" role="paste">
+					<i class="fa fa-paste"></i>
+				</a>
+				<a class="btn btn-sm{% if layouts.length == 0 %} disabled{% endif %}" role="copy">
+					<i class="fa fa-copy"></i>
+				</a>
+				<a class="btn btn-sm{% if layouts.length == 0 %} disabled{% endif %}" role="edit">
+					<i class="fa fa-edit"></i>
+				</a>
+				<a class="btn btn-sm{% if layouts.length == 0 %} disabled{% endif %}" role="remove">
+					<i class="fa fa-trash-o"></i>
+				</a>
+			</div>
+		</div>
+		<ul class="nav">
+			{% for layout in layouts %}
+				<li class="nav-item" data-layoutid="{{ layout.__uid }}">
+					<a class="nav-link{% if layout.__active %} active{% endif %}" data-toggle="tab" href="#layout{{ uid }}{{ layout.handle }}" role="tab">{{ layout.label }}</a>
+				</li>
+			{% endfor %}
+		</ul>
+	</nav>
+	<main>
+		<div class="tab-content">
+			{% for layout in layouts %}
+				<div class="tab-pane{% if layout.__active %} active{% endif %}" id="layout{{ uid }}{{ layout.handle }}" role="tabpanel">
+					<input type="hidden" name="{{ name }}[{{ layout.__uid }}][handle]" value="{{ layout.handle|escape }}">
+					<input type="hidden" name="{{ name }}[{{ layout.__uid }}][label]" value="{{ layout.label|escape }}">
+					<input type="hidden" role="builder-tabs" name="{{ name }}[{{ layout.__uid }}][tabs]" value="{{ layout.tabs|json|escape }}">
+				</div>
+			{% endfor %}
+		</div>
+	</main>
+</div>

@@ -87,8 +87,11 @@
   text-align: center;
   width: 1.875rem;
   height: 1.875rem;
-  border-radius: 100%;
+  border-radius: 0.25rem;
   border: none;
+}
+.datepicker table tr td {
+  border-radius: 100%;
 }
 .table-striped .datepicker table tr td,
 .table-striped .datepicker table tr th {
@@ -580,8 +583,8 @@ fieldset[disabled] .datepicker table tr td.active.highlighted.focus {
 .datepicker table tr td span {
   display: block;
   width: 23%;
-  height: 50.25rem;
-  line-height: 50.25rem;
+  height: 3.375rem;
+  line-height: 3.375rem;
   float: left;
   margin: 1%;
   cursor: pointer;

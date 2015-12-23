@@ -156,10 +156,10 @@
 	<div class="portlet light">
 		<main>
 			<ul>
-				<li><a href="javascript:sinaps.modal.alert('This is a simple alert', 'Custom title', null, 'Ok button');">Alert</a></li>
-				<li><a href="javascript:sinaps.modal.confirm('This is a simple confirm', 'Custom title', null, ['Ok button', 'Cancel button']);">Confirm</a></li>
-				<li><a href="javascript:sinaps.modal.create({title: 'Fullscreen modal', suicide: true}).open().$main.append('Content');">Fullscreen modal</a></li>
-				<li><a href="javascript:sinaps.modal.create({title: 'Fullscreen modal', modal: true, suicide: true}).open().$main.append('Content<br /><br /><a href=\'#\' class=\'close-modal btn btn-primary\'>Close me</a>');">Fullscreen modal without close button</a></li>
+				<li><a href="javascript:sinaps.Modal.alert('This is a simple alert', 'Custom title', null, 'Ok button');">Alert</a></li>
+				<li><a href="javascript:sinaps.Modal.confirm('This is a simple confirm', 'Custom title', null, ['Ok button', 'Cancel button']);">Confirm</a></li>
+				<li><a href="javascript:sinaps.Modal.create({title: 'Fullscreen modal', suicide: true}).open().$main.append('Content');">Fullscreen modal</a></li>
+				<li><a href="javascript:sinaps.Modal.create({title: 'Fullscreen modal', modal: true, suicide: true}).open().$main.append('Content<br /><br /><a href=\'#\' class=\'close-modal btn btn-primary\'>Close me</a>');">Fullscreen modal without close button</a></li>
 			</ul>
 		</main>
 	</div>
@@ -376,14 +376,6 @@
 	</div>
 
 	<h2>Form</h2>
-	<div class="row">
-		<div class="col-xs-12">
-			http://www.eyecon.ro/bootstrap-colorpicker/<br />
-			https://github.com/eternicode/bootstrap-datepicker/<br />
-			https://github.com/jdewit/bootstrap-timepicker<br />
-			<br />
-		</div>
-	</div>
 	<div class="portlet">
 		<main>
 			<div class="tabs tabs-xs-horizontal no-margin">
@@ -491,7 +483,8 @@
 								id: 'fieldText',
 								name: 'text',
 								label: 'Text',
-								placeholder: 'This is a single line text field'
+								placeholder: 'This is a single line text field',
+								instructions: 'This is an instruction'
 							}) }}
 							{{ fields.field({
 								type: 'text',
@@ -499,14 +492,16 @@
 								id: 'fieldMultilineText',
 								name: 'multiline',
 								label: 'Multiline',
-								placeholder: 'This is a multiline text field'
+								placeholder: 'This is a multiline text field',
+								instructions: 'This is an instruction'
 							}) }}
 							{{ fields.field({
 								type: 'password',
 								id: 'fieldPassword',
 								name: 'password',
 								label: 'Password',
-								placeholder: 'This is a password field'
+								placeholder: 'This is a password field',
+								instructions: 'This is an instruction'
 							}) }}
 							{{ fields.field({
 								type: 'checkbox',
@@ -586,17 +581,38 @@
 									}
 								]
 							}) }}
-
-							{#{% for handle, fieldtype in sinaps.require('sinaps.admin').fieldTypes %}
-								{{ fields.field({
-									type: handle,
-									id: handle,
-									name: handle,
-									label: handle|capitalize,
-									placeholder: handle|capitalize,
-									instructions: handle|capitalize + ' instructions'
-								}) }}
-							{% endfor %}#}
+							{{ fields.field({
+								type: 'matrix',
+								id: 'fieldMatrix',
+								name: 'matrix',
+								label: 'Matrix',
+								instructions: 'This is a matrix',
+								blocks: [
+									{
+										handle: 'paragraph',
+										label: 'Paragraph',
+										fields: [{
+											input: 'text',
+											handle: 'title',
+											label: 'Title'
+										}, {
+											input: 'text',
+											handle: 'text',
+											label: 'Text',
+											multiline: true
+										}]
+									},
+									{
+										handle: 'photo',
+										label: 'Photo',
+										fields: [{
+											input: 'text',
+											handle: 'title',
+											label: 'Title'
+										}]
+									}
+								]
+							}) }}
 						</div>
 					</div>
 				</main>
