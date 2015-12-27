@@ -1,0 +1,37 @@
+{% extends "sinaps.admin/_frame.html" %}
+
+{% set title = 'Sections' %}
+{% set subtitle = '' %}
+{% set breadcrumbs = [{
+	href: '/admin/sections/',
+	title: 'Sections'
+}] %}
+
+{% block content %}
+	<div class="portlet light">
+		<main>
+			<div class="sidebar no-margin">
+				<ul class="nav">
+					{% for item in nav %}
+						{% if item.handle %}
+							<li class="nav-item">
+								<a class="nav-link{% if item.handle == section.schema.handle %} active{% endif %}" href="/admin/sections/{{ item.handle }}">{{ item.label }}</a>
+							</li>
+						{% elif item.href %}
+							<li class="nav-item">
+								<a class="nav-link" href="{{ item.href }}">{{ item.label }}</a>
+							</li>
+						{% elif item.label %}
+							<li class="nav-item">
+								{{ item.label }}
+							</li>
+						{% endif %}
+					{% endfor %}
+				</ul>
+				<main>
+					{% block tab %}{% endblock %}
+				</main>
+			</div>
+		</main>
+	</div>
+{% endblock %}

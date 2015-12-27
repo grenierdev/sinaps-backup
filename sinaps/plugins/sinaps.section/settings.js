@@ -23,7 +23,7 @@ module.exports = function () {
 	};
 
 	pluginAdmin.settings.router.get('/sections/', function (req, res) {
-		res.render('sinaps.section/section-list', {
+		res.render('sinaps.section/settings-list', {
 			sections: pluginSection.sections
 		});
 	});
@@ -36,7 +36,7 @@ module.exports = function () {
 			delete req.session.data;
 		}
 
-		res.render('sinaps.section/section-form', {
+		res.render('sinaps.section/settings-form', {
 			section: sec,
 			schema: pluginSection.SectionSchema
 		});
@@ -91,7 +91,7 @@ module.exports = function () {
 			delete req.session.data;
 		}
 
-		res.render('sinaps.section/section-form', {
+		res.render('sinaps.section/settings-form', {
 			section: sec.model,
 			schema: pluginSection.SectionSchema
 		});
@@ -144,7 +144,7 @@ module.exports = function () {
 	});
 
 	pluginAdmin.settings.router.get('/sections/restarting', function (req, res) {
-		res.render('sinaps.section/section-restart', {
+		res.render('sinaps.section/settings-restart', {
 			redirect: req.query.redirect
 		});
 

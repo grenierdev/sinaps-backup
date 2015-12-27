@@ -21,13 +21,12 @@ $(function () {
 	function downloadTemplateDone (templates) {
 
 		$('body').on('refresh-fields', function (e) {
-			$('[role="matrix"] > input[data-blocks]:not([data-field-discovered])').attr('data-field-discovered', '').each(function () {
+			$('[role="matrix"] > input:not([data-field-discovered])').attr('data-field-discovered', '').each(function () {
 				var $input = $(this);
 				var $matrix = $input.parent();
 				var id = uid++;
 				var name = $input.attr('name');
-				var dataTypes = $input.data('blocks');
-				var blockTypes = {};
+				var blockTypes = $input.data('blocks');
 				var blocks = $input.val();
 				var depth = $input.parents('[role="matrix"]').length - 1;
 
@@ -46,7 +45,9 @@ $(function () {
 					block.__uid = i;
 				});
 
-				dataTypes.forEach(function (type) {
+				var t = blockTypes;
+				blockTypes = {};
+				t.forEach(function (type) {
 					type.template = '';
 					if (type.fields && _.isArray(type.fields)) {
 						type.fields.forEach(function (field) {
@@ -63,14 +64,17 @@ $(function () {
 					blockTypes[type.handle] = type;
 				});
 
+				console.debug('Matrix', depth, blocks, blockTypes);
+
 				var $view = null;
 				updateView();
 				function updateData () {
 					var form = $view.closest('form').serializeObject();
 					var path = name.replace(/\]\[/g, '.').replace(/(\[)/, '.').replace(/\]$/, '') + '.';
-					for (var a = 0, b = fields.length; a < b; ++a) {
+					for (var a = 0, b = blocks.length; a < b; ++a) {
 						var p = path + a;
-						fields[a] = _.merge({
+						blocks[a] = _.merge({
+							__active: blocks[a].__active,
 							__uid: a
 						}, _.get(form, p));
 					}
@@ -80,11 +84,12 @@ $(function () {
 						$view.remove();
 						$view = null;
 					}
+
 					$view = $($.parseHTML(templates.blocks.render({
 						uid: id,
 						depth: depth,
 						name: name,
-						blockTypes: _.values(blockTypes),
+						blockTypes: blockTypes,
 						blocks: blocks.map(function (block) {
 							return _.merge({
 								__blockType: blockTypes[block.type].label,
@@ -94,11 +99,63 @@ $(function () {
 					})));
 					$input.after($view);
 
-					$('body').trigger('refresh-fields');
+					// Maintain UI active state and data
+					$matrix.on('show.bs.collapse', function (e) {
+						e.stopPropagation();
+						var blockid = $(e.target).closest('[data-blockid]').data('blockid');
+						blocks[blockid].__active = true;
+					});
+					$matrix.on('hide.bs.collapse', function (e) {
+						e.stopPropagation();
+						var blockid = $(e.target).closest('[data-blockid]').data('blockid');
+						blocks[blockid].__active = false;
+					});
 
-					// Popup
-					if (depth > 0) {
-						var $popup = $matrix.find('[role="matrix-popup"]');
+					// Sort blocks
+					$matrix.find('ul.blocks').sortable({
+						tolerance: 'pointer',
+						axis: 'y',
+						items: 'li',
+
+						stop: function (e, ui) {
+							var order = $(this).children().map(function () {
+								return $(this).data('blockid');
+							}).get();
+							updateData();
+							blocks = order.map(function (id, i) {
+								blocks[id].__uid = i;
+								return blocks[id];
+							});
+							updateView();
+						}
+					});
+
+					$matrix.find('[role="matrix-remove"]').on('click', function (e) {
+						e.preventDefault();
+						e.stopPropagation();
+
+						var blockid = $(this).closest('[data-blockid]').data('blockid') || -1;
+						sinaps.Modal.confirm('Are you sure you want to remove this block?', 'Remove block', function (state) {
+							if (state) {
+								updateData();
+								blocks.splice(blockid, 1);
+								updateView();
+							}
+						});
+					});
+
+					// Nested matrices
+					$matrix.find('[role="matrix"]').each(function () {
+						var $submatrix = $(this);
+						var copy = $submatrix.parent().html();
+						var $popup = $('<button type="button" class="btn btn-secondary btn-sm" role="matrix-popup"><i class="fa fa-external-link"></i> Blocks</button>').insertAfter($submatrix);
+						$submatrix.attr('role', 'submatrix'); // prevent sub-matrix discovery
+
+						var data = [];
+						try {
+							data = JSON.parse($submatrix.find('> input').val());
+						} catch (e) {};
+
 						$popup.on('click', function (e) {
 							e.preventDefault();
 
@@ -109,7 +166,7 @@ $(function () {
 
 								onClose: function (e) {
 									if (form) {
-										blocks = form.blocks || [];
+										data = form.blocks || [];
 										updateHidden();
 									}
 								}
@@ -130,8 +187,8 @@ $(function () {
 								matrix: sinaps.fieldTypes.matrix.templates.field.render({
 									field: {
 										name: name,
-										value: blocks,
-										blocks: _.values(blockTypes)
+										value: data,
+										blocks: $submatrix.find('> input').data('blocks')
 									}
 								})
 							})));
@@ -147,83 +204,18 @@ $(function () {
 						});
 
 						updateHidden();
-					}
+						function updateHidden () {
+							$submatrix.nextAll('input[type="hidden"]').remove();
 
-					// Inline actions
-					else {
-						// Maintain UI active state and data
-						$matrix.on('show.bs.collapse', function (e) {
-							e.stopPropagation();
-							var blockid = $(e.target).closest('[data-blockid]').data('blockid');
-							blocks[blockid].__active = true;
-						});
-						$matrix.on('hide.bs.collapse', function (e) {
-							e.stopPropagation();
-							var blockid = $(e.target).closest('[data-blockid]').data('blockid');
-							blocks[blockid].__active = false;
-						});
-
-						// Sort blocks
-						$matrix.find('ul.blocks').sortable({
-							tolerance: 'pointer',
-							axis: 'y',
-							items: 'li',
-
-							stop: function (e, ui) {
-								var order = $(this).children().map(function () {
-									return $(this).data('blockid');
-								}).get();
-								updateData();
-								blocks = order.map(function (id, i) {
-									blocks[id].__uid = i;
-									return blocks[id];
-								});
-								updateView();
-							}
-						});
-
-						// Remove block
-						$matrix.find('[role="matrix-remove"]').on('click', function (e) {
-							e.preventDefault();
-							e.stopPropagation();
-
-							var blockid = $(this).closest('[data-blockid]').data('blockid') || -1;
-							sinaps.Modal.confirm('Are you sure you want to remove this block?', 'Remove block', function (state) {
-								if (state) {
-									updateData();
-									blocks.splice(blockid, 1);
-									updateView();
-								}
+							_.each(_.paths(data), function (v, n) {
+								var $hidden = $('<input type="hidden" name="" value="" />').insertAfter($submatrix);
+								$hidden.attr('name', name + '[' + n.split('.').join('][') + ']');
+								$hidden.val(v);
 							});
-						});
-
-						// TODO Add block
-					}
-
-					function updateData () {
-						var form = $view.closest('form').serializeObject();
-						var path = name.replace(/\]\[/g, '.').replace(/(\[)/, '.').replace(/\]$/, '') + '.';
-						for (var a = 0, b = blocks.length; a < b; ++a) {
-							var p = path + a;
-							blocks[a] = _.merge({
-								__active: blocks[a].__active,
-								__uid: a
-							}, _.get(form, p));
 						}
-					}
+					});
 
-					function updateHidden () {
-						$popup.nextAll('input[type="hidden"]').remove();
-						var $parent = $popup.parent();
-
-						_.each(_.paths(blocks), function (v, n) {
-							var $hidden = $('<input type="hidden" name="" value="" />').appendTo($parent);
-							$hidden.attr('name', name + '[' + n.split('.').join('][') + ']');
-							$hidden.val(v);
-						});
-
-						updateData();
-					}
+					$('body').trigger('refresh-fields');
 				}
 			});
 		});

@@ -1,0 +1,47 @@
+{% extends "sinaps.section/admin-frame.html" %}
+
+{% block tab %}
+	<table class="table table-structure">
+		<thead>
+			<tr>
+				<th width="1">
+					<input type="checkbox" value="" />
+				</th>
+				<th data-field="title">Title</th>
+				<th data-field="category">Category</th>
+				<th data-field="postDate">Post date</th>
+				<th width="1"></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for entry in entries %}
+				<tr data-struct-id="{{ entry.id }}" data-struct-parentid="{{ entry.parentId }}" data-struct-order="{{ entry.order }}">
+					<td>
+						<input type="checkbox" name="ids[]" value="{{ entry.id }}" />
+					</td>
+					<td>
+						<a href="/admin/sections/{{ handle }}/edit/{{ entry.id }}">
+							<i class="fa fa-circle"></i>
+							{{ entry.id }}
+						</a>
+					</td>
+					<td class="text-no-wrap">
+						{{ fields.value({
+							type: 'date',
+							value: entry.postDate
+						}) }}
+					</td>
+					<td class="text-no-wrap">
+						{{ fields.value({
+							type: 'date',
+							value: entry.expireDate
+						}) }}
+					</td>
+					<td>
+						<a href="/admin/sections/{{ handle }}/delete?ids[]={{ entry.id }}" class="text-danger"><i class="fa fa-minus-circle"></i></a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

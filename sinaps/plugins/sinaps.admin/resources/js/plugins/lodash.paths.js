@@ -14,11 +14,11 @@
 _.mixin({
 	paths: function (obj) {
 		var getPaths = function (obj, path) {
-			path = path || '';
+			path = typeof path === 'undefined' ? '' : path;
 			var paths = {};
 
 			_.each(obj, function (v, k) {
-				var p = path ? path + '.' + k : k;
+				var p = path != '' ? path + '.' + k : k + '';
 				if (_.isObject(v) || _.isArray(v)) {
 					_.merge(paths, getPaths(v, p));
 				} else {

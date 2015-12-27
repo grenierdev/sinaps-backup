@@ -1,0 +1,52 @@
+{% extends "sinaps.admin/_frame.html" %}
+
+{% set title = 'Sections' %}
+{% set subtitle = '' %}
+{% set breadcrumbs = [{
+	href: '/admin/sections/',
+	title: 'Sections'
+},{
+	href: '/admin/sections/' + handle + '/',
+	title: section.schema.label
+},{
+	href: '/admin/sections/' + handle + '/edit/' + model.id,
+	title: 'Edit ' + model.id
+}] %}
+
+{% block actions %}
+	<button type="button" class="btn btn-primary">
+		<i class="fa fa-check"></i>
+		Save
+	</button>
+{% endblock %}
+
+{% import 'sinaps.admin/components/fields.html' as fields %}
+{% import 'sinaps.admin/components/schema.html' as schema %}
+
+{% block content %}
+
+	<form method="post">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="portlet light">
+					<main>
+
+						{{ schema.tabs(section.schema, model) }}
+
+					</main>
+				</div>
+			</div>
+		</div>
+	</form>
+
+{% endblock %}
+
+{% block footJS %}
+	<script>
+		$(function () {
+
+
+
+		});
+	</script>
+{% endblock %}

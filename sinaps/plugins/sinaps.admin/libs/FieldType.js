@@ -32,7 +32,7 @@ function FieldType (options) {
 
 		getFieldTemplate: function (field) {
 			return '<div class="form-group">\
-	<label for="{{ field.id|default(field.name) }}">{{ field.label }} {% if field.lang %}<small><code>{{ field.lang|upper }}</code></small>{% endif %}</label>\
+	<label for="{{ field.id|default(field.name) }}">{{ field.label }} {% if field.locale %}<small><code>{{ field.locale|upper }}</code></small>{% endif %}</label>\
 	'+ this.getInputTemplate(field) +'\
 	{% if field.instructions %}<small class="text-muted">{{ field.instructions }}</small>{% endif %}\
 	{% if field.success %}<small class="text-success">{{ field.success }}</small>{% endif %}\

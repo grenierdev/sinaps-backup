@@ -12,7 +12,7 @@
 - [x] Field - Layouts
 - [x] Field - Tabs
 - [x] Field - Fields
-- [ ] Field - Matrix
+- [ ] Content - Matrix
 - [ ] Content - List/Pagination
 
 #### Release Demo

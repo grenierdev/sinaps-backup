@@ -1,0 +1,82 @@
+{% extends "sinaps.section/admin-frame.html" %}
+
+{% import 'sinaps.admin/components/fields.html' as fields %}
+
+{% macro pagination (page, offset, perpage, total) %}
+	{% set pmin = max(page - 5, 0) %}
+	{% set pmax = min(page + 5, floor(total / perpage)) %}
+	{% set querystr = "" %}
+	<div class="row">
+		<div class="col-md-12">
+			<nav>
+				<ul class="pagination">
+					<li {% if page <= 0 %}class="disabled"{% endif %}>
+						<a href="?page=0&min={{ options.min }}{{ querystr }}">&laquo;</a>
+					</li>
+					<li {% if page - 1 < 0 %}class="disabled"{% endif %}>
+						<a href="?page={{ max(page - 1, 0) }}{{ querystr }}">&lsaquo;</a>
+					</li>
+					{% for p in range(pmin, pmax) %}
+						<li {% if p == page %}class="active"{% endif %}>
+							<a href="?page={{ p }}{{ querystr }}">{{ p + 1 }}</a>
+						</li>
+					{% endfor %}
+					<li {% if page + 1 > floor(total / perpage) %}class="disabled"{% endif %}>
+						<a href="?page={{ min(page + 1, floor(total / perpage)) }}{{ querystr }}">&rsaquo;</a>
+					</li>
+					<li {% if page >= floor(total / perpage) %}class="disabled"{% endif %}>
+						<a href="?page={{ floor(total / perpage) }}{{ querystr }}">&raquo;</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+{% endmacro %}
+
+{% block tab %}
+	<table class="table table-data">
+		<thead>
+			<tr>
+				<th width="1">
+					<input type="checkbox" value="" />
+				</th>
+				<th data-field="title">Title</th>
+				<th data-field="postDate" class="sorted">Post date <span class="pull-right"><i class="fa fa-sort-amount-desc"></i></span></th>
+				<th data-field="expireDate">Expire date</th>
+				<th width="1"></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for entry in entries %}
+				<tr>
+					<td>
+						<input type="checkbox" name="ids[]" value="{{ entry.id }}" />
+					</td>
+					<td>
+						<a href="/admin/sections/{{ handle }}/edit/{{ entry.id }}">
+							<i class="fa fa-circle"></i>
+							{{ entry.id }}
+						</a>
+					</td>
+					<td class="text-no-wrap">
+						{{ fields.value({
+							type: 'date',
+							value: entry.postDate
+						}) }}
+					</td>
+					<td class="text-no-wrap">
+						{{ fields.value({
+							type: 'date',
+							value: entry.expireDate
+						}) }}
+					</td>
+					<td>
+						<a href="/admin/sections/{{ handle }}/delete?ids[]={{ entry.id }}" class="text-danger"><i class="fa fa-minus-circle"></i></a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	{{ pagination(page * perpage, offset, perpage, count) }}
+{% endblock %}

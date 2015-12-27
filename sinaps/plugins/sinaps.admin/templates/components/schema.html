@@ -39,7 +39,7 @@
 
 {% macro fields(fields, model) %}
 	{% for field in tab.fields %}
-		{% set fieldtype = pluginAdmin.getFieldType(field.input) %}
+		{% set fieldtype = sinaps.require('sinaps.admin').getFieldType(field.input) %}
 		{% if fieldtype %}
 			{% if field.lang %}
 				{% for lang in sinaps.config.languages %}
@@ -47,7 +47,8 @@
 						{% set field = field|merge({
 							id: field.handle + '[' + lang + ']',
 							name: field.handle + '[' + lang + ']',
-							value: model.get(field.handle + '.' + lang)
+							value: model.get(field.handle + '.' + lang),
+							locale: lang
 						}) %}
 						{{ fieldtype.getFieldHTML(field) }}
 					</div>
@@ -72,25 +73,25 @@
 	{% set layoutHandle = model.get('layout')|default(schema.layouts[0].handle) %}
 	{% if layoutHandle %}
 		{% set layout = schema.getLayout(layoutHandle) %}
-		{% set pluginAdmin = sinaps.require('sinaps.admin') %}
-
-		<div class="tabbable-line">
-			<ul class="nav nav-tabs">
-				{% for tab in layout.tabs %}
-					<li {% if loop.first %}class="active"{% endif %}>
-						<a href="#form_tab_{{ tab.handle }}" data-toggle="tab">
-							{{ tab.label|default(tab.handle) }}
-						</a>
-					</li>
-				{% endfor %}
-			</ul>
-			<div class="tab-content">
-				{% for tab in layout.tabs %}
-					<div id="form_tab_{{ tab.handle }}" class="tab-pane {% if loop.first %}active{% endif %}">
-						{{ fields(tab.fields, model) }}
-					</div>
-				{% endfor %}
-			</div>
+		<div class="tabs tabs-xs-horizontal no-margin">
+			<nav>
+				<ul class="nav">
+					{% for tab in layout.tabs %}
+						<li class="nav-item">
+							<a class="nav-link{% if loop.first %} active{% endif %}" data-toggle="tab" href="#formTab{{ tab.handle }}" role="tab">{{ tab.label|default(tab.handle) }}</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</nav>
+			<main>
+				<div class="tab-content">
+					{% for tab in layout.tabs %}
+						<div class="tab-pane{% if loop.first %} active{% endif %}" id="formTab{{ tab.handle }}" role="tabpanel">
+							{{ fields(tab.fields, model) }}
+						</div>
+					{% endfor %}
+				</div>
+			</main>
 		</div>
 	{% endif %}
 {%- endmacro %}

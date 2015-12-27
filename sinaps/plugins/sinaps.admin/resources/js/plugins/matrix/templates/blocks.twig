@@ -1,0 +1,43 @@
+{% if depth > 0 %}
+	<button type="button" class="btn btn-secondary btn-sm" role="matrix-popup">
+		<i class="fa fa-external-link"></i>
+		Blocks
+	</button>
+{% else %}
+	<ul class="blocks">
+		{% for block in blocks %}
+			<li data-blockid="{{ block.__uid }}">
+				<input type="hidden" name="{{ name }}[{{ block.__uid }}][type]" value="{{ block.type }}">
+				<header data-toggle="collapse" data-target="#block{{ uid }}-{{ block.__uid }}">
+					<i role="matrix-handle" class="fa fa-sort"></i>
+					<span>{{ block.__blockType }}</span>
+					<i role="matrix-remove" class="fa fa-trash-o"></i>
+				</header>
+				<main class="collapse{% if block.__active %} in{% endif %}" id="block{{ uid }}-{{ block.__uid }}">
+					{{ block.__template }}
+				</main>
+			</li>
+		{% endfor %}
+	</ul>
+	<div class="btn-group btn-group-sm hidden-xs-down" role="group">
+		{% for type in blockTypes %}
+			<a href="#" class="btn btn-secondary" data-type="{{ type.handle }}">
+				{% if loop.first %}<i class="fa fa-plus"></i> {% endif %}
+				{{ type.label }}
+			</a>
+		{% endfor %}
+	</div>
+	<div class="btn-group btn-group-sm hidden-sm-up" role="group">
+		<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<i class="fa fa-plus"></i>
+			Add block
+		</button>
+		<div class="dropdown-menu dropdown-menu-right">
+			{% for type in blockTypes %}
+				<a href="#" class="dropdown-item" data-type="{{ type.handle }}">
+					{{ type.label }}
+				</a>
+			{% endfor %}
+		</div>
+	</div>
+{% endif %}

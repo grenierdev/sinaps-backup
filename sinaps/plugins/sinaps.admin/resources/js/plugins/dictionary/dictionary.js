@@ -21,7 +21,7 @@ $(function () {
 				key.__uid = uid++;
 			});
 
-			var $add = $('<a href="#add" class="btn btn-sm btn-primary center-block"><i class="fa fa-plus"></i> Key</a>').insertAfter($keys);
+			var $add = $('<a href="#add" class="btn btn-sm btn-secondary"><i class="fa fa-plus"></i> Key</a>').insertAfter($keys);
 
 			var getKey = function (id) {
 				for (var a = 0, b = value.length; a < b; ++a) {

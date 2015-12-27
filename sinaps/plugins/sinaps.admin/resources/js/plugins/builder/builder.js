@@ -1,9 +1,7 @@
 $(function () {
 	var uid = 0;
 	var formUID = 0;
-	var templates = {
-		layouts: null
-	};
+	var templates = {};
 
 	function downloadTemplate (tpl, url) {
 		return function () {
@@ -112,7 +110,7 @@ $(function () {
 							});
 							updateView();
 						}
-					})
+					});
 
 					// Paste layout
 					$view.on('click', '> nav [role="paste"]', function (e) {

@@ -1,0 +1,139 @@
+{% extends "sinaps.admin/_frame.html" %}
+
+{% set title = 'Sections' %}
+{% set subtitle = '' %}
+{% set breadcrumbs = [{
+	href: '/admin/settings/',
+	title: 'Settings'
+},{
+	href: '/admin/settings/sections/',
+	title: 'Sections'
+},{
+	href: '/admin/settings/sections/edit/' + section.get('handle'),
+	title: 'Edit ' + section.label
+}] %}
+
+{% block actions %}
+	<button type="button" class="btn btn-primary">
+		<i class="fa fa-check"></i>
+		Save
+	</button>
+{% endblock %}
+
+{% import 'sinaps.admin/components/fields.html' as fields %}
+
+{% block content %}
+
+	<form method="post">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="portlet light">
+					<main>
+						{% set layouts = [] %}
+						{% for layout in schema.layouts %}
+							{% set layouts = layouts|merge({
+								value: layout.handle,
+								label: layout.label|default(layout.name)
+							}) %}
+						{% endfor %}
+						{{ fields.field({
+							type: 'selectbox',
+							name: 'layout',
+							value: section.get('layout'),
+							label: 'Layout',
+							options: layouts,
+							required: true
+						}) }}
+
+						{{ fields.field({
+							type: 'text',
+							name: 'handle',
+							label: 'Handle',
+							instructions: 'How you’ll refer to this section in the templates.',
+							value: section.get('handle'),
+							required: true,
+							autofocus: true
+						}) }}
+
+						{{ fields.field({
+							type: 'text',
+							name: 'label',
+							label: 'Label',
+							instructions: 'What this section will be called in the CP.',
+							value: section.label,
+							required: true
+						}) }}
+
+						{{ fields.field({
+							type: 'text',
+							name: 'title',
+							label: 'Title format',
+							instructions: 'How entries will be displayed in the CP.',
+							value: section.title,
+							required: true
+						}) }}
+
+						{{ fields.field({
+							type: 'checkbox',
+							name: 'hasurls',
+							label: 'Entries in this section have their own URLs',
+							checked: section.hasurls,
+							required: true
+						}) }}
+
+						<div id="toggle-hasurls">
+							{% for lang in sinaps.config.languages %}
+								{{ fields.field({
+									type: 'text',
+									name: 'url[' + lang + ']',
+									label: 'URL format',
+									lang: lang,
+									instructions: 'What the entry URLs should look like. You can include tags that output entry properties, such as {slug} or {postDate|date("Y")}.',
+									value: section.get('url.' + lang)
+								}) }}
+							{% endfor %}
+
+							{{ fields.field({
+								type: 'text',
+								name: 'template',
+								label: 'Template',
+								instructions: 'The template to use when an entry’s URL is requested.',
+								value: section.template
+							}) }}
+						</div>
+					</main>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="portlet light">
+					<main>
+						{{ fields.input({
+							type: 'builder-layouts',
+							name: 'layouts',
+							value: section.layouts
+						}) }}
+					</main>
+				</div>
+			</div>
+		</div>
+	</form>
+
+{% endblock %}
+
+{% block footJS %}
+	<script>
+		$(function () {
+
+			$('#hasurls').on('change', function (e) {
+				if (this.checked) {
+					$('#toggle-hasurls').stop(true, false).slideDown(300);
+				} else {
+					$('#toggle-hasurls').stop(true, false).slideUp(300);
+				}
+			}).change();
+
+		});
+	</script>
+{% endblock %}
