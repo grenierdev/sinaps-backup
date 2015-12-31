@@ -72,6 +72,9 @@
 				<li><a href="{{item.href|default('#')}}" {% if loop.last %}class="active"{% endif %}>{{item.title}}</a></li>
 			{% endfor %}
 		</ol>
+
+		<div id="notifications"></div>
+
 		<header id="page-header">
 			<h1>
 				{{title}}
@@ -112,10 +115,12 @@
 	<link href="/admin/resources/css/bootstrap/bootstrap-reboot.css" rel="stylesheet" type="text/css"/>
 	<link href="/admin/resources/css/bootstrap/bootstrap.css" rel="stylesheet" type="text/css"/>
 	<link href="/admin/resources/css/sinaps/sinaps.css" rel="stylesheet" type="text/css"/>
+	<link href="/admin/resources/css/animate.css" rel="stylesheet" type="text/css"/>
 	<script src="/admin/resources/js/plugins/jquery.js" type="text/javascript"></script>
 	<script src="/admin/resources/js/plugins/jquery-ui.js" type="text/javascript"></script>
 	<script src="/admin/resources/js/plugins/jquery-serializeobject.js" type="text/javascript"></script>
 	<script src="/admin/resources/js/plugins/bootstrap.js" type="text/javascript"></script>
+	<script src="/admin/resources/js/plugins/bootstrap-notify.js" type="text/javascript"></script>
 	<script src="/admin/resources/js/plugins/lodash.js" type="text/javascript"></script>
 	<script src="/admin/resources/js/plugins/lodash.paths.js" type="text/javascript"></script>
 	<script src="/admin/resources/js/plugins/moment.js" type="text/javascript"></script>
@@ -161,6 +166,23 @@
 					{{ fieldtype.getIncludedJS() }}
 				{%- endfor %}
 			}).trigger('refresh-fields');
+
+			$.notifyDefaults({
+				element: '#notifications',
+				placement: { from: 'top', align: 'center' },
+				mouse_over: 'pause',
+				animate: {
+					enter: '',
+					exit: 'animated zoomOut'
+				}
+			})
+			{% for message in messages %}
+				$.notify({
+					message: {{ message.message|json }}
+				}, {
+					type: {{ message.type|json }}
+				})
+			{% endfor %}
 		});
 	</script>
 </body>

@@ -5,6 +5,7 @@ var Schema = sinaps.require('sinaps.core').Schema;
 var SectionSchema = require('./schemas/Section');
 var SectionModel;
 var mongoose = require('mongoose');
+var unidecode = require('unidecode');
 
 module.exports = _.extend({}, EventEmitter.prototype, {
 
@@ -151,13 +152,29 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 							break;
 					}
 
+
 					section.entrySchema.add({
+						url: {
+							type: String,
+							index: true
+						},
 						state: {
 							type: String,
 							index: true,
 							required: true,
 							default: 'published'
-						}
+						},
+					});
+
+					section.entrySchema.methods['getTitle'] = function () {
+						return sinaps.nunjucks.renderString(section.model.titleFormat, this);
+					};
+					section.entrySchema.methods['getUrl'] = function () {
+						return this.url;
+					};
+					section.entrySchema.pre('save', function (next) {
+						this.url = unidecode(this.getTitle());
+						next();
 					});
 
 					section.entryModel = mongoose.model(section.schema.handle, section.entrySchema);

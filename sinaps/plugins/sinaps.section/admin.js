@@ -130,4 +130,36 @@ module.exports = function () {
 		});
 	});
 
+	// Update logic
+	pluginAdmin.router.post('/sections/:handle/edit/:id', function (req, res) {
+		var section = getSectionByHandle(req.params.handle);
+
+		if (!section) {
+			req.session.messages.push({type: 'danger', message: 'Could not find section'});
+			res.status(404).redirect('/admin/sections/');
+			return;
+		}
+
+		section.entryModel.findById(req.params.id, function (err, model) {
+			if (err) {
+				req.session.messages.push({type: 'danger', message: 'Could not find entry'});
+				res.status(404).redirect(`/admin/sections/${req.params.handle}/`);
+				return;
+			}
+
+			model.set(req.body);
+
+			model.save(function (err) {
+				if (err) {
+					console.error(err);
+					req.session.messages.push({type: 'danger', message: 'Could not save'});
+					req.session.data = model.toObject();
+					res.redirect(`/admin/sections/${req.params.handle}/edit/${model.id}`);
+				} else {
+					req.session.messages.push({type: 'success', message: 'Entry saved'});
+					res.redirect(`/admin/sections/${req.params.handle}/`);
+				}
+			});
+		});
+	});
 };

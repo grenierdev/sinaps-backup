@@ -70,6 +70,20 @@ body {
         left: 1rem;
         font-size: 1.25rem;
         line-height: 1rem; }
+    body > main > #notifications {
+      position: relative;
+      padding: 0 1rem;
+      margin: 0 10rem; }
+      body > main > #notifications > .alert {
+        padding: 0.25rem 1rem;
+        margin: 0 auto 0.5rem auto !important;
+        box-shadow: 0 2px 2px 0px rgba(0, 0, 0, 0.2);
+        /*position: relative !important;
+				top: auto !important;
+				left: auto !important;
+				right: auto !important;
+				bottom: auto !important;
+				display: block !important;*/ }
   body > aside[role="left"] {
     position: fixed;
     left: -250px;

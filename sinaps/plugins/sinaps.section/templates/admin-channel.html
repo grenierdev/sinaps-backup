@@ -55,7 +55,7 @@
 					<td>
 						<a href="/admin/sections/{{ handle }}/edit/{{ entry.id }}">
 							<i class="fa fa-circle"></i>
-							{{ entry.id }}
+							{{ entry.getTitle()|default(entry.id) }}
 						</a>
 					</td>
 					<td class="text-no-wrap">

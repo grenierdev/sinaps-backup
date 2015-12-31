@@ -82,6 +82,8 @@ console.info('================================================');
 
 // Startup server
 {
+	// TODO Use asyncjs as waiter
+
 	var wait = sinaps.config.mongodb === false ? 1 : 2; // express, mongodb
 	sinaps.on('connected', function () {
 		if (--wait > 0)

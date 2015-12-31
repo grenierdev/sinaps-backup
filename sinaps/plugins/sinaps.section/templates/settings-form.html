@@ -14,7 +14,7 @@
 }] %}
 
 {% block actions %}
-	<button type="button" class="btn btn-primary">
+	<button type="submit" class="btn btn-primary" form="main">
 		<i class="fa fa-check"></i>
 		Save
 	</button>
@@ -24,7 +24,7 @@
 
 {% block content %}
 
-	<form method="post">
+	<form id="main" method="post">
 		<div class="row">
 			<div class="col-xs-12">
 				<div class="portlet light">
@@ -66,10 +66,10 @@
 
 						{{ fields.field({
 							type: 'text',
-							name: 'title',
+							name: 'titleFormat',
 							label: 'Title format',
 							instructions: 'How entries will be displayed in the CP.',
-							value: section.title,
+							value: section.titleFormat,
 							required: true
 						}) }}
 

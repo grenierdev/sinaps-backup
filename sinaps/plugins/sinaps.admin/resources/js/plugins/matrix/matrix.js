@@ -111,6 +111,7 @@ $(function () {
 									if (form) {
 										blocks = form.blocks || [];
 										updateHidden();
+										updateView();
 									}
 								}
 							});
@@ -163,11 +164,17 @@ $(function () {
 							blocks[blockid].__active = false;
 						});
 
+						$matrix.find('[role="matrix-handle"]').on('mousedown', function (e) {
+							var $collapse = $(this).closest('[data-toggle="collapse"]');
+
+							$($collapse.data('target')).collapse('hide');
+						});
+
 						// Sort blocks
 						$matrix.find('ul.blocks').sortable({
 							tolerance: 'pointer',
 							axis: 'y',
-							items: 'li',
+							handle: '[role="matrix-handle"]',
 
 							stop: function (e, ui) {
 								var order = $(this).children().map(function () {
@@ -197,7 +204,19 @@ $(function () {
 							});
 						});
 
-						// TODO Add block
+						// Add block
+						$matrix.find('[data-type]').on('click', function (e) {
+							e.preventDefault();
+							var type = $(this).data('type');
+
+							updateData();
+							blocks.push({
+								__active: true,
+								__uid: blocks.length,
+								type: type
+							});
+							updateView();
+						});
 					}
 
 					function updateData () {
@@ -216,7 +235,7 @@ $(function () {
 						$popup.nextAll('input[type="hidden"]').remove();
 						var $parent = $popup.parent();
 
-						_.each(_.paths(blocks), function (v, n) {
+						_.each(_.paths(_.map(blocks, function (block) { return _.omit(block, '__uid', '__active', '_id'); })), function (v, n) {
 							var $hidden = $('<input type="hidden" name="" value="" />').appendTo($parent);
 							$hidden.attr('name', name + '[' + n.split('.').join('][') + ']');
 							$hidden.val(v);

@@ -12,12 +12,12 @@
 - [x] Field - Layouts
 - [x] Field - Tabs
 - [x] Field - Fields
-- [ ] Content - Matrix
+- [x] Content - Matrix
 - [ ] Content - List/Pagination
 
 #### Release Demo
-- [x] sinaps.section : Channel pagination
-- [x] sinaps.section : Delete / trash channel
+- [ ] sinaps.section : Channel pagination
+- [ ] sinaps.section : Delete / trash channel
 - [ ] sinaps.section : Change layout
 - [ ] sinaps.section : Field entry picker
 - [ ] sinaps.section : Structure

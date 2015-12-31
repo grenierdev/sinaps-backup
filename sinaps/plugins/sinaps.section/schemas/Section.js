@@ -29,8 +29,8 @@ var Section = new Schema({
 							input: 'text',
 						},
 						{
-							handle: 'title',
-							label: 'Title',
+							handle: 'titleFormat',
+							label: 'Title format',
 							type: 'string',
 							input: 'text',
 							required: true
@@ -93,8 +93,8 @@ var Section = new Schema({
 							input: 'text',
 						},
 						{
-							handle: 'title',
-							label: 'Title',
+							handle: 'titleFormat',
+							label: 'Title format',
 							type: 'string',
 							input: 'text',
 							required: true
@@ -157,8 +157,8 @@ var Section = new Schema({
 							input: 'text',
 						},
 						{
-							handle: 'title',
-							label: 'Title',
+							handle: 'titleFormat',
+							label: 'Title format',
 							type: 'string',
 							input: 'text',
 							required: true

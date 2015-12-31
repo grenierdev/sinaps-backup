@@ -11,11 +11,14 @@
 
 [role="matrix"] > .blocks > li {
 	display: block;
-	margin: 0 0 1rem 0;
+	margin: 0;
 	padding: 1rem 1rem 0 1rem;
-	border: 1px solid #ccc;
-	border-radius: 0.25rem;
 	overflow: hidden;
+	background: white;
+}
+
+[role="matrix"] > .blocks > li:not(:last-child) {
+	margin-bottom: 1rem;
 }
 
 [role="matrix"] > .blocks > li > header {
@@ -23,7 +26,6 @@
 	flex-direction: row;
 	margin: -1rem -1rem 0 -1rem;
 	padding: 0.25rem;
-	background: #fafafa;
 	font-weight: 300;
 	cursor: pointer;
 }
@@ -47,6 +49,37 @@
 [role="matrix"] > .blocks > li > main {
 	margin-left: -1rem;
 	margin-right: -1rem;
-	padding: 1rem;
-	border-top: 1px solid #ccc;
+	padding: 0 1rem;
+}
+[role="matrix"] > .blocks > li > main:before,
+[role="matrix"] > .blocks > li > main:after {
+	content: '';
+	display: block;
+	padding: 0 0 1rem 0;
+}
+
+[role="matrix"] > .blocks > li > header,
+[role="matrix"] > .blocks > li > main {
+	border-left: 3px solid transparent;
+	-webkit-transition: height .2s ease-in-out, border .2s ease-in-out;
+	transition: height .2s ease-in-out, border .2s ease-in-out;
+}
+
+[role="matrix"] > .blocks > li > header,
+[role="matrix"] > .blocks > li > main.in,
+[role="matrix"] > .blocks > li > main.collapsing {
+	border-color: #1CA8DD;
+}
+
+[role="matrix"] > .blocks > li > header.collapsed {
+	border-color: transparent;
+}
+
+[role="matrix"] > .blocks > li > header.collapsed:hover {
+	border-color: #54B7DD;
+}
+
+[role="matrix"] > .blocks > li.ui-sortable-helper,
+[role="matrix"] > .blocks > li.ui-sortable-placeholder {
+	height: 2rem !important;
 }

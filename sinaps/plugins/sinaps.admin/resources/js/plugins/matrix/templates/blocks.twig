@@ -1,14 +1,14 @@
 {% if depth > 0 %}
 	<button type="button" class="btn btn-secondary btn-sm" role="matrix-popup">
 		<i class="fa fa-external-link"></i>
-		Blocks
+		Blocks {% if blocks|length %}({{ blocks|length }}){% endif %}
 	</button>
 {% else %}
 	<ul class="blocks">
 		{% for block in blocks %}
 			<li data-blockid="{{ block.__uid }}">
 				<input type="hidden" name="{{ name }}[{{ block.__uid }}][type]" value="{{ block.type }}">
-				<header data-toggle="collapse" data-target="#block{{ uid }}-{{ block.__uid }}">
+				<header data-toggle="collapse"{% if block.__active != true %} class="collapsed"{% endif %} data-target="#block{{ uid }}-{{ block.__uid }}">
 					<i role="matrix-handle" class="fa fa-sort"></i>
 					<span>{{ block.__blockType }}</span>
 					<i role="matrix-remove" class="fa fa-trash-o"></i>
