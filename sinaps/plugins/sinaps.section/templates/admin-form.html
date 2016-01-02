@@ -10,7 +10,7 @@
 	title: section.schema.label
 },{
 	href: '/admin/sections/' + handle + '/edit/' + model.id,
-	title: 'Edit ' + model.id
+	title: l10n(model.getTitle())|default(model.id)
 }] %}
 
 {% block actions %}
