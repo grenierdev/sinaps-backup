@@ -42,7 +42,7 @@
 	border: 0;
 	outline: 0;
 	padding: 0 0 1px 0;
-	border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid #1ca8dd;
 	border-radius: 0;
 	background-color: transparent;
 	box-shadow: none;
@@ -51,7 +51,6 @@
 
 [role="dictionary"] .keys > .key > .inputs > input:focus {
 	padding-bottom: 0;
-	border-color: #000000;
 	border-bottom-width: 2px;
 }
 

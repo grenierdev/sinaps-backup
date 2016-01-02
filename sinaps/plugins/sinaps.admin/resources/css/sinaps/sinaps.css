@@ -847,7 +847,7 @@ label {
 .form-control {
   border: 0;
   outline: 0;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #1ca8dd;
   border-radius: 0;
   background-color: transparent;
   box-shadow: none;
@@ -856,6 +856,7 @@ label {
   .form-control:focus {
     box-shadow: none;
     border-width: 2px;
+    border-color: #1ca8dd;
     padding-bottom: 0.375rem; }
     .form-control:focus ~ .input-group-btn {
       margin-bottom: 0;
