@@ -366,5 +366,14 @@ $(function () {
 		return this.data('table-structure');
 	}
 
-	$('.table-structure').tableStructure();
+	$('.table-structure').each(function () {
+		var $table = $(this);
+		var opts = {};
+
+		if ($table.data('structure-handle')) {
+			opts.handleColumn = parseInt($table.data('structure-handle'), 10) || 1;
+		}
+
+		$table.tableStructure(opts);
+	})
 });

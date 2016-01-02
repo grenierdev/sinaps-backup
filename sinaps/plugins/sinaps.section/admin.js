@@ -33,6 +33,7 @@ module.exports = function () {
 		return section;
 	};
 
+	// List & search
 	pluginAdmin.router.get('/sections/:handle', function (req, res) {
 		var section = getSectionByHandle(req.params.handle);
 
@@ -97,6 +98,59 @@ module.exports = function () {
 
 	});
 
+	// New form
+	pluginAdmin.router.get('/sections/:handle/create', function (req, res) {
+		var section = getSectionByHandle(req.params.handle);
+
+		if (!section) {
+			req.session.messages.push({type: 'danger', message: 'Could not find section'});
+			res.status(404).redirect('/admin/sections/');
+			return;
+		}
+
+		var model = new section.entryModel();
+
+		if (req.session.data) {
+			model.set(req.session.data);
+			delete req.session.data;
+		}
+
+		model.set('layout', req.query.layout || model.layout);
+
+		res.render('sinaps.section/admin-form', {
+			handle: section.schema.handle,
+			section: section,
+
+			_action: 'create',
+			model: model
+		});
+	});
+
+	// Create logic
+	pluginAdmin.router.post('/sections/:handle/create', function (req, res) {
+		var section = getSectionByHandle(req.params.handle);
+
+		if (!section) {
+			req.session.messages.push({type: 'danger', message: 'Could not find section'});
+			res.status(404).redirect('/admin/sections/');
+			return;
+		}
+
+		var model = new section.entryModel(req.body);
+		model.save(function (err) {
+			if (err) {
+				console.error(err);
+				req.session.messages.push({type: 'danger', message: 'Could not save'});
+				req.session.data = model.toObject();
+				res.redirect(`/admin/sections/${req.params.handle}/create`);
+			} else {
+				req.session.messages.push({type: 'success', message: 'Entry saved'});
+				res.redirect(`/admin/sections/${req.params.handle}/`);
+			}
+		});
+	});
+
+	// Edit form
 	pluginAdmin.router.get('/sections/:handle/edit/:id', function (req, res) {
 		var section = getSectionByHandle(req.params.handle);
 
@@ -112,6 +166,7 @@ module.exports = function () {
 				res.status(404).redirect(`/admin/sections/${req.params.handle}/`);
 				return;
 			}
+
 
 			if (req.session.data) {
 				model.set(req.session.data);
@@ -158,6 +213,76 @@ module.exports = function () {
 				} else {
 					req.session.messages.push({type: 'success', message: 'Entry saved'});
 					res.redirect(`/admin/sections/${req.params.handle}/`);
+				}
+			});
+		});
+	});
+
+	// Delete
+	pluginAdmin.router.get('/sections/:handle/delete/:id', function (req, res) {
+		var section = getSectionByHandle(req.params.handle);
+
+		if (!section) {
+			req.session.messages.push({type: 'danger', message: 'Could not find section'});
+			res.status(404).redirect('/admin/sections/');
+			return;
+		}
+
+		section.entryModel.findById(req.params.id, function (err, model) {
+			if (err) {
+				req.session.messages.push({type: 'danger', message: 'Could not find entry'});
+				res.status(404).redirect(`/admin/sections/${req.params.handle}/`);
+				return;
+			}
+
+			if (model.state == 'trashed') {
+				model.remove(function (err) {
+					if (err) {
+						req.session.messages.push({type: 'danger', message: 'Could remove entry from bin'});
+					} else {
+						req.session.messages.push({type: 'success', message: 'Entry pulverized'});
+					}
+					res.redirect(`/admin/sections/${req.params.handle}/`);
+				});
+			} else {
+				model.state = 'trashed';
+				model.save(function (err) {
+					if (err) {
+						req.session.messages.push({type: 'danger', message: 'Could not trash this entry'});
+					} else {
+						req.session.messages.push({type: 'success', message: 'Entry trashed'});
+					}
+					res.redirect(`/admin/sections/${req.params.handle}/`);
+				});
+			}
+		});
+	});
+
+	// Restore to draft
+	pluginAdmin.router.get('/sections/:handle/restore/:id', function (req, res) {
+		var section = getSectionByHandle(req.params.handle);
+
+		if (!section) {
+			req.session.messages.push({type: 'danger', message: 'Could not find section'});
+			res.status(404).redirect('/admin/sections/');
+			return;
+		}
+
+		section.entryModel.findById(req.params.id, function (err, model) {
+			if (err) {
+				req.session.messages.push({type: 'danger', message: 'Could not find entry'});
+				res.status(404).redirect(`/admin/sections/${req.params.handle}/`);
+				return;
+			}
+
+			model.state = 'draft';
+			model.save(function (err) {
+				if (err) {
+					req.session.messages.push({type: 'danger', message: 'Could not restore this entry'});
+					res.redirect(`/admin/sections/${req.params.handle}/trash`);
+				} else {
+					req.session.messages.push({type: 'success', message: 'Entry restored as draft'});
+					res.redirect(`/admin/sections/${req.params.handle}/edit/${model.id}`);
 				}
 			});
 		});

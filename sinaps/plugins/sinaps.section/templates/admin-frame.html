@@ -1,11 +1,11 @@
 {% extends "sinaps.admin/_frame.html" %}
 
 {% set title = 'Sections' %}
-{% set subtitle = '' %}
-{% set breadcrumbs = [{
+
+{% set breadcrumbs = breadcrumbs|default([{
 	href: '/admin/sections/',
 	title: 'Sections'
-}] %}
+}]) %}
 
 {% block content %}
 	<div class="portlet light">

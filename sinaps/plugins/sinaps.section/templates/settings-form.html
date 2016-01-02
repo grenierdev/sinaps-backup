@@ -85,11 +85,11 @@
 							{% for lang in sinaps.config.languages %}
 								{{ fields.field({
 									type: 'text',
-									name: 'url[' + lang + ']',
+									name: 'urlFormat[' + lang + ']',
 									label: 'URL format',
-									lang: lang,
+									locale: lang,
 									instructions: 'What the entry URLs should look like. You can include tags that output entry properties, such as {slug} or {postDate|date("Y")}.',
-									value: section.get('url.' + lang)
+									value: section.get('urlFormat.' + lang)
 								}) }}
 							{% endfor %}
 

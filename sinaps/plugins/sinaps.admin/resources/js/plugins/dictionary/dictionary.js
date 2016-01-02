@@ -98,7 +98,7 @@ $(function () {
 				var id = $(this).closest('[data-id]').data('id'),
 					key = getKey(id);
 
-				sinaps.Modal.confirm('Are you sure you want to remove this item?', 'Dictionary', function (result) {
+				sinaps.Modal.confirm('Are you sure you want to remove this item?', 'Remove key', function (result) {
 					if (result) {
 						var i = value.indexOf(key);
 						if (i > -1) {

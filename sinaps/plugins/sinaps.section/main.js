@@ -154,10 +154,12 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 
 
 					section.entrySchema.add({
-						url: {
-							type: String,
-							index: true
-						},
+						url: _.mapValues(_.invert(sinaps.config.languages), function (i, lang) {
+							return {
+								type: String,
+								index: true
+							};
+						}),
 						state: {
 							type: String,
 							index: true,
@@ -167,13 +169,25 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 					});
 
 					section.entrySchema.methods['getTitle'] = function () {
-						return sinaps.nunjucks.renderString(section.model.titleFormat, this);
-					};
-					section.entrySchema.methods['getUrl'] = function () {
-						return this.url;
+						return _.mapValues(_.invert(sinaps.config.languages), function (i, lang) {
+							try {
+								return sinaps.nunjucks.renderString(section.model.titleFormat, this.localized(lang));
+							} catch (e) {}
+							return '';
+						}.bind(this));
 					};
 					section.entrySchema.pre('save', function (next) {
-						this.url = unidecode(this.getTitle());
+						this.url = _.mapValues(_.invert(sinaps.config.languages), function (i, lang) {
+							try {
+								return unidecode(sinaps.nunjucks.renderString(section.model.urlFormat[lang], this.localized(lang)))
+										.replace(/[^a-z0-9_\/]/gi, '-')
+										.replace(/[-]+/g, '-')
+										.replace(/^-/, '')
+										.replace(/-$/, '')
+										.toLowerCase();
+							} catch (e) {}
+							return '';
+						}.bind(this));
 						next();
 					});
 

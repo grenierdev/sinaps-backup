@@ -43,8 +43,8 @@ var Section = new Schema({
 							required: true
 						},
 						{
-							handle: 'url',
-							label: 'URL',
+							handle: 'urlFormat',
+							label: 'URL format',
 							type: 'string',
 							input: 'text',
 							lang: true
@@ -107,8 +107,8 @@ var Section = new Schema({
 							required: true
 						},
 						{
-							handle: 'url',
-							label: 'URL',
+							handle: 'urlFormat',
+							label: 'URL format',
 							type: 'string',
 							input: 'text',
 							lang: true
@@ -171,8 +171,8 @@ var Section = new Schema({
 							required: true
 						},
 						{
-							handle: 'url',
-							label: 'URL',
+							handle: 'urlFormat',
+							label: 'URL format',
 							type: 'string',
 							input: 'text',
 							lang: true

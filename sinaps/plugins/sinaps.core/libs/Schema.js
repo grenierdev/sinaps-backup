@@ -126,6 +126,21 @@ Schema.prototype.finalizedSchema = function () {
 		this._finalizedSchema.methods[name] = fn;
 	}.bind(this));
 
+	var schema = this;
+	this._finalizedSchema.methods['localized'] = function (locale) {
+		var fields = schema.fields();
+		var obj = this.toObject();
+		var currentLayout = obj.layout;
+		_.each(fields, function (def, path) {
+			if (def.lang && path.split('.')[0] == currentLayout) {
+				var p = path.split('.').slice(2).join('.');
+				var v = _.get(obj, p);
+				_.set(obj, p, _.isObject(v) ? v[locale] || '' : v);
+			}
+		});
+		return obj;
+	};
+
 	_.forEach(this._virtuals, function (obj, name) {
 		var get = obj && obj.get || function () {};
 		var set = obj && obj.set || function () {};

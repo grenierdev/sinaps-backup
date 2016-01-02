@@ -201,7 +201,7 @@ $(function () {
 									blocks.splice(blockid, 1);
 									updateView();
 								}
-							});
+							}, ['Remove', 'Cancel']);
 						});
 
 						// Add block

@@ -1,12 +1,23 @@
 {% extends "sinaps.section/admin-frame.html" %}
 
+{% set breadcrumbs = [{
+	href: '/admin/sections/',
+	title: 'Sections'
+},{
+	href: '/admin/sections/' + handle + '/',
+	title: section.schema.label
+}] %}
+
+{% import 'sinaps.admin/components/fields.html' as fields %}
+
 {% block tab %}
-	<table class="table table-structure">
+	<table class="table table-structure" data-structure-handle="2">
 		<thead>
 			<tr>
 				<th width="1">
 					<input type="checkbox" value="" />
 				</th>
+				<th width="1"></th>
 				<th data-field="title">Title</th>
 				<th data-field="category">Category</th>
 				<th data-field="postDate">Post date</th>
@@ -20,9 +31,11 @@
 						<input type="checkbox" name="ids[]" value="{{ entry.id }}" />
 					</td>
 					<td>
+						<i class="fa fa-circle"></i>
+					</td>
+					<td>
 						<a href="/admin/sections/{{ handle }}/edit/{{ entry.id }}">
-							<i class="fa fa-circle"></i>
-							{{ entry.id }}
+							{{ l10n(entry.getTitle())|default(entry.id) }}
 						</a>
 					</td>
 					<td class="text-no-wrap">

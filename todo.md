@@ -23,7 +23,7 @@
 - [ ] sinaps.section : Structure
 - [ ] sinaps.section : Page
 - [ ] sinaps.section : Recherche & results
-- [ ] sinaps.section : Url des sections
+- [x] sinaps.section : Url des sections
 - [ ] sinaps.core : Langue dans les Url
 - [x] sinaps.core : FieldType adv storage + getter/setter
 - [ ] sinaps.asset : Assets source

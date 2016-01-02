@@ -1,5 +1,20 @@
 {% extends "sinaps.section/admin-frame.html" %}
 
+{% set breadcrumbs = [{
+	href: '/admin/sections/',
+	title: 'Sections'
+},{
+	href: '/admin/sections/' + handle + '/',
+	title: section.schema.label
+}] %}
+
+{% block actions %}
+	<a href="/admin/sections/{{handle}}/create" class="btn btn-primary" form="main">
+		<i class="fa fa-plus"></i>
+		New entry
+	</a>
+{% endblock %}
+
 {% import 'sinaps.admin/components/fields.html' as fields %}
 
 {% macro pagination (page, offset, perpage, total) %}
@@ -11,7 +26,7 @@
 			<nav>
 				<ul class="pagination">
 					<li {% if page <= 0 %}class="disabled"{% endif %}>
-						<a href="?page=0&min={{ options.min }}{{ querystr }}">&laquo;</a>
+						<a href="?page=0{{ querystr }}">&laquo;</a>
 					</li>
 					<li {% if page - 1 < 0 %}class="disabled"{% endif %}>
 						<a href="?page={{ max(page - 1, 0) }}{{ querystr }}">&lsaquo;</a>
@@ -40,6 +55,7 @@
 				<th width="1">
 					<input type="checkbox" value="" />
 				</th>
+				<th width="1"></th>
 				<th data-field="title">Title</th>
 				<th data-field="postDate" class="sorted">Post date <span class="pull-right"><i class="fa fa-sort-amount-desc"></i></span></th>
 				<th data-field="expireDate">Expire date</th>
@@ -53,9 +69,11 @@
 						<input type="checkbox" name="ids[]" value="{{ entry.id }}" />
 					</td>
 					<td>
+						<i class="fa fa-circle"></i>
+					</td>
+					<td>
 						<a href="/admin/sections/{{ handle }}/edit/{{ entry.id }}">
-							<i class="fa fa-circle"></i>
-							{{ entry.getTitle()|default(entry.id) }}
+							{{ l10n(entry.getTitle())|default(entry.id) }}
 						</a>
 					</td>
 					<td class="text-no-wrap">
