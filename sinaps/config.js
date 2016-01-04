@@ -2,6 +2,8 @@ module.exports = {
 
 	siteUrl: 'http://localhost/',
 
+	languages: ['en', 'fr'],
+
 	mongodb: {
 		host: 'localhost',
 		port: 27017,
