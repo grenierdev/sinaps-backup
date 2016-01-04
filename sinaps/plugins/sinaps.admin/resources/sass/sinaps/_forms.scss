@@ -22,7 +22,7 @@ label {
 		& ~ .input-group-btn {
 			margin-bottom: 0;
 			border-width: 2px;
-			border-color: $input-border-focus;
+			border-color: $color-primary;
 		}
 	}
 
@@ -32,7 +32,7 @@ label {
 
 	& ~ .input-group-btn {
 		height: 2.36rem;
-		border-bottom: 1px solid $input-border;
+		border-bottom: 1px solid $color-primary;
 		margin-bottom: 1px;
 		@include transition(border-color .2s ease-in-out);
 
@@ -41,6 +41,22 @@ label {
 			outline: none;
 			border: none;
 		}
+	}
+}
+
+.input-group.date .input-group-addon {
+	height: 2.36rem;
+	background: none;
+	border: 0;
+	border-bottom: 1px solid $color-primary;
+	border-radius: 0;
+	margin-bottom: 1px;
+	@include transition(border-color .2s ease-in-out);
+
+	@at-root .input-group.date .form-control:focus ~ .input-group-addon {
+		margin-bottom: 0;
+		border-width: 2px;
+		border-color: $color-primary;
 	}
 }
 

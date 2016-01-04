@@ -7,8 +7,8 @@ module.exports = function () {
 
 	// Datetime
 	pluginAdmin.registerFieldType(new FieldType({
-		handle: 'date',
-		label: 'Date',
+		handle: 'datetime',
+		label: 'Datetime',
 		type: Date,
 		setter: function (v) {
 			var m = moment(v)
@@ -18,17 +18,17 @@ module.exports = function () {
 			format: {
 				type: 'text',
 				label: 'Format',
-				value: 'YYYY-MM-DD'
+				value: 'YYYY-MM-DD HH:mm'
 			}
 		},
 
 		getInputTemplate: function () {
-			return '<div class="input-group date" role="date" data-date-format="{{ field.format|default("YYYY-MM-DD") }}">\
+			return '<div class="input-group date" role="datetime" data-datetime-format="{{ field.format|default("YYYY-MM-DD HH:mm") }}">\
 	<input 	type="text"\
 	 		class="{{ field.class|default("form-control") }}"\
 			id="{{ field.id|default(field.name) }}"\
 			{% if field.name %} name="{{ field.name }}"{% endif %}\
-			{% if field.value %} value="{{ field.value|date("YYYY-MM-DD") }}"{% endif %}\
+			{% if field.value %} value="{{ field.value|date("YYYY-MM-DD HH:mm") }}"{% endif %}\
 			{% if field.autofocus %} autofocus{% endif %}\
 			{% if field.required %} required{% endif %}\
 			{% if field.disabled %} disabled{% endif %}\
@@ -41,14 +41,24 @@ module.exports = function () {
 		},
 
 		getValueTemplate: function () {
-			return '{% if field.value %}{{ field.value|date(field.format|default("YYYY-MM-DD")) }}{% endif %}';
+			return '{% if field.value %}{{ field.value|date(field.format|default("YYYY-MM-DD HH:mm")) }}{% endif %}';
+		},
+
+		getIncludedResources: function () {
+			return [{
+				type: 'script',
+				src: '/admin/resources/js/vendors/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js'
+			}, {
+				type: 'css',
+				src: '/admin/resources/js/vendors/bootstrap-datetimepicker/bootstrap-datetimepicker.css'
+			}];
 		},
 
 		getIncludedJS: function () {
-			return '$(".input-group[role=\'date\']:not([data-field-discovered])").attr("data-field-discovered", "").each(function () {\
+			return '$(".input-group[role=\'datetime\']:not([data-field-discovered])").attr("data-field-discovered", "").each(function () {\
 				var $date = $(this);\
 				$date.datetimepicker({\
-					format: $date.data("date-format") || "YYYY-MM-DD",\
+					format: $date.data("datetime-format") || "YYYY-MM-DD HH:mm",\
 					icons: {\
 						time: "fa fa-clock-o",\
 						date: "fa fa-calendar",\

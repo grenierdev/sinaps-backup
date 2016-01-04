@@ -1,49 +1,12 @@
 {% import 'sinaps.admin/components/fields.html' as fields %}
 
-{% macro langSwitcher() %}
-
-	{% if sinaps.config.languages.length > 1 %}
-		{% set opts = [] %}
-		{% for lang in sinaps.config.languages %}
-			{% set opts = opts|merge({value: lang, label: lang}) %}
-		{% endfor %}
-
-		{{ fields.field({
-			type: 'selectbox',
-			name: 'lang-switcher',
-			label: 'Languages',
-			options: opts
-		}) }}
-	{% endif %}
-{% endmacro %}
-
-{% macro layoutSwitcher(schema, currentLayout) %}
-
-	{% set layouts = [] %}
-	{% for layout in schema.layouts %}
-		{% set layouts = layouts|merge({
-			value: layout.handle,
-			label: layout.label|default(layout.name)
-		}) %}
-	{% endfor %}
-
-	{{ fields.field({
-		type: 'selectbox',
-		name: 'layout',
-		value: currentLayout,
-		label: 'Layout',
-		options: layouts,
-		required: true
-	}) }}
-{% endmacro %}
-
 {% macro fields(fields, model) %}
 	{% for field in tab.fields %}
 		{% set fieldtype = sinaps.require('sinaps.admin').getFieldType(field.input) %}
 		{% if fieldtype %}
 			{% if field.lang %}
 				{% for lang in sinaps.config.languages %}
-					<div data-lang="{{ lang }}">
+					<div data-lang="{{ lang }}" {% if loop.first == false %}style="display: none"{% endif %}>
 						{% set field = field|merge({
 							id: field.handle + '[' + lang + ']',
 							name: field.handle + '[' + lang + ']',

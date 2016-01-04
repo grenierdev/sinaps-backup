@@ -13,7 +13,7 @@ module.exports = function (env) {
 	env.addFilter('merge', function (input, obj) {
 		if (_.isArray(input))
 			return input.concat(obj);
-		return _.extend({}, obj, input);
+		return _.extend({}, input, obj);
 	});
 
 	env.addFilter('split', function (input, char) {

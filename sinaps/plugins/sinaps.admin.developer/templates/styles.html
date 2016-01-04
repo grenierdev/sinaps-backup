@@ -376,24 +376,23 @@
 	</div>
 
 	<h2>Form</h2>
-	<div class="portlet">
-		<main>
-			<div class="tabs tabs-xs-horizontal no-margin">
-				<nav>
-					<ul class="nav">
-						<li class="nav-item">
-							<a class="nav-link" data-toggle="tab" href="#formBasic" role="tab">Bootstrap fields</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link active" data-toggle="tab" href="#formAdvance" role="tab">Builtin fields</a>
-						</li>
-					</ul>
-				</nav>
-				<main>
-					<div class="tab-content">
-						<div class="tab-pane" id="formBasic" role="tabpanel">
-							<form>
-								<h3>Basic inputs</h3>
+	<form>
+		<div class="portlet light">
+			<main>
+				<div class="tabs tabs-xs-horizontal no-margin">
+					<nav>
+						<ul class="nav">
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" href="#formBasic" role="tab">Bootstrap fields</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link active" data-toggle="tab" href="#formAdvance" role="tab">Builtin fields</a>
+							</li>
+						</ul>
+					</nav>
+					<main>
+						<div class="tab-content">
+							<div class="tab-pane" id="formBasic" role="tabpanel">
 								<fieldset class="form-group">
 									<label for="text">Text</label>
 									<input type="text" class="form-control form-control-success" id="text" placeholder="Simple text">
@@ -475,149 +474,156 @@
 									<input type="text" class="form-control form-control-error" id="error" placeholder="Enter email">
 									<small class="text-danger">We'll never share your email with anyone else.</small>
 								</fieldset>
-							</form>
+							</div>
+							<div class="tab-pane active" id="formAdvance" role="tabpanel">
+								{{ fields.field({
+									type: 'text',
+									id: 'fieldText',
+									name: 'text',
+									label: 'Text',
+									placeholder: 'This is a single line text field',
+									instructions: 'This is an instruction'
+								}) }}
+								{{ fields.field({
+									type: 'text',
+									multiline: true,
+									id: 'fieldMultilineText',
+									name: 'multiline',
+									label: 'Multiline',
+									placeholder: 'This is a multiline text field',
+									instructions: 'This is an instruction'
+								}) }}
+								{{ fields.field({
+									type: 'password',
+									id: 'fieldPassword',
+									name: 'password',
+									label: 'Password',
+									placeholder: 'This is a password field',
+									instructions: 'This is an instruction'
+								}) }}
+								{{ fields.field({
+									type: 'checkbox',
+									id: 'fieldCheckbox',
+									name: 'checkbox',
+									label: 'Checkbox',
+									value: true,
+									instructions: 'This is a lightswitch'
+								}) }}
+								{{ fields.field({
+									type: 'number',
+									id: 'fieldNumber',
+									name: 'number',
+									label: 'Number',
+									min: 0,
+									max: 10,
+									step: 1,
+									value: 5,
+									instructions: 'This is a number (html5) field'
+								}) }}
+								{{ fields.field({
+									type: 'selectbox',
+									id: 'fieldSelectbox',
+									name: 'selectbox',
+									label: 'Selectbox',
+									instructions: 'This is a selectbox',
+									value: 'b',
+									options: [
+										{
+											value: 'a',
+											label: 'A'
+										},
+										{
+											value: 'b',
+											label: 'B'
+										},
+										{
+											value: 'c',
+											label: 'C'
+										}
+									]
+								}) }}
+								{{ fields.field({
+									type: 'date',
+									id: 'fieldDate',
+									name: 'date',
+									label: 'Date',
+									value: '2015-12-21',
+									placeholder: 'This is a date field'
+								}) }}
+								{{ fields.field({
+									type: 'datetime',
+									id: 'fieldDatetime',
+									name: 'datetime',
+									label: 'Datetime',
+									value: '2015-12-21 23:18',
+									placeholder: 'This is a datetime field'
+								}) }}
+								{{ fields.field({
+									type: 'time',
+									id: 'fieldTime',
+									name: 'time',
+									label: 'Time',
+									value: '14:27',
+									placeholder: 'This is a time field'
+								}) }}
+								{{ fields.field({
+									type: 'dictionary',
+									id: 'fieldDictionary',
+									name: 'dictionary',
+									label: 'Dictionary',
+									instructions: 'This is a dictionary',
+									value: [
+										{
+											value: 'a',
+											label: 'A'
+										},
+										{
+											value: 'b',
+											label: 'B'
+										},
+										{
+											value: 'c',
+											label: 'C'
+										}
+									]
+								}) }}
+								{{ fields.field({
+									type: 'matrix',
+									id: 'fieldMatrix',
+									name: 'matrix',
+									label: 'Matrix',
+									instructions: 'This is a matrix',
+									blocks: [
+										{
+											handle: 'paragraph',
+											label: 'Paragraph',
+											fields: [{
+												input: 'text',
+												handle: 'title',
+												label: 'Title'
+											}, {
+												input: 'text',
+												handle: 'text',
+												label: 'Text',
+												multiline: true
+											}]
+										},
+										{
+											handle: 'photo',
+											label: 'Photo',
+											fields: [{
+												input: 'text',
+												handle: 'title',
+												label: 'Title'
+											}]
+										}
+									]
+								}) }}
+							</div>
 						</div>
-						<div class="tab-pane active" id="formAdvance" role="tabpanel">
-							{{ fields.field({
-								type: 'text',
-								id: 'fieldText',
-								name: 'text',
-								label: 'Text',
-								placeholder: 'This is a single line text field',
-								instructions: 'This is an instruction'
-							}) }}
-							{{ fields.field({
-								type: 'text',
-								multiline: true,
-								id: 'fieldMultilineText',
-								name: 'multiline',
-								label: 'Multiline',
-								placeholder: 'This is a multiline text field',
-								instructions: 'This is an instruction'
-							}) }}
-							{{ fields.field({
-								type: 'password',
-								id: 'fieldPassword',
-								name: 'password',
-								label: 'Password',
-								placeholder: 'This is a password field',
-								instructions: 'This is an instruction'
-							}) }}
-							{{ fields.field({
-								type: 'checkbox',
-								id: 'fieldCheckbox',
-								name: 'checkbox',
-								label: 'Checkbox',
-								value: true,
-								instructions: 'This is a lightswitch'
-							}) }}
-							{{ fields.field({
-								type: 'number',
-								id: 'fieldNumber',
-								name: 'number',
-								label: 'Number',
-								min: 0,
-								max: 10,
-								step: 1,
-								value: 5,
-								instructions: 'This is a number (html5) field'
-							}) }}
-							{{ fields.field({
-								type: 'selectbox',
-								id: 'fieldSelectbox',
-								name: 'selectbox',
-								label: 'Selectbox',
-								instructions: 'This is a selectbox',
-								value: 'b',
-								options: [
-									{
-										value: 'a',
-										label: 'A'
-									},
-									{
-										value: 'b',
-										label: 'B'
-									},
-									{
-										value: 'c',
-										label: 'C'
-									}
-								]
-							}) }}
-							{{ fields.field({
-								type: 'date',
-								id: 'fieldDate',
-								name: 'date',
-								label: 'Date',
-								value: '2015-12-21',
-								placeholder: 'This is a date field'
-							}) }}
-							{{ fields.field({
-								type: 'time',
-								id: 'fieldTime',
-								name: 'time',
-								label: 'Time',
-								value: '14:27',
-								placeholder: 'This is a time field'
-							}) }}
-							{{ fields.field({
-								type: 'dictionary',
-								id: 'fieldDictionary',
-								name: 'dictionary',
-								label: 'Dictionary',
-								instructions: 'This is a dictionary',
-								value: [
-									{
-										value: 'a',
-										label: 'A'
-									},
-									{
-										value: 'b',
-										label: 'B'
-									},
-									{
-										value: 'c',
-										label: 'C'
-									}
-								]
-							}) }}
-							{{ fields.field({
-								type: 'matrix',
-								id: 'fieldMatrix',
-								name: 'matrix',
-								label: 'Matrix',
-								instructions: 'This is a matrix',
-								blocks: [
-									{
-										handle: 'paragraph',
-										label: 'Paragraph',
-										fields: [{
-											input: 'text',
-											handle: 'title',
-											label: 'Title'
-										}, {
-											input: 'text',
-											handle: 'text',
-											label: 'Text',
-											multiline: true
-										}]
-									},
-									{
-										handle: 'photo',
-										label: 'Photo',
-										fields: [{
-											input: 'text',
-											handle: 'title',
-											label: 'Title'
-										}]
-									}
-								]
-							}) }}
-						</div>
-					</div>
-				</main>
-			</div>
-		</main>
-	</div>
-
+					</main>
+				</div>
+			</main>
+		</div>
+	</form>
 {% endblock %}

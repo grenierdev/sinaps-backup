@@ -111,6 +111,7 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 		require('./fields/password')();
 		require('./fields/number')();
 		require('./fields/date')();
+		require('./fields/datetime')();
 		require('./fields/time')();
 		require('./fields/selectbox')();
 		require('./fields/checkbox')();

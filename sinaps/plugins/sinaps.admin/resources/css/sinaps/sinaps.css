@@ -275,7 +275,6 @@ body {
   flex-direction: column;
   border: 1px solid #eaeaea;
   border-radius: 0.25rem;
-  overflow: hidden;
   margin-bottom: 1.25rem; }
   .portlet.light {
     background: #ffffff;
@@ -861,18 +860,31 @@ label {
     .form-control:focus ~ .input-group-btn {
       margin-bottom: 0;
       border-width: 2px;
-      border-color: inherit; }
+      border-color: #1ca8dd; }
   .input-group .form-control {
     margin-bottom: 1px; }
   .form-control ~ .input-group-btn {
     height: 2.36rem;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #1ca8dd;
     margin-bottom: 1px;
     transition: border-color 0.2s ease-in-out; }
     .form-control ~ .input-group-btn > .btn {
       background: none;
       outline: none;
       border: none; }
+
+.input-group.date .input-group-addon {
+  height: 2.36rem;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid #1ca8dd;
+  border-radius: 0;
+  margin-bottom: 1px;
+  transition: border-color 0.2s ease-in-out; }
+  .input-group.date .form-control:focus ~ .input-group-addon {
+    margin-bottom: 0;
+    border-width: 2px;
+    border-color: #1ca8dd; }
 
 .radio.lightswitch.checkbox-inline, .radio.lightswitch.radio-inline,
 .checkbox.lightswitch.checkbox-inline,

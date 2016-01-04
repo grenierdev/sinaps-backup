@@ -14,10 +14,17 @@
 }] %}
 
 {% block actions %}
+<div class="btn-group">
 	<button type="submit" class="btn btn-primary" form="main">
-		<i class="fa fa-check"></i>
-		Save
+		{% if _action == 'edit' %}
+			<i class="fa fa-check"></i>
+			{{ "Save" }}
+		{% else %}
+			<i class="fa fa-plus"></i>
+			{{ "Create" }}
+		{% endif %}
 	</button>
+</div>
 {% endblock %}
 
 {% import 'sinaps.admin/components/fields.html' as fields %}
@@ -27,7 +34,7 @@
 
 	<form id="main" method="post">
 		<div class="row">
-			<div class="col-xs-12">
+			<div class="col-xs-12 col-lg-8">
 				<div class="portlet light">
 					<main>
 
@@ -36,7 +43,88 @@
 					</main>
 				</div>
 			</div>
+			<div class="col-xs-12 col-lg-4">
+				<div class="portlet light">
+					<main>
+						{% set languages = [] %}
+						{% for lang in sinaps.config.languages %}
+							{% set languages = languages|merge({
+								value: lang,
+								label: lang|upper
+							}) %}
+						{% endfor %}
+
+						{{ fields.field({
+							type: 'selectbox',
+							id: 'language',
+							name: '',
+							value: sinaps.config.languages[0],
+							label: 'Language',
+							options: languages,
+							required: true
+						}) }}
+
+						{% set layouts = [] %}
+						{% for layout in section.schema.layouts %}
+							{% set layouts = layouts|merge({
+								value: layout.handle,
+								label: layout.label|default(layout.name)
+							}) %}
+						{% endfor %}
+
+						{{ fields.field({
+							type: 'selectbox',
+							id: 'layout',
+							name: 'layout',
+							value: model.layout,
+							label: 'Layout',
+							options: layouts,
+							required: true
+						}) }}
+
+						{{ fields.field({
+							type: 'datetime',
+							name: 'postDate',
+							value: model.postDate,
+							label: 'Post date'
+						}) }}
+
+						{{ fields.field({
+							type: 'datetime',
+							name: 'expireDate',
+							value: model.expireDate,
+							label: 'Expire date'
+						}) }}
+					</main>
+				</div>
+			</div>
 		</div>
 	</form>
 
+{% endblock %}
+
+{% block footJS %}
+	<script type="text/javascript">
+		$(function () {
+
+			if (window.location.hash) {
+				var lang = window.location.hash.replace(/^#/, '');
+				if ($('#language [value="'+ lang +'"]').length) {
+					$('#language').val(lang);
+				}
+			}
+
+			$('#language').on('change', function (e) {
+				var lang = $(this).val();
+				$('[data-lang]').hide().filter('[data-lang="'+ lang +'"]').show();
+				window.location.hash = lang;
+			}).trigger('change');
+
+			$('#layout').on('change', function (e) {
+				var layout = $(this).val();
+				window.location.search = '?layout=' + layout;
+			});
+
+		});
+	</script>
 {% endblock %}
