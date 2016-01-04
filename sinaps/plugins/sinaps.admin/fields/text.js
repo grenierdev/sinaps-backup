@@ -17,12 +17,12 @@ module.exports = function () {
 			size: {
 				type: 'number',
 				label: 'Size',
-				decimal: 0
+				min: 0
 			},
 			maxlength: {
 				type: 'number',
 				label: 'Maximum length',
-				decimal: 0
+				min: 0
 			},
 			placeholder: {
 				type: 'text',

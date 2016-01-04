@@ -402,8 +402,9 @@ body > main > .modal-overlay {
       color: #1686b0; }
     body > main > .modal-overlay > .modal > main {
       display: block;
-      padding-top: 1rem;
-      padding-bottom: 1rem;
+      margin: 0 -2rem;
+      padding: 1rem 2rem;
+      overflow: auto;
       flex-grow: 1; }
     body > main > .modal-overlay > .modal > footer {
       display: block;

@@ -20,6 +20,8 @@ $(function () {
 
 	function downloadTemplateDone (templates) {
 
+		// TODO updateView retain scroll position
+
 		$('body').on('refresh-fields', function (e) {
 			$('[role="matrix"] > input[data-blocks]:not([data-field-discovered])').attr('data-field-discovered', '').each(function () {
 				var $input = $(this);

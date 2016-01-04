@@ -2,6 +2,7 @@ window.sinaps = typeof window.sinaps !== 'undefined' ? window.sinaps : {};
 
 $(function () {
 
+	var $modalBody = $('body', window.top.document);
 	var $modalContainer = $('body > main', window.top.document);
 
 	function Modal (options) {
@@ -51,8 +52,23 @@ $(function () {
 		}.bind(this));
 
 		this.$container.on('modal-opened', function (e) {
+			$modalBody.css('overflow', 'hidden');
 			this.$container.find('[autofocus]:first').focus();
 		}.bind(this));
+
+		this.$container.on('modal-closed', function (e) {
+			if ($modalContainer.children('.modal-overlay.open').length == 0) {
+				$modalBody.css('overflow', 'auto');
+			}
+		}.bind(this));
+
+		this.$container.on('scroll touchmove mousewheel', function (e) {
+			e.preventDefault();
+		});
+
+		this.$modal.on('scroll touchmove mousewheel', function (e) {
+			e.stopPropagation();
+		});
 
 		if (typeof options.onOpen === 'function') {
 			this.$container.on('modal-opened', function (e) {

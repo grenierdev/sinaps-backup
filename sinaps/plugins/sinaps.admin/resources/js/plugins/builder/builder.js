@@ -25,6 +25,9 @@ $(function () {
 	});
 
 	function downloadTemplateDone (templates) {
+		
+		// TODO updateView retain scroll position
+
 		$('body').on('refresh-fields', function (e) {
 			$('[role="builder-layouts"]:not([data-field-discovered])').attr('data-field-discovered', '').each(function () {
 				var $input = $(this);
@@ -498,7 +501,9 @@ $(function () {
 					$view.on('click', '[role="create"]', function (e) {
 						e.preventDefault();
 
-						showFieldForm('New field', {}, function (state) {
+						showFieldForm('New field', {
+							input: 'text'
+						}, function (state) {
 							if (state) {
 								var field = state;
 

@@ -34,7 +34,7 @@
 
 	<form id="main" method="post">
 		<div class="row">
-			<div class="col-xs-12 col-lg-8">
+			<div class="col-xs-12 col-xl-8">
 				<div class="portlet light">
 					<main>
 
@@ -43,7 +43,7 @@
 					</main>
 				</div>
 			</div>
-			<div class="col-xs-12 col-lg-4">
+			<div class="col-xs-12 col-xl-4">
 				<div class="portlet light">
 					<main>
 						{% set languages = [] %}
@@ -76,25 +76,57 @@
 							type: 'selectbox',
 							id: 'layout',
 							name: 'layout',
-							value: model.layout,
+							value: model.get('layout'),
 							label: 'Layout',
 							options: layouts,
 							required: true
 						}) }}
 
-						{{ fields.field({
-							type: 'datetime',
-							name: 'postDate',
-							value: model.postDate,
-							label: 'Post date'
-						}) }}
+						{% if section.model.layout|lower == 'channel' %}
+							{{ fields.field({
+								type: 'datetime',
+								name: 'postDate',
+								value: model.get('postDate'),
+								label: 'Post date'
+							}) }}
+							{{ fields.field({
+								type: 'datetime',
+								name: 'expireDate',
+								value: model.get('expireDate'),
+								label: 'Expire date'
+							}) }}
+						{% elif section.model.layout|lower == 'structure' %}
+							{{ fields.field({
+								type: 'text',
+								name: 'parentId',
+								value: model.get('parentId'),
+								label: 'Parent'
+							}) }}
+							<input type="hidden" name="order" value="{{ model.get('order') }}">
+						{% endif %}
 
 						{{ fields.field({
-							type: 'datetime',
-							name: 'expireDate',
-							value: model.expireDate,
-							label: 'Expire date'
+							type: 'selectbox',
+							label: 'State',
+							name: 'state',
+							value: model.get('state'),
+							options: [{
+								value: 'published',
+								label: 'Published'
+							}, {
+								value: 'draft',
+								label: 'Draft'
+							}]
 						}) }}
+
+						{% if _action == 'edit' %}
+							<div class="text-right">
+								<a href="/admin/sections/{{ handle }}/delete?ids[]={{ model.id }}" class="btn btn-sm btn-danger">
+									<i class="fa fa-minus-circle"></i>
+									Delete
+								</a>
+							</div>
+						{% endif %}
 					</main>
 				</div>
 			</div>
