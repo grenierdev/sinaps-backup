@@ -182,6 +182,7 @@ $(function () {
 
 				newParentTable ? newParent.struct.splice(newPos, 0, dragItem) : newParent.children.splice(newPos, 0, dragItem);
 				dragItem.parent = newParentTable ? null : newParent;
+				dragItem.parentid = newParentTable ? 0 : newParent.id;
 				dragItem.depth = newParentTable ? 0 : newParent.depth + 1;
 
 				if (oldParentId == newParentId && newPos < oldPos) {
@@ -226,9 +227,9 @@ $(function () {
 
 				$row.attr('data-struct-depth', 0);
 
-				var id = parseInt($row.data('struct-id'), 10) || 0;
-				var parentid = parseInt($row.data('struct-parentid'), 10) || 0;
-				var order = parseInt($row.data('struct-order'), 10) || 0;
+				var id = $row.data('struct-id') || "";
+				var parentid = $row.data('struct-parentid') || 0;
+				var order = $row.data('struct-order') || 0;
 				var opened = $row.hasClass('open');
 
 				if (typeof struct[parentid] === 'undefined') {
@@ -332,6 +333,7 @@ $(function () {
 				item.order = order;
 				item.$element.toggleClass('open', item.state);
 				item.$element.toggle(state);
+				item.$element.attr('data-struct-parentid', item.parentid);
 				item.$element.attr('data-struct-depth', item.depth);
 				item.$element.attr('data-struct-order', item.order);
 				item.$element.find('[data-struct-collapse]').css('visibility', item.children.length > 0 ? 'visible' : 'hidden');
@@ -368,7 +370,11 @@ $(function () {
 
 	$('.table-structure').each(function () {
 		var $table = $(this);
-		var opts = {};
+		var opts = {
+			onChange: function (e, data) {
+				$table.trigger('structure-changed', [data]);
+			}
+		};
 
 		if ($table.data('structure-handle')) {
 			opts.handleColumn = parseInt($table.data('structure-handle'), 10) || 1;
