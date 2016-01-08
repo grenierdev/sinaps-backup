@@ -125,6 +125,17 @@ $(function () {
 								form = _.merge({}, $form.serializeObject());
 							});
 
+							modal.$header.append('<div class="btn-group pull-right m-r-md" role="changelanguage">\
+								<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\
+									'+ sinaps.currentLang.toUpperCase() +'\
+								</button>\
+								<div class="dropdown-menu">\
+									'+ sinaps.languages.map(function (lang) {
+										return '<a class="dropdown-item" href="#" data-switch-lang="' + lang.toLowerCase() + '">' + lang.toUpperCase() + '</a>';
+									}).join('') +'\
+								</div>\
+							</div>');
+
 							modal.$footer.append($ok);
 							modal.$footer.append($cancel);
 

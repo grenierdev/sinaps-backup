@@ -158,14 +158,24 @@
 	<script src="/admin/resources/js/plugins/moment.js" type="text/javascript"></script>
 	<script src="/admin/resources/js/plugins/nunjucks.js" type="text/javascript"></script>
 	<script src="/admin/resources/js/plugins/nunjucks-ext.js" type="text/javascript"></script>
+	<!--script src="/admin/resources/js/sinaps.event.js" type="text/javascript"></script-->
 	<script src="/admin/resources/js/sinaps.sidebar.js" type="text/javascript"></script>
 	<script src="/admin/resources/js/sinaps.modal.js" type="text/javascript"></script>
 	<script src="/admin/resources/js/sinaps.table.js" type="text/javascript"></script>
 
+	<style id="langStyles"></style>
 	<script type="text/javascript">
 		var sinaps = {
-			fieldTypes: {}
+			languages: {{ sinaps.config.languages|json }},
+			currentLang: {{ sinaps.config.languages[0]|json }},
+			fieldTypes: {},
+			switchLanguage: function (lang) {
+				sinaps.currentLang = (lang + "").toLowerCase();
+				$('#langStyles').html('[data-lang] { display: none; } [data-lang="' + sinaps.currentLang + '"] { display: block; }');
+				$('body').trigger('language-changed', [sinaps.currentLang]);
+			}
 		};
+
 		{% for handle, fieldType in sinaps.require('sinaps.admin').getFieldTypes() %}
 			sinaps.fieldTypes[{{ fieldType.handle|json }}] = {
 				handle: {{ fieldType.handle|json }},
@@ -188,8 +198,6 @@
 			{%- endif %}
 		{%- endfor %}
 	{%- endfor %}
-
-	{% block footJS %}{% endblock %}
 
 	<script>
 		$(function() {
@@ -216,6 +224,22 @@
 				})
 			{% endfor %}
 
+			$('body')
+				.on('language-changed', function (e, lang) {
+					$('[role="changelanguage"] .dropdown-toggle').text(lang.toUpperCase());
+				})
+				.on('click', '[data-switch-lang]', function (e) {
+					e.preventDefault();
+					sinaps.switchLanguage($(this).data('switch-lang'));
+				});
+			sinaps.switchLanguage(sinaps.currentLang);
+		});
+	</script>
+
+	{% block footJS %}{% endblock %}
+
+	<script>
+		$(function() {
 			$('body').removeClass('loading');
 		});
 	</script>

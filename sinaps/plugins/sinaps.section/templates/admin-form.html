@@ -14,17 +14,31 @@
 }] %}
 
 {% block actions %}
-<div class="btn-group">
-	<button type="submit" class="btn btn-primary" form="main">
-		{% if _action == 'edit' %}
-			<i class="fa fa-check"></i>
-			{{ "Save" }}
-		{% else %}
-			<i class="fa fa-plus"></i>
-			{{ "Create" }}
-		{% endif %}
-	</button>
-</div>
+	<div class="btn-group">
+		<div class="btn-group" role="changelanguage">
+			<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				{% for lang in sinaps.config.languages %}
+					{% if loop.first %}
+						{{ lang|upper }}
+					{% endif %}
+				{% endfor %}
+			</button>
+			<div class="dropdown-menu">
+				{% for lang in sinaps.config.languages %}
+					<a class="dropdown-item" href="#" data-switch-lang="{{ lang|lower }}">{{ lang|upper }}</a>
+				{% endfor %}
+			</div>
+		</div>
+		<button type="submit" class="btn btn-primary" form="main">
+			{% if _action == 'edit' %}
+				<i class="fa fa-check"></i>
+				{{ "Save" }}
+			{% else %}
+				<i class="fa fa-plus"></i>
+				{{ "Create" }}
+			{% endif %}
+		</button>
+	</div>
 {% endblock %}
 
 {% import 'sinaps.admin/components/fields.html' as fields %}
@@ -46,24 +60,6 @@
 			<div class="col-xs-12 col-xl-4">
 				<div class="portlet light">
 					<main>
-						{% set languages = [] %}
-						{% for lang in sinaps.config.languages %}
-							{% set languages = languages|merge({
-								value: lang,
-								label: lang|upper
-							}) %}
-						{% endfor %}
-
-						{{ fields.field({
-							type: 'selectbox',
-							id: 'language',
-							name: '',
-							value: sinaps.config.languages[0],
-							label: 'Language',
-							options: languages,
-							required: true
-						}) }}
-
 						{% set layouts = [] %}
 						{% for layout in section.schema.layouts %}
 							{% set layouts = layouts|merge({
@@ -139,7 +135,31 @@
 	<script type="text/javascript">
 		$(function () {
 
+			// V2
+			/*$('body').on('click', '[role="changelanguage"] .dropdown-item', function (e) {
+				e.preventDefault();
+
+				var $item = $(this);
+				var $menu = $item.parent();
+				var $btn = $menu.siblings('.btn');
+				var lang = $item.attr('href').replace(/^#/, '');
+
+				$btn.text(lang.toUpperCase());
+				$('[data-lang]').hide().filter('[data-lang="'+ lang +'"]').show();
+				window.location.hash = lang;
+
+				if (typeof e.originalEvent !== 'undefined') {
+					$('[role="changelanguage"] .dropdown-item[href="#'+ lang +'"]').not(this).click();
+				}
+			});
+
 			if (window.location.hash) {
+				var lang = window.location.hash.replace(/^#/, '').toLowerCase();
+				$('[role="changelanguage"] .dropdown-item[href="#'+ lang +'"]').click();
+			}*/
+
+			// V1
+			/*if (window.location.hash) {
 				var lang = window.location.hash.replace(/^#/, '');
 				if ($('#language [value="'+ lang +'"]').length) {
 					$('#language').val(lang);
@@ -150,7 +170,7 @@
 				var lang = $(this).val();
 				$('[data-lang]').hide().filter('[data-lang="'+ lang +'"]').show();
 				window.location.hash = lang;
-			}).trigger('change');
+			}).trigger('change');*/
 
 			$('#layout').on('change', function (e) {
 				var layout = $(this).val();

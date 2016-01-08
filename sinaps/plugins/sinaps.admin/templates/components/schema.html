@@ -6,7 +6,7 @@
 		{% if fieldtype %}
 			{% if field.lang %}
 				{% for lang in sinaps.config.languages %}
-					<div data-lang="{{ lang }}" {% if loop.first == false %}style="display: none"{% endif %}>
+					<div data-lang="{{ lang }}">
 						{% set field = field|merge({
 							id: field.handle + '[' + lang + ']',
 							name: field.handle + '[' + lang + ']',
