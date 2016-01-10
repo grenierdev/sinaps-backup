@@ -131,13 +131,12 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 							});
 							break;
 						case 'structure':
+							// FIXME static method to retrieve full structure
+							// FIXME method to retrieve children
 							section.entrySchema.add({
 								parentId: {
 									type: mongoose.Schema.Types.ObjectId,
-									index: true,
-									set: function () {
-										return null;
-									}
+									index: true
 								},
 								order: {
 									type: Number,

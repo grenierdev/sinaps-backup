@@ -276,8 +276,15 @@ Schema.Field.prototype.finalizedField = function (depth) {
 		definition.default = this.default;
 	if (this.index)
 		definition.index = this.index;
+
+	// Prevent nested field from being required
 	if (depth == 0 && this.required)
 		definition.required = this.required;
+
+	// Prevent nested field from generating ids
+	if (depth > 0)
+		definition._id = false;
+
 	if (_.isFunction(this.getter))
 		definition.get = this.getter;
 	if (_.isFunction(this.setter))

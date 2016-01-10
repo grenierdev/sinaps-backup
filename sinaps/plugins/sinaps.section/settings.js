@@ -148,9 +148,9 @@ module.exports = function () {
 			redirect: req.query.redirect
 		});
 
-		// TODO just reload model ? http://stackoverflow.com/questions/19643126/how-do-you-remove-a-model-from-mongoose
+		// IDEA just reload model ? http://stackoverflow.com/questions/19643126/how-do-you-remove-a-model-from-mongoose
 
-		// TODO interprocess restart signal ?
+		// IDEA interprocess restart signal ?
 		setTimeout(function () {
 			process.exit();
 		}, 500);

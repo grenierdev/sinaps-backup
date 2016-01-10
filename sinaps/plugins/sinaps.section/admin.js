@@ -1,5 +1,6 @@
 var _ = require('lodash');
 var async = require('async');
+var mongoose = require('mongoose');
 var pluginAdmin = sinaps.require('sinaps.admin');
 var pluginSection = sinaps.require('sinaps.section');
 
@@ -219,7 +220,7 @@ module.exports = function () {
 	});
 
 	// Delete
-	pluginAdmin.router.get('/sections/:handle/delete/:id', function (req, res) {
+	pluginAdmin.router.get('/sections/:handle/delete', function (req, res) {
 		var section = getSectionByHandle(req.params.handle);
 
 		if (!section) {
@@ -228,33 +229,39 @@ module.exports = function () {
 			return;
 		}
 
-		section.entryModel.findById(req.params.id, function (err, model) {
+		section.entryModel.find({
+			_id: { $in: req.query.ids }
+		}, function (err, models) {
 			if (err) {
-				req.session.messages.push({type: 'danger', message: 'Could not find entry'});
-				res.status(404).redirect(`/admin/sections/${req.params.handle}/`);
+				res.status(400).end();
 				return;
 			}
 
-			if (model.state == 'trashed') {
-				model.remove(function (err) {
-					if (err) {
-						req.session.messages.push({type: 'danger', message: 'Could remove entry from bin'});
-					} else {
-						req.session.messages.push({type: 'success', message: 'Entry pulverized'});
-					}
-					res.redirect(`/admin/sections/${req.params.handle}/`);
-				});
-			} else {
-				model.state = 'trashed';
-				model.save(function (err) {
-					if (err) {
-						req.session.messages.push({type: 'danger', message: 'Could not trash this entry'});
-					} else {
-						req.session.messages.push({type: 'success', message: 'Entry trashed'});
-					}
-					res.redirect(`/admin/sections/${req.params.handle}/`);
-				});
-			}
+			var tasks = [];
+
+			models.forEach(function (model) {
+				// Force delete or already trashed
+				if (req.query.forceDelete || model.state == 'trashed') {
+					tasks.push(model.remove);
+				}
+
+				// Put in trash
+				else {
+					model.state = 'trashed';
+					tasks.push(model.save.bind(model, {
+						validateBeforeSave: false
+					}));
+				}
+			});
+
+			async.parallel(tasks, function (err) {
+				if (err) {
+					req.session.messages.push({type: 'danger', message: 'Something wrong happened, try again'});
+				} else {
+					req.session.messages.push({type: 'success', message: 'Entry pulverized'});
+				}
+				res.redirect(`/admin/sections/${req.params.handle}/`);
+			});
 		});
 	});
 
@@ -284,6 +291,45 @@ module.exports = function () {
 					req.session.messages.push({type: 'success', message: 'Entry restored as draft'});
 					res.redirect(`/admin/sections/${req.params.handle}/edit/${model.id}`);
 				}
+			});
+		});
+	});
+
+	// Structure reording
+	pluginAdmin.router.post('/sections/:handle/restruct', function (req, res) {
+		var section = getSectionByHandle(req.params.handle);
+
+		if (!section) {
+			req.session.messages.push({type: 'danger', message: 'Could not find section'});
+			res.status(404).redirect('/admin/sections/');
+			return;
+		}
+
+		var struct = [];
+		req.body.struct.forEach(function (pair) {
+			struct[pair.id] = pair;
+		});
+
+		section.entryModel.find({
+			_id: { $in: _.keys(struct) }
+		}, function (err, models) {
+			if (err) {
+				res.status(400).end();
+				return;
+			}
+
+			var tasks = [];
+
+			models.forEach(function (model) {
+				model.set('parentId', struct[model.id].parentid != 0 ? struct[model.id].parentid : null);
+				model.set('order', struct[model.id].order);
+				tasks.push(model.save.bind(model, {
+					validateBeforeSave: false
+				}));
+			});
+
+			async.parallel(tasks, function (err) {
+				res.status(err ? 400 : 200).end();
 			});
 		});
 	});

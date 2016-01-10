@@ -52,7 +52,7 @@ module.exports = {
 
 				// If user present in request (logged)
 				sinaps.router.use(function (req, res, next) {
-					// TODO locale in url
+					// FIXME locale in url
 					res.locals.locale = sinaps.config.languages[0];
 					res.locals.l10n = function (input) {
 						return _.isObject(input) && typeof input[res.locals.locale] != 'undefined' ? input[res.locals.locale] : input;

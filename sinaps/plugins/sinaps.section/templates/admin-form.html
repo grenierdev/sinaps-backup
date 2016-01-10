@@ -8,10 +8,19 @@
 },{
 	href: '/admin/sections/' + handle + '/',
 	title: section.schema.label
-},{
-	href: '/admin/sections/' + handle + '/edit/' + model.id,
-	title: l10n(model.getTitle())|default(model.id)
 }] %}
+
+{% if _action == 'create' %}
+	{% set breadcrumbs = breadcrumbs|merge({
+		href: '/admin/sections/' + handle + '/create/',
+		title: 'Create'
+	}) %}
+{% else %}
+	{% set breadcrumbs = breadcrumbs|merge({
+		href: '/admin/sections/' + handle + '/edit/' + model.id,
+		title: l10n(model.getTitle())|default(model.id)
+	}) %}
+{% endif %}
 
 {% block actions %}
 	<div class="btn-group">
@@ -112,6 +121,9 @@
 							}, {
 								value: 'draft',
 								label: 'Draft'
+							}, {
+								value: 'trashed',
+								label: 'Trashed'
 							}]
 						}) }}
 

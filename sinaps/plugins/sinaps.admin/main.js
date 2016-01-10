@@ -14,7 +14,7 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 	// Admin router
 	router: express.Router(),
 
-	// Sidebar ? TODO wtf ?
+	// CP Sidebar
 	sidebar: {
 		//top: new Navigation(),
 		navigation: new Navigation()
