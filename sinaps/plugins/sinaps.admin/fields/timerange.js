@@ -5,74 +5,74 @@ var FieldType = pluginAdmin.FieldType;
 
 module.exports = function () {
 
-	// Date range
+	// Time range
 	pluginAdmin.registerFieldType(new FieldType({
-		handle: 'daterange',
-		label: 'Date range',
+		handle: 'timerange',
+		label: 'Time range',
 		type: 'object',
 		fields: [
 			{
 				handle: 'from',
-				type: 'date'
+				type: 'time'
 			},
 			{
 				handle: 'to',
-				type: 'date'
+				type: 'time'
 			}
 		],
 		settings: {
 			format: {
 				type: 'text',
 				label: 'Format',
-				value: 'YYYY-MM-DD'
+				value: 'HH:mm'
 			}
 		},
 
 		getInputTemplate: function () {
-			return '<div class="input-group date" role="daterange" data-date-format="{{ field.format|default("YYYY-MM-DD") }}">\
+			return '<div class="input-group date" role="timerange" data-time-format="{{ field.format|default("HH:mm") }}">\
 	<input 	type="text"\
 	 		class="{{ field.class|default("form-control") }}"\
 			id="{{ field.id|default(field.name) }}from"\
 			{% if field.name %} name="{{ field.name }}[from]"{% endif %}\
-			{% if field.value.from %} value="{{ field.value.from|date("YYYY-MM-DD") }}"{% endif %}\
+			{% if field.value.from %} value="{{ field.value.from }}"{% endif %}\
 			{% if field.autofocus %} autofocus{% endif %}\
 			{% if field.required %} required{% endif %}\
 			{% if field.disabled %} disabled{% endif %}\
 			{% if field.readonly %} readonly{% endif %}\
 	/>\
 	<span class="input-group-addon" style="order: -1">\
-		<i class="fa fa-calendar"></i>\
+		<i class="fa fa-clock-o"></i>\
 	</span>\
 	<span class="input-group-addon">to</span>\
 	<input 	type="text"\
 	 		class="{{ field.class|default("form-control") }}"\
 			id="{{ field.id|default(field.name) }}to"\
 			{% if field.name %} name="{{ field.name }}[to]"{% endif %}\
-			{% if field.value.to %} value="{{ field.value.to|date("YYYY-MM-DD") }}"{% endif %}\
+			{% if field.value.to %} value="{{ field.value.to }}"{% endif %}\
 			{% if field.autofocus %} autofocus{% endif %}\
 			{% if field.required %} required{% endif %}\
 			{% if field.disabled %} disabled{% endif %}\
 			{% if field.readonly %} readonly{% endif %}\
 	/>\
 	<span class="input-group-addon">\
-		<i class="fa fa-calendar"></i>\
+		<i class="fa fa-clock-o"></i>\
 	</span>\
 </div>';
 		},
 
 		getValueTemplate: function () {
-			return '{% if field.value %}{{ field.value|date(field.format|default("YYYY-MM-DD")) }}{% endif %}';
+			return '{% if field.value %}{{ field.value|date(field.format|default("HH:mm")) }}{% endif %}';
 		},
 
 		getIncludedJS: function () {
-			return '$(".input-group[role=\'daterange\']:not([data-field-discovered])").attr("data-field-discovered", "").each(function () {\
+			return '$(".input-group[role=\'timerange\']:not([data-field-discovered])").attr("data-field-discovered", "").each(function () {\
 				var $date = $(this);\
 				var $from = $date.find(":input:first");\
 				var $to = $date.find(":input:last");\
 				$from.datetimepicker({\
 					allowInputToggle: true,\
 					useCurrent: false,\
-					format: $date.data("date-format") || "YYYY-MM-DD",\
+					format: $date.data("time-format") || "HH:mm",\
 					icons: {\
 						time: "fa fa-clock-o",\
 						date: "fa fa-calendar",\
@@ -96,7 +96,7 @@ module.exports = function () {
 				$to.datetimepicker({\
 					allowInputToggle: true,\
 					useCurrent: false,\
-					format: $date.data("date-format") || "YYYY-MM-DD",\
+					format: $date.data("time-format") || "HH:mm",\
 					icons: {\
 						time: "fa fa-clock-o",\
 						date: "fa fa-calendar",\

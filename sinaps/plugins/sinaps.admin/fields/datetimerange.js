@@ -5,7 +5,7 @@ var FieldType = pluginAdmin.FieldType;
 
 module.exports = function () {
 
-	// Datetime
+	// Datetime range
 	pluginAdmin.registerFieldType(new FieldType({
 		handle: 'datetimerange',
 		label: 'Datetime range',
@@ -72,7 +72,6 @@ module.exports = function () {
 				$from.datetimepicker({\
 					allowInputToggle: true,\
 					useCurrent: false,\
-					maxDate: $to.val() || undefined,\
 					format: $date.data("datetime-format") || "YYYY-MM-DD",\
 					icons: {\
 						time: "fa fa-clock-o",\
@@ -97,7 +96,6 @@ module.exports = function () {
 				$to.datetimepicker({\
 					allowInputToggle: true,\
 					useCurrent: false,\
-					minDate: $to.val() || undefined,\
 					format: $date.data("datetime-format") || "YYYY-MM-DD",\
 					icons: {\
 						time: "fa fa-clock-o",\
@@ -118,6 +116,12 @@ module.exports = function () {
 					e.preventDefault();\
 					$to.data("DateTimePicker").toggle();\
 				});\
+				if ($from.val()) {\
+					$to.data("DateTimePicker").minDate($from.val());\
+				}\
+				if ($to.val()) {\
+					$from.data("DateTimePicker").maxDate($to.val());\
+				}\
 			});';
 		}
 	}));

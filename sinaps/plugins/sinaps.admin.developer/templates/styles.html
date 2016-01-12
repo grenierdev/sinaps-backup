@@ -592,6 +592,17 @@
 									placeholder: 'This is a datetimerange field'
 								}) }}
 								{{ fields.field({
+									type: 'timerange',
+									id: 'fieldTimeRange',
+									name: 'timerange',
+									label: 'Time range',
+									value: {
+										from: '18:30',
+										to: '22:30'
+									},
+									placeholder: 'This is a timerange field'
+								}) }}
+								{{ fields.field({
 									type: 'dictionary',
 									id: 'fieldDictionary',
 									name: 'dictionary',

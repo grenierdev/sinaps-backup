@@ -115,6 +115,7 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 		require('./fields/time')();
 		require('./fields/daterange')();
 		require('./fields/datetimerange')();
+		require('./fields/timerange')();
 		require('./fields/selectbox')();
 		require('./fields/checkbox')();
 		require('./fields/matrix')();

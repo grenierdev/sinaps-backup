@@ -47,7 +47,7 @@ module.exports = function () {
 		getIncludedResources: function () {
 			return [{
 				type: 'script',
-				src: '/admin/resources/js/vendors/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js'
+				src: '/admin/resources/js/vendors/bootstrap-datetimepicker/bootstrap-datetimepicker.js'
 			}, {
 				type: 'css',
 				src: '/admin/resources/js/vendors/bootstrap-datetimepicker/bootstrap-datetimepicker.css'

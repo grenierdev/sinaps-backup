@@ -5,7 +5,7 @@ var FieldType = pluginAdmin.FieldType;
 
 module.exports = function () {
 
-	// Datetime
+	// Time
 	pluginAdmin.registerFieldType(new FieldType({
 		handle: 'time',
 		label: 'Time',
