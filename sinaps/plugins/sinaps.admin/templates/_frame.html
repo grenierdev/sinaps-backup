@@ -190,21 +190,21 @@
 	</script>
 
 	{% for handle, fieldtype in sinaps.require('sinaps.admin').fieldTypes -%}
-		{% for resource in fieldtype.getIncludedResources() -%}
+		{% for resource in fieldtype.getIncludedResources() %}
 			{% if resource.type == 'script' -%}
 				<script src="{{ resource.src }}" type="text/javascript"></script>
 			{%- elif resource.type == 'css' -%}
 				<link href="{{ resource.src }}" rel="stylesheet" type="text/css"/>
 			{%- endif %}
-		{%- endfor %}
+		{% endfor %}
 	{%- endfor %}
 
 	<script>
 		$(function() {
 			$('body').on('refresh-fields', function (e) {
-				{% for handle, fieldtype in sinaps.require('sinaps.admin').fieldTypes -%}
+				{% for handle, fieldtype in sinaps.require('sinaps.admin').fieldTypes %}
 					{{ fieldtype.getIncludedJS() }}
-				{%- endfor %}
+				{% endfor %}
 			}).trigger('refresh-fields');
 
 			$.notifyDefaults({

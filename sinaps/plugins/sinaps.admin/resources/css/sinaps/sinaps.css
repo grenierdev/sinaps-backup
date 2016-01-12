@@ -972,4 +972,7 @@ label {
     padding: 0.4375rem 0.75rem;
     margin-bottom: 0; } }
 
+.btn-secondary.collapsed {
+  color: #818a91; }
+
 /*# sourceMappingURL=sinaps.css.map */

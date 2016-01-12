@@ -3,6 +3,27 @@ var async = require('async');
 var mongoose = require('mongoose');
 var pluginAdmin = sinaps.require('sinaps.admin');
 var pluginSection = sinaps.require('sinaps.section');
+var moment = require('moment');
+
+function flattenObject (obj) {
+	var getPaths = function (obj, path) {
+		path = typeof path === 'undefined' ? '' : path;
+		var paths = {};
+
+		_.each(obj, function (v, k) {
+			var p = path != '' ? path + '.' + k : k + '';
+			if (_.isObject(v) || _.isArray(v)) {
+				_.merge(paths, getPaths(v, p));
+			} else {
+				paths[p] = v;
+			}
+		});
+
+		return paths;
+	};
+
+	return getPaths(obj);
+};
 
 module.exports = function () {
 
@@ -51,6 +72,50 @@ module.exports = function () {
 				var query = {};
 				var order = { postDate: -1 };
 
+				var search = req.query.search || {};
+				var flatSearch = flattenObject(search);
+				var hasSearch = _.values(flatSearch).join('') != '';
+				var searchQuery = [];
+
+				if (flatSearch['postDate.from'] || flatSearch['postDate.to']) {
+					query['postDate'] = {};
+					if (flatSearch['postDate.from']) {
+						query['postDate']['$gte'] = moment(flatSearch['postDate.from']).toDate();
+					}
+					if (flatSearch['postDate.to']) {
+						query['postDate']['$lte'] = moment(flatSearch['postDate.to']).toDate();
+					}
+				}
+				if (flatSearch['expireDate.from'] || flatSearch['expireDate.to']) {
+					query['expireDate'] = {};
+					if (flatSearch['expireDate.from']) {
+						query['expireDate']['$gte'] = moment(flatSearch['expireDate.from']).toDate();
+					}
+					if (flatSearch['expireDate.to']) {
+						query['expireDate']['$lte'] = moment(flatSearch['expireDate.to']).toDate();
+					}
+				}
+
+				_.each(_.omit(flatSearch, 'postDate.from', 'postDate.to', 'expireDate.from', 'expireDate.to'), function (value, path) {
+					if (value) {
+						// FIXME multilingual search ?!
+						query[path] = new RegExp(value, 'i');
+
+						searchQuery.push('search['+ path.split('.').join('][') +']='+ value);
+					}
+				});
+
+				searchQuery = searchQuery.join('&');
+
+				var searchableFields = {};
+
+				_.each(section.schema.fields(), function (field, path) {
+					if (field.index) {
+						var p = path.split('.').slice(2).join('.');
+						searchableFields[p] = field;
+					}
+				});
+
 				async.parallel({
 					count: function (done) {
 						section.entryModel.find(query).count(function (err, count) {
@@ -67,6 +132,11 @@ module.exports = function () {
 						handle: section.schema.handle,
 						section: section,
 						nav: navigation,
+
+						searchableFields: searchableFields,
+						search: search,
+						hasSearch: hasSearch,
+						searchQuery: searchQuery,
 
 						entries: result.entries,
 						page: page,

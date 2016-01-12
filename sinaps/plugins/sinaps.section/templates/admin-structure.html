@@ -33,15 +33,15 @@
 		</thead>
 		<tbody>
 			{% for entry in entries %}
-				<tr data-struct-id="{{ entry.id }}" data-struct-parentid="{{ entry.parentId }}" data-struct-order="{{ entry.order }}">
+				<tr data-struct-id="{{ entry.id }}" data-struct-parentid="{{ entry.parentId }}" data-struct-order="{{ entry.order }}" class="open">
 					<td>
 						<input type="checkbox" name="ids[]" value="{{ entry.id }}" />
 					</td>
 					<td>
 						{% if entry.state == 'trashed' %}
-							<i class="fa fa-circle-o text-muted"></i>
+							<i class="fa fa-trash-o text-muted"></i>
 						{% elif entry.state == 'published' %}
-							<i class="fa fa-circle text-primary"></i>
+							<i class="fa fa-circle text-muted"></i>
 						{% else %}
 							<i class="fa fa-pie-chart text-muted"></i>
 						{% endif %}

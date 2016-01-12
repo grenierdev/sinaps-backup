@@ -9,18 +9,25 @@
 }] %}
 
 {% block actions %}
-	<a href="/admin/sections/{{handle}}/create" class="btn btn-primary" form="main">
-		<i class="fa fa-plus"></i>
-		Create entry
-	</a>
+	<div class="btn-group">
+		<a class="btn btn-secondary {% if hasSearch == false %}collapsed{% endif %}" data-toggle="collapse" href="#formFilters">
+			<i class="fa fa-filter"></i> Search
+		</a>
+		<a href="/admin/sections/{{handle}}/create" class="btn btn-primary" form="main">
+			<i class="fa fa-plus"></i>
+			Create entry
+		</a>
+	</div>
 {% endblock %}
 
 {% import 'sinaps.admin/components/fields.html' as fields %}
 
-{% macro pagination (page, offset, perpage, total) %}
+{% macro pagination (page, offset, perpage, total, querystr) %}
 	{% set pmin = max(page - 5, 0) %}
 	{% set pmax = min(page + 5, floor(total / perpage)) %}
-	{% set querystr = "" %}
+	{% if querystr != "" %}
+		{% set querystr = "&" + querystr %}
+	{% endif %}
 	<div class="row">
 		<div class="col-md-12">
 			<nav>
@@ -49,64 +56,132 @@
 {% endmacro %}
 
 {% block tab %}
-	<table class="table table-data">
-		<thead>
-			<tr>
-				<th width="1">
-					<input type="checkbox" value="" />
-				</th>
-				<th width="1"></th>
-				<th data-field="title">Title</th>
-				<th data-field="postDate" class="sorted">Post date <span class="pull-right"><i class="fa fa-sort-amount-desc"></i></span></th>
-				<th data-field="expireDate">Expire date</th>
-				<th width="1"></th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for entry in entries %}
-				<tr>
-					<td>
-						<input type="checkbox" name="ids[]" value="{{ entry.id }}" />
-					</td>
-					<td>
-						{% if entry.state == 'trashed' %}
-							<i class="fa fa-circle-o text-muted"></i>
-						{% elif entry.state == 'published' %}
-							<i class="fa fa-circle text-primary"></i>
-						{% else %}
-							<i class="fa fa-pie-chart text-muted"></i>
-						{% endif %}
-					</td>
-					<td>
-						<a href="/admin/sections/{{ handle }}/edit/{{ entry.id }}">
-							{{ l10n(entry.getTitle())|default(entry.id) }}
-						</a>
-					</td>
-					<td class="text-no-wrap">
-						{{ fields.value({
-							type: 'date',
-							value: entry.postDate
-						}) }}
-					</td>
-					<td class="text-no-wrap">
-						{{ fields.value({
-							type: 'date',
-							value: entry.expireDate
-						}) }}
-					</td>
-					<td>
-						<a href="/admin/sections/{{ handle }}/delete?ids[]={{ entry.id }}" class="text-danger">
-							{% if entry.state == 'trashed' %}
-								<i class="fa fa-chain-broken"></i>
-							{% else %}
-								<i class="fa fa-trash-o"></i>
-							{% endif %}
-						</a>
-					</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+	<form method="get" id="main">
+		<div class="collapse {% if hasSearch %}in{% endif %}" id="formFilters">
+			<div class="card card-block">
+				<h5><i class="fa fa-filter"></i> Search</h5>
+				{% for path,field in searchableFields %}
+					{{ fields.field({
+						type: field.input,
+						inline: true,
+						id: 'search' + path,
+						name: 'search[' + path + ']',
+						label: field.label,
+						value: search[path]
+					}) }}
+				{% endfor %}
+				{{ fields.field({
+					type: 'daterange',
+					inline: true,
+					id: 'searchPostDate',
+					name: 'search[postDate]',
+					label: 'Post date',
+					value: {
+						from: search.postDate.from,
+						to: search.postDate.to
+					}
+				}) }}
+				{{ fields.field({
+					type: 'daterange',
+					inline: true,
+					id: 'searchExpireDate',
+					name: 'search[expireDate]',
+					label: 'Expire date',
+					value: {
+						from: search.expireDate.from,
+						to: search.expireDate.to
+					}
+				}) }}
+				{{ fields.field({
+					type: 'selectbox',
+					inline: true,
+					label: 'State',
+					id: 'searchstate',
+					name: 'search[state]',
+					class: 'fa',
+					value: search.state,
+					options: [{
+						value: '',
+						label: ''
+					}, {
+						value: 'published',
+						label: '&#xf111; Published'
+					}, {
+						value: 'draft',
+						label: '&#xf200; Draft'
+					}, {
+						value: 'trashed',
+						label: '&#xf014; Trashed'
+					}]
+				}) }}
+				<div class="row">
+					<div class="col-xs-12 text-right">
+						<button type="submit" class="btn btn-primary" form="main">Search</button>
+					</div>
+				</div>
+			</div>
+			<h5><i class="fa fa-server"></i> Results</h5>
+		</div>
 
-	{{ pagination(page * perpage, offset, perpage, count) }}
+		<table class="table table-data">
+			<thead>
+				<tr>
+					<th width="1">
+						<input type="checkbox" value="" />
+					</th>
+					<th width="1"></th>
+					<th data-field="title">Title</th>
+					<th data-field="postDate" class="sorted">Post date <span class="pull-right"><i class="fa fa-sort-amount-desc"></i></span></th>
+					<th data-field="expireDate">Expire date</th>
+					<th width="1"></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for entry in entries %}
+					<tr>
+						<td>
+							<input type="checkbox" name="ids[]" value="{{ entry.id }}" />
+						</td>
+						<td>
+							{% if entry.state == 'trashed' %}
+								<i class="fa fa-trash-o text-muted"></i>
+							{% elif entry.state == 'published' %}
+								<i class="fa fa-circle text-muted"></i>
+							{% else %}
+								<i class="fa fa-pie-chart text-muted"></i>
+							{% endif %}
+						</td>
+						<td>
+							<a href="/admin/sections/{{ handle }}/edit/{{ entry.id }}">
+								{{ l10n(entry.getTitle())|default(entry.id) }}
+							</a>
+						</td>
+						<td class="text-no-wrap">
+							{{ fields.value({
+								type: 'date',
+								value: entry.postDate
+							}) }}
+						</td>
+						<td class="text-no-wrap">
+							{{ fields.value({
+								type: 'date',
+								value: entry.expireDate
+							}) }}
+						</td>
+						<td>
+							<a href="/admin/sections/{{ handle }}/delete?ids[]={{ entry.id }}" class="text-danger">
+								{% if entry.state == 'trashed' %}
+									<i class="fa fa-chain-broken"></i>
+								{% else %}
+									<i class="fa fa-trash-o"></i>
+								{% endif %}
+							</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		{{ pagination(page * perpage, offset, perpage, count, searchQuery) }}
+	</form>
 {% endblock %}
