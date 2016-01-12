@@ -133,3 +133,31 @@ label {
 		}
 	}
 }
+
+@include media-breakpoint-up(sm) {
+	.form-control-label-sm {
+		padding: ($input-padding-y + $border-width) $input-padding-x;
+		margin-bottom: 0;
+	}
+}
+
+@include media-breakpoint-up(md) {
+	.form-control-label-md {
+		padding: ($input-padding-y + $border-width) $input-padding-x;
+		margin-bottom: 0;
+	}
+}
+
+@include media-breakpoint-up(lg) {
+	.form-control-label-lg {
+		padding: ($input-padding-y + $border-width) $input-padding-x;
+		margin-bottom: 0;
+	}
+}
+
+@include media-breakpoint-up(xl) {
+	.form-control-label-xl {
+		padding: ($input-padding-y + $border-width) $input-padding-x;
+		margin-bottom: 0;
+	}
+}

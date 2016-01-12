@@ -28,16 +28,17 @@ body {
   font-family: Roboto, Arial, sans-serif;
   box-sizing: border-box;
   overflow-x: hidden; }
+  body .fa {
+    font-family: FontAwesome, Roboto, Arial, sans-serif; }
   body > main {
     position: relative;
     left: 0;
     border-left: 0 solid transparent;
     padding-bottom: 2rem;
     transition: left 0.2s ease-in-out, border-left-width 0.2s ease-in-out; }
-    @media (max-width: 74.9em) {
-      body > aside[role="left"].open + main {
-        left: 250px; } }
-    @media (min-width: 62em) {
+    body > aside[role="left"].open + main {
+      left: 250px; }
+    @media (min-width: 75em) {
       body > aside[role="left"] + main,
       body > aside[role="left"].open + main {
         left: 0;
@@ -97,7 +98,7 @@ body {
     color: #f5f6f8;
     overflow: 0;
     transition: left 0.2s ease-in-out; }
-    @media (min-width: 62em) {
+    @media (min-width: 75em) {
       body > aside[role="left"] {
         left: 0; } }
     body > aside[role="left"].open {
@@ -950,5 +951,25 @@ label {
     height: 1em;
     background: white;
     transition: left 0.2s ease-in-out; }
+
+@media (min-width: 34em) {
+  .form-control-label-sm {
+    padding: 0.4375rem 0.75rem;
+    margin-bottom: 0; } }
+
+@media (min-width: 48em) {
+  .form-control-label-md {
+    padding: 0.4375rem 0.75rem;
+    margin-bottom: 0; } }
+
+@media (min-width: 62em) {
+  .form-control-label-lg {
+    padding: 0.4375rem 0.75rem;
+    margin-bottom: 0; } }
+
+@media (min-width: 75em) {
+  .form-control-label-xl {
+    padding: 0.4375rem 0.75rem;
+    margin-bottom: 0; } }
 
 /*# sourceMappingURL=sinaps.css.map */

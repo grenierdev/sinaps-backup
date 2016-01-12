@@ -388,6 +388,9 @@
 							<li class="nav-item">
 								<a class="nav-link active" data-toggle="tab" href="#formAdvance" role="tab">Builtin fields</a>
 							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" href="#formInline" role="tab">Inline</a>
+							</li>
 						</ul>
 					</nav>
 					<main>
@@ -641,6 +644,40 @@
 										}
 									]
 								}) }}
+							</div>
+							<div class="tab-pane" id="formInline" role="tabpanel">
+								<div class="">
+									{{ fields.field({
+										type: 'text',
+										inline: true,
+										id: 'fieldText',
+										name: 'text',
+										label: 'Text',
+										placeholder: 'This is a single line text field',
+										instructions: 'This is an instruction'
+									}) }}
+									{{ fields.field({
+										type: 'checkbox',
+										inline: true,
+										id: 'fieldCheckbox',
+										name: 'checkbox',
+										label: 'Checkbox',
+										value: true,
+										instructions: 'This is a lightswitch'
+									}) }}
+									{{ fields.field({
+										type: 'datetimerange',
+										inline: true,
+										id: 'fieldDatetimeRange',
+										name: 'datetimerange',
+										label: 'Datetime range',
+										value: {
+											from: '2015-12-21 08:17',
+											to: '2015-12-31 23:48'
+										},
+										placeholder: 'This is a datetimerange field'
+									}) }}
+								</div>
 							</div>
 						</div>
 					</main>
