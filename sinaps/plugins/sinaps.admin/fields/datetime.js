@@ -59,6 +59,7 @@ module.exports = function () {
 				var $date = $(this);\
 				$date.datetimepicker({\
 					allowInputToggle: true,\
+					useCurrent: false,\
 					format: $date.data("datetime-format") || "YYYY-MM-DD HH:mm",\
 					icons: {\
 						time: "fa fa-clock-o",\

@@ -71,7 +71,8 @@ module.exports = function () {
 				var $to = $date.find(":input:last");\
 				$from.datetimepicker({\
 					allowInputToggle: true,\
-					maxDate: $to.val(),\
+					useCurrent: false,\
+					maxDate: $to.val() || null,\
 					format: $date.data("date-format") || "YYYY-MM-DD",\
 					icons: {\
 						time: "fa fa-clock-o",\
@@ -95,7 +96,8 @@ module.exports = function () {
 				\
 				$to.datetimepicker({\
 					allowInputToggle: true,\
-					minDate: $to.val(),\
+					useCurrent: false,\
+					minDate: $to.val() || null,\
 					format: $date.data("date-format") || "YYYY-MM-DD",\
 					icons: {\
 						time: "fa fa-clock-o",\
