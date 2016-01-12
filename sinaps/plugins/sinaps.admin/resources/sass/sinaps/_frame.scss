@@ -32,6 +32,10 @@ body {
 	box-sizing: border-box;
 	overflow-x: hidden;
 
+	.fa {
+		font-family: FontAwesome, Roboto, Arial, sans-serif;
+	}
+
 	> main {
 		position: relative;
 		left: 0;
@@ -40,13 +44,13 @@ body {
 
 		@include transition(left .2s ease-in-out, border-left-width .2s ease-in-out);
 
-		@include media-breakpoint-down(lg) {
+		@include media-breakpoint-down(xl) {
 			@at-root body > aside[role="left"].open + main {
 				left: $sidebar-left-size;
 			}
 		}
 
-		@include media-breakpoint-up(lg) {
+		@include media-breakpoint-up(xl) {
 
 			@at-root body > aside[role="left"] + main,
 			body > aside[role="left"].open + main {
@@ -135,7 +139,7 @@ body {
 
 		@include transition(left .2s ease-in-out);
 
-		@include media-breakpoint-up(lg) {
+		@include media-breakpoint-up(xl) {
 			& {
 				left: 0;
 			}
