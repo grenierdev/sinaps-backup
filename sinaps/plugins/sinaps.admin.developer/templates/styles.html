@@ -567,6 +567,28 @@
 									placeholder: 'This is a time field'
 								}) }}
 								{{ fields.field({
+									type: 'daterange',
+									id: 'fieldDateRange',
+									name: 'daterange',
+									label: 'Date range',
+									value: {
+										from: '2015-12-21',
+										to: '2015-12-31'
+									},
+									placeholder: 'This is a daterange field'
+								}) }}
+								{{ fields.field({
+									type: 'datetimerange',
+									id: 'fieldDatetimeRange',
+									name: 'datetimerange',
+									label: 'Datetime range',
+									value: {
+										from: '2015-12-21 08:17',
+										to: '2015-12-31 23:48'
+									},
+									placeholder: 'This is a datetimerange field'
+								}) }}
+								{{ fields.field({
 									type: 'dictionary',
 									id: 'fieldDictionary',
 									name: 'dictionary',

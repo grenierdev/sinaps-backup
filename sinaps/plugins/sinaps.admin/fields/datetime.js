@@ -58,6 +58,7 @@ module.exports = function () {
 			return '$(".input-group[role=\'datetime\']:not([data-field-discovered])").attr("data-field-discovered", "").each(function () {\
 				var $date = $(this);\
 				$date.datetimepicker({\
+					allowInputToggle: true,\
 					format: $date.data("datetime-format") || "YYYY-MM-DD HH:mm",\
 					icons: {\
 						time: "fa fa-clock-o",\
