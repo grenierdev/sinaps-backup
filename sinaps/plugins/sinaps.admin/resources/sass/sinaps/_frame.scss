@@ -342,3 +342,20 @@ body {
 		}
 	}
 }
+
+.search-box {
+	display: flex;
+	margin-bottom: 1rem;
+
+	> * {
+		width: auto !important;
+		
+		&:not(:last-child) {
+			margin-right: 1rem;
+		}
+	}
+
+	> input[type="text"] {
+		flex-grow: 1;
+	}
+}

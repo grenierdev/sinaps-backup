@@ -237,6 +237,16 @@ body {
       line-height: 1;
       color: inherit; }
 
+.search-box {
+  display: flex;
+  margin-bottom: 1rem; }
+  .search-box > * {
+    width: auto !important; }
+    .search-box > *:not(:last-child) {
+      margin-right: 1rem; }
+  .search-box > input[type="text"] {
+    flex-grow: 1; }
+
 .sidebar {
   display: flex;
   flex-direction: row; }
@@ -874,6 +884,9 @@ label {
       background: none;
       outline: none;
       border: none; }
+
+select.form-control {
+  height: 2.375rem; }
 
 .input-group.date .input-group-addon {
   height: 2.36rem;

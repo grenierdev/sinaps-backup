@@ -190,7 +190,10 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 						next();
 					});
 
-					section.entryModel = mongoose.model(section.schema.handle, section.entrySchema);
+					// TODO multi-lingual text index ?
+					section.entrySchema.index({ "$**": "text" }, { name: "WildcardSearch" });
+
+					section.entryModel = mongoose.model('section_' + section.schema.handle, section.entrySchema);
 				});
 
 				// Let others know models are ready

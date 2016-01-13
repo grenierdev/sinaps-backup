@@ -70,6 +70,7 @@ module.exports = function () {
 				var page = parseInt(req.query.page, 10) || 0;
 				var perpage = 50;
 				var query = {};
+				var opts = {};
 				var order = { postDate: -1 };
 
 				var search = req.query.search || {};
@@ -96,34 +97,26 @@ module.exports = function () {
 					}
 				}
 
-				_.each(_.omit(flatSearch, 'postDate.from', 'postDate.to', 'expireDate.from', 'expireDate.to'), function (value, path) {
-					if (value) {
-						// FIXME multilingual search ?!
-						query[path] = new RegExp(value, 'i');
+				if (flatSearch['term']) {
+					query['$text'] = { $search: flatSearch['term'] };
+					opts['score'] = { $meta: 'textScore' };
+					order = { score: { $meta: 'textScore' } };
+				}
 
-						searchQuery.push('search['+ path.split('.').join('][') +']='+ value);
-					}
-				});
+				if (flatSearch['state']) {
+					query['state'] = flatSearch['state'];
+				}
 
 				searchQuery = searchQuery.join('&');
 
-				var searchableFields = {};
-
-				_.each(section.schema.fields(), function (field, path) {
-					if (field.index) {
-						var p = path.split('.').slice(2).join('.');
-						searchableFields[p] = field;
-					}
-				});
-
 				async.parallel({
 					count: function (done) {
-						section.entryModel.find(query).count(function (err, count) {
+						section.entryModel.find(query, opts).count(function (err, count) {
 							done(err, count);
 						});
 					},
 					entries: function (done) {
-						section.entryModel.find(query).limit(perpage).skip(page * perpage).sort(order).exec(function (err, entries) {
+						section.entryModel.find(query, opts).limit(perpage).skip(page * perpage).sort(order).exec(function (err, entries) {
 							done(err, entries);
 						});
 					}
@@ -133,7 +126,6 @@ module.exports = function () {
 						section: section,
 						nav: navigation,
 
-						searchableFields: searchableFields,
 						search: search,
 						hasSearch: hasSearch,
 						searchQuery: searchQuery,

@@ -1,6 +1,4 @@
 #### Release Demo
-- TODO sinaps.section : Search & results
-- TODO sinaps.section : Channel pagination
 - TODO sinaps.section : Page
 - TODO sinaps.core : Translation files
 - TODO sinaps.section : Field entry picker

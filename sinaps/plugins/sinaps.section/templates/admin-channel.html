@@ -10,9 +10,9 @@
 
 {% block actions %}
 	<div class="btn-group">
-		<a class="btn btn-secondary {% if hasSearch == false %}collapsed{% endif %}" data-toggle="collapse" href="#formFilters">
+		{# <a class="btn btn-secondary {% if hasSearch == false %}collapsed{% endif %}" data-toggle="collapse" href="#formFilters">
 			<i class="fa fa-filter"></i> Search
-		</a>
+		</a> #}
 		<a href="/admin/sections/{{handle}}/create" class="btn btn-primary" form="main">
 			<i class="fa fa-plus"></i>
 			Create entry
@@ -57,19 +57,53 @@
 
 {% block tab %}
 	<form method="get" id="main">
-		<div class="collapse {% if hasSearch %}in{% endif %}" id="formFilters">
+		<div class="search-box">
+			{{ fields.input({
+				type: 'selectbox',
+				id: 'searchstate',
+				name: 'search[state]',
+				class: 'fa',
+				placeholder: 'State',
+				value: search.state,
+				options: [{
+					value: '',
+					label: 'State'
+				}, {
+					value: 'published',
+					label: '&#xf111; Published'
+				}, {
+					value: 'draft',
+					label: '&#xf200; Draft'
+				}, {
+					value: 'trashed',
+					label: '&#xf014; Trashed'
+				}]
+			}) }}
+			{{ fields.input({
+				type: 'text',
+				id: 'searchTerm',
+				name: 'search[term]',
+				placeholder: 'Search',
+				value: search.term
+			}) }}
+			<button type="submit" class="btn btn-primary" form="main">
+				<i class="fa fa-search"></i>
+				Search
+			</button>
+		</div>
+
+		{# <div class="collapse {% if hasSearch %}in{% endif %}" id="formFilters">
 			<div class="card card-block">
 				<h5><i class="fa fa-filter"></i> Search</h5>
-				{% for path,field in searchableFields %}
-					{{ fields.field({
-						type: field.input,
-						inline: true,
-						id: 'search' + path,
-						name: 'search[' + path + ']',
-						label: field.label,
-						value: search[path]
-					}) }}
-				{% endfor %}
+				{{ fields.field({
+					type: 'text',
+					inline: true,
+					id: 'searchTerm',
+					name: 'search[term]',
+					label: 'Search',
+					value: search.term
+				}) }}
+
 				{{ fields.field({
 					type: 'daterange',
 					inline: true,
@@ -81,6 +115,7 @@
 						to: search.postDate.to
 					}
 				}) }}
+
 				{{ fields.field({
 					type: 'daterange',
 					inline: true,
@@ -121,7 +156,7 @@
 				</div>
 			</div>
 			<h5><i class="fa fa-server"></i> Results</h5>
-		</div>
+		</div>#}
 
 		<table class="table table-data">
 			<thead>
