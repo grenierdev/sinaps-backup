@@ -191,7 +191,7 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 					});
 
 					// TODO multi-lingual text index ?
-					section.entrySchema.index({ "$**": "text" }, { name: "WildcardSearch" });
+					section.entrySchema.index({ "$**": "text" }, { name: "WildcardSearch", default_language: "none" });
 
 					section.entryModel = mongoose.model('section_' + section.schema.handle, section.entrySchema);
 				});
