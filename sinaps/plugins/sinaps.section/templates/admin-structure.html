@@ -26,8 +26,6 @@
 				</th>
 				<th width="1"></th>
 				<th data-field="title">Title</th>
-				<th data-field="category">Category</th>
-				<th data-field="postDate">Post date</th>
 				<th width="1"></th>
 			</tr>
 		</thead>
@@ -50,18 +48,6 @@
 						<a href="/admin/sections/{{ handle }}/edit/{{ entry.id }}">
 							{{ entry.getTitle()|l10n|default(entry.id) }}
 						</a>
-					</td>
-					<td class="text-no-wrap">
-						{{ fields.value({
-							type: 'date',
-							value: entry.postDate
-						}) }}
-					</td>
-					<td class="text-no-wrap">
-						{{ fields.value({
-							type: 'date',
-							value: entry.expireDate
-						}) }}
 					</td>
 					<td>
 						<a href="/admin/sections/{{ handle }}/delete?ids[]={{ entry.id }}" class="text-danger">

@@ -47,7 +47,7 @@
 								</a>
 							</td>
 							<td>
-								{{ section.model.layout|capitalize }}
+								{{ section.model.get('layout')|capitalize }}
 							</td>
 							<td class="text-no-wrap">
 								{% if section.model.get('hasurls') %}
@@ -55,7 +55,7 @@
 								{% endif %}
 							</td>
 							<td>
-								<a href="#" class="text-danger"><i class="fa fa-minus-circle"></i></a>
+								<a href="#" class="text-danger"><i class="fa fa-trash-o"></i></a>
 							</td>
 						</tr>
 					{% endfor %}

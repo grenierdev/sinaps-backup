@@ -135,7 +135,8 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 							// FIXME method to retrieve children
 							section.entrySchema.add({
 								parentId: {
-									type: mongoose.Schema.Types.ObjectId,
+									//type: mongoose.Schema.Types.ObjectId,
+									type: String,
 									index: true
 								},
 								order: {
@@ -180,13 +181,13 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 						for (var a = urlFormat.length; --a >= 0;) {
 							url[urlFormat[a].locale] = '';
 							try {
-								url[urlFormat[a].locale] = unidecode(sinaps.nunjucks.renderString(urlFormat[a].value, this.localized(lang)))
+								url[urlFormat[a].locale] = unidecode(sinaps.nunjucks.renderString(urlFormat[a].value, this.localized(urlFormat[a].locale)))
 										.replace(/[^a-z0-9_\/]/gi, '-')
 										.replace(/[-]+/g, '-')
 										.replace(/^-/, '')
 										.replace(/-$/, '')
 										.toLowerCase();
-							} catch (e) {}
+							} catch (e) { }
 						}
 						this.url = url;
 						next();
