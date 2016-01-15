@@ -175,6 +175,12 @@ module.exports = function () {
 
 		var model = new section.entryModel();
 
+		switch (section.model.get('layout')) {
+			case 'channel':
+				model.set('postDate', new Date());
+				break;
+		}
+
 		if (req.session.data) {
 			model.set(req.session.data);
 			delete req.session.data;
@@ -191,6 +197,15 @@ module.exports = function () {
 		});
 	});
 
+	var schema = new mongoose.Schema({ postalCode: { type: String, maxlength: 9 }});
+	var Address = mongoose.model('Address', schema);
+	var address = new Address({ postalCode: '9512512345' });
+	address.save(function (err) {
+		console.error(err); // validator error
+		address.postalCode = '95125';
+		address.save(); // success
+	});
+
 	// Create logic
 	pluginAdmin.router.post('/sections/:handle/create', function (req, res) {
 		var section = getSectionByHandle(req.params.handle);
@@ -202,7 +217,13 @@ module.exports = function () {
 		}
 
 		var model = new section.entryModel(req.body);
-		model.save(function (err) {
+
+		console.log('Def', section.entryModel)
+		console.log('Create', req.body);
+		console.log('Model', model);
+		res.end();
+
+		/*model.save(function (err) {
 			if (err) {
 				console.error(err);
 				req.session.messages.push({type: 'danger', message: 'Could not save'});
@@ -212,7 +233,7 @@ module.exports = function () {
 				req.session.messages.push({type: 'success', message: 'Entry saved'});
 				res.redirect(`/admin/sections/${req.params.handle}/`);
 			}
-		});
+		});*/
 	});
 
 	// Edit form

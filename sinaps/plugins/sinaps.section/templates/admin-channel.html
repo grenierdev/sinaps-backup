@@ -92,72 +92,6 @@
 			</button>
 		</div>
 
-		{# <div class="collapse {% if hasSearch %}in{% endif %}" id="formFilters">
-			<div class="card card-block">
-				<h5><i class="fa fa-filter"></i> Search</h5>
-				{{ fields.field({
-					type: 'text',
-					inline: true,
-					id: 'searchTerm',
-					name: 'search[term]',
-					label: 'Search',
-					value: search.term
-				}) }}
-
-				{{ fields.field({
-					type: 'daterange',
-					inline: true,
-					id: 'searchPostDate',
-					name: 'search[postDate]',
-					label: 'Post date',
-					value: {
-						from: search.postDate.from,
-						to: search.postDate.to
-					}
-				}) }}
-
-				{{ fields.field({
-					type: 'daterange',
-					inline: true,
-					id: 'searchExpireDate',
-					name: 'search[expireDate]',
-					label: 'Expire date',
-					value: {
-						from: search.expireDate.from,
-						to: search.expireDate.to
-					}
-				}) }}
-				{{ fields.field({
-					type: 'selectbox',
-					inline: true,
-					label: 'State',
-					id: 'searchstate',
-					name: 'search[state]',
-					class: 'fa',
-					value: search.state,
-					options: [{
-						value: '',
-						label: ''
-					}, {
-						value: 'published',
-						label: '&#xf111; Published'
-					}, {
-						value: 'draft',
-						label: '&#xf200; Draft'
-					}, {
-						value: 'trashed',
-						label: '&#xf014; Trashed'
-					}]
-				}) }}
-				<div class="row">
-					<div class="col-xs-12 text-right">
-						<button type="submit" class="btn btn-primary" form="main">Search</button>
-					</div>
-				</div>
-			</div>
-			<h5><i class="fa fa-server"></i> Results</h5>
-		</div>#}
-
 		<table class="table table-data">
 			<thead>
 				<tr>
@@ -178,9 +112,9 @@
 							<input type="checkbox" name="ids[]" value="{{ entry.id }}" />
 						</td>
 						<td>
-							{% if entry.state == 'trashed' %}
+							{% if entry.get('state') == 'trashed' %}
 								<i class="fa fa-trash-o text-muted"></i>
-							{% elif entry.state == 'published' %}
+							{% elif entry.get('state') == 'published' %}
 								<i class="fa fa-circle text-muted"></i>
 							{% else %}
 								<i class="fa fa-pie-chart text-muted"></i>
@@ -188,7 +122,7 @@
 						</td>
 						<td>
 							<a href="/admin/sections/{{ handle }}/edit/{{ entry.id }}">
-								{{ l10n(entry.getTitle())|default(entry.id) }}
+								{{ entry.getTitle()|l10n|default(entry.id) }}
 							</a>
 						</td>
 						<td class="text-no-wrap">

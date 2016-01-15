@@ -45,4 +45,25 @@ module.exports = function (env) {
 			return args.length > 0 ? args.shift() : '';
 		});
 	});
+
+	env.addFilter('l10n', function (input, locale) {
+		locale = locale || this.ctx.locale;
+		if (!locale) {
+			throw new Error("No locale in context, provide locale to filter");
+		}
+		if (_.isArray(input)) {
+			for (var a = input.length; --a >= 0;) {
+				if (typeof input[a].locale !== 'undefined' && input[a].locale == locale) {
+					return input[a].value;
+				}
+			}
+		}
+		if (_.isObject(input) && typeof input[locale] !== 'undefined') {
+			return input[locale];
+		}
+		if (typeof input === 'string') {
+			return input;
+		}
+		return null;
+	});
 };

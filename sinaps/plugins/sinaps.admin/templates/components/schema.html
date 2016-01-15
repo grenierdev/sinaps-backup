@@ -7,12 +7,20 @@
 			{% if field.lang %}
 				{% for lang in sinaps.config.languages %}
 					<div data-lang="{{ lang }}">
+						<input type="hidden" name="{{ field.handle }}[{{ loop.index0 }}][locale]" value="{{ lang }}" />
 						{% set field = field|merge({
-							id: field.handle + '[' + lang + ']',
-							name: field.handle + '[' + lang + ']',
-							value: model.get(field.handle + '.' + lang),
+							id: field.handle + '[' + loop.index0 + '][value]',
+							name: field.handle + '[' + loop.index0 + '][value]',
+							value: null,
 							locale: lang
 						}) %}
+						{% for translation in model.get(field.handle) -%}
+							{% if translation.locale == lang -%}
+								{% set field = field|merge({
+									value: translation.value
+								}) %}
+							{%- endif %}
+						{%- endfor %}
 						{{ fieldtype.getFieldHTML(field) }}
 					</div>
 				{% endfor %}

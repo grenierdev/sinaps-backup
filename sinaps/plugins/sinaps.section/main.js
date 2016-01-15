@@ -168,30 +168,29 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 					});
 
 					section.entrySchema.methods['getTitle'] = function () {
-						return _.mapValues(_.invert(sinaps.config.languages), function (i, lang) {
+						return _.map(sinaps.config.languages, function (lang) {
 							try {
-								return sinaps.nunjucks.renderString(section.model.titleFormat, this.localized(lang));
+								return { locale: lang, value: sinaps.nunjucks.renderString(section.model.get('titleFormat'), this.localized(lang)) };
 							} catch (e) {}
-							return '';
+							return { locale: lang, value: '' };
 						}.bind(this));
 					};
 					section.entrySchema.pre('save', function (next) {
-						this.url = _.mapValues(_.invert(sinaps.config.languages), function (i, lang) {
+						var url = {}, urlFormat = section.model.get('urlFormat') || [];
+						for (var a = urlFormat.length; --a >= 0;) {
+							url[urlFormat[a].locale] = '';
 							try {
-								return unidecode(sinaps.nunjucks.renderString(section.model.urlFormat[lang], this.localized(lang)))
+								url[urlFormat[a].locale] = unidecode(sinaps.nunjucks.renderString(urlFormat[a].value, this.localized(lang)))
 										.replace(/[^a-z0-9_\/]/gi, '-')
 										.replace(/[-]+/g, '-')
 										.replace(/^-/, '')
 										.replace(/-$/, '')
 										.toLowerCase();
 							} catch (e) {}
-							return '';
-						}.bind(this));
+						}
+						this.url = url;
 						next();
 					});
-
-					// TODO multi-lingual text index ?
-					section.entrySchema.index({ "$**": "text" }, { name: "WildcardSearch", default_language: "none" });
 
 					section.entryModel = mongoose.model('section_' + section.schema.handle, section.entrySchema);
 				});

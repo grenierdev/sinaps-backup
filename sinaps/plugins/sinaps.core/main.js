@@ -53,10 +53,23 @@ module.exports = {
 				// If user present in request (logged)
 				sinaps.router.use(function (req, res, next) {
 					// FIXME locale in url
-					res.locals.locale = sinaps.config.languages[0];
-					res.locals.l10n = function (input) {
-						return _.isObject(input) && typeof input[res.locals.locale] != 'undefined' ? input[res.locals.locale] : input;
+					req.locale = sinaps.config.languages[0];
+					req.l10n = function (input, locale) {
+						locale == locale || res.locals.locale;
+						if (_.isArray(input)) {
+							for (var a = input.length; --a >= 0;) {
+								if (typeof input[a].locale !== 'undefined' && input[a].locale == locale) {
+									return input[a].value;
+								}
+							}
+						}
+						if (_.isObject(input) && typeof input[locale] !== 'undefined') {
+							return input[locale];
+						}
+						return input;
 					};
+
+					res.locals.locale = req.locale;
 
 					res.locals.messages = req.session.messages || [];
 					res.locals.user = req.user || null;

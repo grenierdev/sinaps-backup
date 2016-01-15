@@ -18,7 +18,7 @@
 {% else %}
 	{% set breadcrumbs = breadcrumbs|merge({
 		href: '/admin/sections/' + handle + '/edit/' + model.id,
-		title: l10n(model.getTitle())|default(model.id)
+		title: model.getTitle()|l10n|default(model.id)
 	}) %}
 {% endif %}
 
@@ -54,7 +54,6 @@
 {% import 'sinaps.admin/components/schema.html' as schema %}
 
 {% block content %}
-
 	<form id="main" method="post">
 		<div class="row">
 			<div class="col-xs-12 col-xl-8">
@@ -87,7 +86,7 @@
 							required: true
 						}) }}
 
-						{% if section.model.layout|lower == 'channel' %}
+						{% if section.model.get('layout')|lower == 'channel' %}
 							{{ fields.field({
 								type: 'datetime',
 								name: 'postDate',
@@ -100,7 +99,7 @@
 								value: model.get('expireDate'),
 								label: 'Expire date'
 							}) }}
-						{% elif section.model.layout|lower == 'structure' %}
+						{% elif section.model.get('layout')|lower == 'structure' %}
 							{{ fields.field({
 								type: 'text',
 								name: 'parentId',

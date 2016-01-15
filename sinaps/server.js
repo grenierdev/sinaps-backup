@@ -160,7 +160,10 @@ console.info('================================================');
 			sinaps.app.set('view engine', 'html');
 			sinaps.app.set('view cache', sinaps.config.template.cache);
 
-			sinaps.nunjucks = new nunjucks.Environment(new MultipleFSLoader(templates));
+			sinaps.nunjucks = new nunjucks.Environment(new MultipleFSLoader(templates), {
+				watch: true,
+				autoescape: false
+			});
 			sinaps.nunjucks.express(sinaps.app);
 			sinaps.nunjucks.addGlobal('sinaps', sinaps);
 

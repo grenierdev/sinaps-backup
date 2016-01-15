@@ -42,16 +42,16 @@
 							<td><input type="checkbox" name="handle[]" value="{{ section.schema.handle }}" /></td>
 							<td class="text-no-wrap">
 								<a href="/admin/settings/sections/edit/{{ section.schema.handle }}">
-									{{ section.schema.label|default(section.model.handle) }}
-									<small>({{ section.model.handle }})</small>
+									{{ section.model.get('label')|default(section.model.get('handle')) }}
+									<small>({{ section.model.get('handle') }})</small>
 								</a>
 							</td>
 							<td>
 								{{ section.model.layout|capitalize }}
 							</td>
 							<td class="text-no-wrap">
-								{% if section.model.hasurls %}
-									{{ l10n(section.model.urlFormat) }}
+								{% if section.model.get('hasurls') %}
+									{{ section.model.get('urlFormat')|l10n }}
 								{% endif %}
 							</td>
 							<td>

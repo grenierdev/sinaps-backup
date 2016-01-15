@@ -48,7 +48,7 @@
 					</td>
 					<td>
 						<a href="/admin/sections/{{ handle }}/edit/{{ entry.id }}">
-							{{ l10n(entry.getTitle())|default(entry.id) }}
+							{{ entry.getTitle()|l10n|default(entry.id) }}
 						</a>
 					</td>
 					<td class="text-no-wrap">

@@ -100,16 +100,15 @@ Schema.prototype.finalizedSchema = function () {
 		return this._finalizedSchema;
 	}
 
-	var fields = [];
-
+	var fieldDefinitions = [];
 	this.layouts.forEach(function (layout) {
 		layout.tabs.forEach(function (tab) {
-			fields.push.apply(fields, tab.fields);
+			fieldDefinitions.push.apply(fieldDefinitions, tab.fieldDefinitions);
 		});
 	});
 
 	var definitions = {};
-	fields.forEach(function (field) {
+	fieldDefinitions.forEach(function (field) {
 		definitions[field.handle] = field.finalizedField();
 	});
 
@@ -127,19 +126,40 @@ Schema.prototype.finalizedSchema = function () {
 	}.bind(this));
 
 	var schema = this;
+	var fields = schema.fields();
 	this._finalizedSchema.methods['localized'] = function (locale) {
-		var fields = schema.fields();
 		var obj = this.toObject();
 		var currentLayout = obj.layout;
 		_.each(fields, function (def, path) {
 			if (def.lang && path.split('.')[0] == currentLayout) {
 				var p = path.split('.').slice(2).join('.');
 				var v = _.get(obj, p);
-				_.set(obj, p, _.isObject(v) ? v[locale] || '' : v);
+				if (_.isArray(v)) {
+					for (var a = v.length; --a >= 0;) {
+						if (v[a].locale == locale) {
+							_.set(obj, p, v[a].value);
+							return;
+						}
+					}
+				}
+				_.set(obj, p, '');
 			}
 		});
 		return obj;
 	};
+
+	var textFields = {};
+	var textWeights = {};
+	_.each(fields, function (def, path) {
+		if (def.index && def.type === String) {
+			var p = path.split('.').slice(2).join('.');
+			textFields[p + (def.lang ? '.value' : '')] = 'text';
+		}
+	});
+	if (!_.isEmpty(textFields)) {
+		// TODO Text search weight
+		this._finalizedSchema.index(textFields, { name: "textSearch", language_override: "locale", default_language: sinaps.config.languages[0] });
+	}
 
 	_.forEach(this._virtuals, function (obj, name) {
 		var get = obj && obj.get || function () {};
@@ -342,10 +362,10 @@ Schema.Field.prototype.finalizedField = function (depth) {
 
 	if (this.lang) {
 		var d = definition;
-		definition = {};
-		for (var i = sinaps.config.languages.length; --i >= 0;) {
-			definition[sinaps.config.languages[i]] = d;
-		}
+		definition = [{
+			locale: String,
+			value: d
+		}];
 	}
 
 	return definition;

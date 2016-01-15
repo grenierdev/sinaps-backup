@@ -10,7 +10,7 @@
 	title: 'Sections'
 },{
 	href: '/admin/settings/sections/edit/' + section.get('handle'),
-	title: 'Edit ' + section.label
+	title: 'Edit ' + section.get('label')
 }] %}
 
 {% block actions %}
@@ -60,7 +60,7 @@
 							name: 'label',
 							label: 'Label',
 							instructions: 'What this section will be called in the CP.',
-							value: section.label,
+							value: section.get('label'),
 							required: true
 						}) }}
 
@@ -69,7 +69,7 @@
 							name: 'titleFormat',
 							label: 'Title format',
 							instructions: 'How entries will be displayed in the CP.',
-							value: section.titleFormat,
+							value: section.get('titleFormat'),
 							required: true
 						}) }}
 
@@ -77,19 +77,20 @@
 							type: 'checkbox',
 							name: 'hasurls',
 							label: 'Entries in this section have their own URLs',
-							checked: section.hasurls,
+							checked: section.get('hasurls'),
 							required: true
 						}) }}
 
 						<div id="toggle-hasurls">
 							{% for lang in sinaps.config.languages %}
+								<input type="hidden" name="urlFormat[{{ loop.index0 }}][locale]" value="{{ lang }}">
 								{{ fields.field({
 									type: 'text',
-									name: 'urlFormat[' + lang + ']',
+									name: 'urlFormat[' + loop.index0 + '][value]',
 									label: 'URL format',
 									locale: lang,
 									instructions: 'What the entry URLs should look like. You can include tags that output entry properties, such as {slug} or {postDate|date("Y")}.',
-									value: section.get('urlFormat.' + lang)
+									value: section.get('urlFormat')|l10n(lang)
 								}) }}
 							{% endfor %}
 
@@ -98,7 +99,7 @@
 								name: 'template',
 								label: 'Template',
 								instructions: 'The template to use when an entry’s URL is requested.',
-								value: section.template
+								value: section.get('template')
 							}) }}
 						</div>
 					</main>
@@ -112,7 +113,7 @@
 						{{ fields.input({
 							type: 'builder-layouts',
 							name: 'layouts',
-							value: section.layouts
+							value: section.get('layouts')
 						}) }}
 					</main>
 				</div>
