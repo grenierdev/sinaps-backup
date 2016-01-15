@@ -73,6 +73,8 @@ module.exports = function () {
 				var opts = {};
 				var order = { postDate: -1 };
 
+				// FIXME Ordering
+
 				var search = req.query.search || {};
 				var flatSearch = flattenObject(search);
 				var hasSearch = _.values(flatSearch).join('') != '';
