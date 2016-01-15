@@ -100,7 +100,7 @@ module.exports = function () {
 				}
 
 				if (flatSearch['term']) {
-					query['$text'] = { $search: flatSearch['term'] };
+					query['$text'] = { $search: flatSearch['term'], $language: req.locale };
 					opts['score'] = { $meta: 'textScore' };
 					order = { score: { $meta: 'textScore' } };
 				}
@@ -197,15 +197,6 @@ module.exports = function () {
 		});
 	});
 
-	var schema = new mongoose.Schema({ postalCode: { type: String, maxlength: 9 }});
-	var Address = mongoose.model('Address', schema);
-	var address = new Address({ postalCode: '9512512345' });
-	address.save(function (err) {
-		console.error(err); // validator error
-		address.postalCode = '95125';
-		address.save(); // success
-	});
-
 	// Create logic
 	pluginAdmin.router.post('/sections/:handle/create', function (req, res) {
 		var section = getSectionByHandle(req.params.handle);
@@ -218,12 +209,7 @@ module.exports = function () {
 
 		var model = new section.entryModel(req.body);
 
-		console.log('Def', section.entryModel)
-		console.log('Create', req.body);
-		console.log('Model', model);
-		res.end();
-
-		/*model.save(function (err) {
+		model.save(function (err) {
 			if (err) {
 				console.error(err);
 				req.session.messages.push({type: 'danger', message: 'Could not save'});
@@ -233,7 +219,7 @@ module.exports = function () {
 				req.session.messages.push({type: 'success', message: 'Entry saved'});
 				res.redirect(`/admin/sections/${req.params.handle}/`);
 			}
-		});*/
+		});
 	});
 
 	// Edit form

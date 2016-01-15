@@ -103,7 +103,7 @@ Schema.prototype.finalizedSchema = function () {
 	var fieldDefinitions = [];
 	this.layouts.forEach(function (layout) {
 		layout.tabs.forEach(function (tab) {
-			fieldDefinitions.push.apply(fieldDefinitions, tab.fieldDefinitions);
+			fieldDefinitions.push.apply(fieldDefinitions, tab.fields);
 		});
 	});
 

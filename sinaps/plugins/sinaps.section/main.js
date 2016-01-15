@@ -69,7 +69,7 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 		sinaps.once('initialized', function () {
 
 			// Setup user model based on schema
-			this.SectionModel = mongoose.model('section', SectionSchema.finalizedSchema());
+			this.SectionModel = sinaps.db.model('section', SectionSchema.finalizedSchema());
 
 			// Load section from database
 			this.SectionModel.find({}, function (err, models) {
@@ -192,7 +192,7 @@ module.exports = _.extend({}, EventEmitter.prototype, {
 						next();
 					});
 
-					section.entryModel = mongoose.model('section_' + section.schema.handle, section.entrySchema);
+					section.entryModel = sinaps.db.model('section_' + section.schema.handle, section.entrySchema);
 				});
 
 				// Let others know models are ready

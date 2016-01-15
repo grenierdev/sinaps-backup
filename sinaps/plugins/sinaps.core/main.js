@@ -25,7 +25,7 @@ module.exports = {
 		sinaps.once('initialized', function () {
 
 			// Setup user model based on schema
-			User = mongoose.model('User', UserSchema.finalizedSchema());
+			User = sinaps.db.model('User', UserSchema.finalizedSchema());
 
 			// Setup session / login / logout
 			{
